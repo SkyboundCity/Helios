@@ -12,35 +12,35 @@ import org.bukkit.potion.PotionEffectType;
 
 public final class Milk {
 
-  public static final PotionEffectType EFFECT = PotionEffectType.DOLPHINS_GRACE;
-  public static final int AMPLIFIER = 5;
+	public static final PotionEffectType EFFECT = PotionEffectType.DOLPHINS_GRACE;
+	public static final int AMPLIFIER = 5;
 
-  private Milk() {
-  }
+	private Milk() {
+	}
 
-  public static ItemStack regular() {
-    return base()
-        .name(Component.text("Potion of Milk"))
-        .build();
-  }
+	public static ItemStack regular() {
+		return base()
+				.name(Component.text("Potion of Milk"))
+				.build();
+	}
 
-  public static ItemStack splash() {
-    return base()
-        .name(Component.text("Splash Potion of Milk"))
-        .material(Material.SPLASH_POTION)
-        .build();
-  }
+	public static ItemStack splash() {
+		return base()
+				.name(Component.text("Splash Potion of Milk"))
+				.material(Material.SPLASH_POTION)
+				.build();
+	}
 
-  private static PotionBuilder base() {
-    return PotionBuilder.potionBuilder(Material.POTION)
-        .loreList(
-            Component.text("Milk XXXIV").color(NamedTextColor.BLUE),
-            Component.empty(),
-            Component.text("Bottled at your local femboy hooters.").color(NamedTextColor.GRAY)
-        )
-        .addCustomEffect(PotEff.hidden(EFFECT, 100, AMPLIFIER), true)
-        .addFlag(ItemFlag.HIDE_ATTRIBUTES) // FIXME: previously ItemFlag.HIDE_ITEM_SPECIFICS
-        .color(Color.WHITE);
-  }
+	private static PotionBuilder base() {
+		return PotionBuilder.potionBuilder(Material.POTION)
+				.loreList(
+						Component.text("Milk XXXIV").color(NamedTextColor.BLUE),
+						Component.empty(),
+						Component.text("Bottled at your local femboy hooters.").color(NamedTextColor.GRAY)
+				)
+				.addCustomEffect(PotEff.hidden(EFFECT, 100, AMPLIFIER), true)
+				.addFlag(ItemFlag.HIDE_ATTRIBUTES) // FIXME: previously ItemFlag.HIDE_ITEM_SPECIFICS
+				.color(Color.WHITE);
+	}
 
 }

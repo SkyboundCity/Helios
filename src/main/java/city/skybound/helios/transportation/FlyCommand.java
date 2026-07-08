@@ -13,38 +13,38 @@ import static org.incendo.cloud.description.Description.description;
 
 public final class FlyCommand {
 
-  private final Charon charon;
-  private final LangConfig langConfig;
-  private final FlightService flightService;
+	private final Charon charon;
+	private final LangConfig langConfig;
+	private final FlightService flightService;
 
-  @Inject
-  public FlyCommand(
-      final Charon charon,
-      final LangConfig langConfig,
-      final FlightService flightService
-  ) {
-    this.charon = charon;
-    this.langConfig = langConfig;
-    this.flightService = flightService;
-  }
+	@Inject
+	public FlyCommand(
+			final Charon charon,
+			final LangConfig langConfig,
+			final FlightService flightService
+	) {
+		this.charon = charon;
+		this.langConfig = langConfig;
+		this.flightService = flightService;
+	}
 
-  public void register(final PaperCommandManager<Source> commandManager) {
-    final var main = commandManager.commandBuilder("fly")
-        .commandDescription(description("Bends the space-time continuum."))
-        .permission(Permission.FLY)
-        .senderType(PlayerSource.class)
-        .handler(c -> {
-          final var sender = c.sender().source();
-          if (this.charon.grab(sender).toggleFlyBypassEnabled()) {
-            sender.sendMessage(this.langConfig.c(NodePath.path("fly", "enabled")));
-            this.flightService.enableFlight(sender);
-          } else {
-            sender.sendMessage(this.langConfig.c(NodePath.path("fly", "disabled")));
-            this.flightService.disableFlight(sender);
-          }
-        });
+	public void register(final PaperCommandManager<Source> commandManager) {
+		final var main = commandManager.commandBuilder("fly")
+				.commandDescription(description("Bends the space-time continuum."))
+				.permission(Permission.FLY)
+				.senderType(PlayerSource.class)
+				.handler(c -> {
+					final var sender = c.sender().source();
+					if (this.charon.grab(sender).toggleFlyBypassEnabled()) {
+						sender.sendMessage(this.langConfig.c(NodePath.path("fly", "enabled")));
+						this.flightService.enableFlight(sender);
+					} else {
+						sender.sendMessage(this.langConfig.c(NodePath.path("fly", "disabled")));
+						this.flightService.disableFlight(sender);
+					}
+				});
 
-    commandManager.command(main);
-  }
+		commandManager.command(main);
+	}
 
 }

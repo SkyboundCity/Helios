@@ -12,28 +12,28 @@ import org.bukkit.event.player.PlayerToggleFlightEvent;
  */
 public final class FlightListener implements Listener {
 
-  private final FlightService flightService;
+	private final FlightService flightService;
 
-  @Inject
-  public FlightListener(
-      final FlightService flightService
-  ) {
-    this.flightService = flightService;
-  }
+	@Inject
+	public FlightListener(
+			final FlightService flightService
+	) {
+		this.flightService = flightService;
+	}
 
-  @EventHandler
-  public void onToggleFlight(final PlayerToggleFlightEvent event) {
-    this.flightService.checkFlight(event.getPlayer());
-  }
+	@EventHandler
+	public void onToggleFlight(final PlayerToggleFlightEvent event) {
+		this.flightService.checkFlight(event.getPlayer());
+	}
 
-  @EventHandler
-  public void onJoin(final PlayerJoinEvent event) {
-    this.flightService.checkFlight(event.getPlayer());
-  }
+	@EventHandler
+	public void onJoin(final PlayerJoinEvent event) {
+		this.flightService.checkFlight(event.getPlayer());
+	}
 
-  @EventHandler
-  public void onGameModeChange(final PlayerGameModeChangeEvent event) {
-    this.flightService.checkFlight(event.getPlayer());
-  }
+	@EventHandler
+	public void onGameModeChange(final PlayerGameModeChangeEvent event) {
+		this.flightService.checkFlight(event.getPlayer());
+	}
 
 }

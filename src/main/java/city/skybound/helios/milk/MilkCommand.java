@@ -9,17 +9,17 @@ import static org.incendo.cloud.description.Description.description;
 
 public final class MilkCommand {
 
-  public void register(final PaperCommandManager<Source> commandManager) {
-    final var main = commandManager.commandBuilder("milk")
-        .commandDescription(description("Milk."))
-        .permission(Permission.MILK)
-        .senderType(PlayerSource.class)
-        .handler(c -> {
-          final var sender = c.sender().source();
-          sender.getInventory().addItem(Milk.regular());
-        });
+	public void register(final PaperCommandManager<Source> commandManager) {
+		final var main = commandManager.commandBuilder("milk")
+				.commandDescription(description("Milk."))
+				.permission(Permission.MILK)
+				.senderType(PlayerSource.class)
+				.handler(c -> {
+					final var sender = c.sender().source();
+					sender.getInventory().addItem(Milk.regular());
+				});
 
-    commandManager.command(main);
-  }
+		commandManager.command(main);
+	}
 
 }

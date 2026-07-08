@@ -18,48 +18,48 @@ import static org.incendo.cloud.description.Description.description;
 
 public final class PlaytimeCommand {
 
-  private final LangConfig langConfig;
+	private final LangConfig langConfig;
 
-  @Inject
-  public PlaytimeCommand(
-      final LangConfig langConfig
-  ) {
-    this.langConfig = langConfig;
-  }
+	@Inject
+	public PlaytimeCommand(
+			final LangConfig langConfig
+	) {
+		this.langConfig = langConfig;
+	}
 
-  public void register(final PaperCommandManager<Source> commandManager) {
-    final var main = commandManager.commandBuilder("playtime")
-        .commandDescription(description("Check how long you've played."))
-        .senderType(PlayerSource.class)
-        .optional("player", playerParser())
-        .handler(c -> {
-          final var sender = c.sender().source();
+	public void register(final PaperCommandManager<Source> commandManager) {
+		final var main = commandManager.commandBuilder("playtime")
+				.commandDescription(description("Check how long you've played."))
+				.senderType(PlayerSource.class)
+				.optional("player", playerParser())
+				.handler(c -> {
+					final var sender = c.sender().source();
 
-          c.<Player>optional("player").ifPresentOrElse(
-              (target) -> sender.sendMessage(this.langConfig.c(
-                  NodePath.path("playtime", "other"),
-                  TagResolver.resolver(
-                      Placeholder.unparsed(
-                          "time_in_hours",
-                          DurationFormat.fancifyTime(Playtime.getTimePlayed(target), TimeUnit.HOURS)
-                      ),
-                      Placeholder.unparsed("time", DurationFormat.fancifyTime(Playtime.getTimePlayed(target))),
-                      Placeholder.unparsed("player", target.getName())
-                  )
-              )), () -> sender.sendMessage(this.langConfig.c(
-                  NodePath.path("playtime", "self"),
-                  TagResolver.resolver(
-                      Placeholder.unparsed(
-                          "time_in_hours",
-                          DurationFormat.fancifyTime(Playtime.getTimePlayed(sender), TimeUnit.HOURS)
-                      ),
-                      Placeholder.unparsed("time", DurationFormat.fancifyTime(Playtime.getTimePlayed(sender)))
-                  )
-              ))
-          );
-        });
+					c.<Player>optional("player").ifPresentOrElse(
+							(target) -> sender.sendMessage(this.langConfig.c(
+									NodePath.path("playtime", "other"),
+									TagResolver.resolver(
+											Placeholder.unparsed(
+													"time_in_hours",
+													DurationFormat.fancifyTime(Playtime.getTimePlayed(target), TimeUnit.HOURS)
+											),
+											Placeholder.unparsed("time", DurationFormat.fancifyTime(Playtime.getTimePlayed(target))),
+											Placeholder.unparsed("player", target.getName())
+									)
+							)), () -> sender.sendMessage(this.langConfig.c(
+									NodePath.path("playtime", "self"),
+									TagResolver.resolver(
+											Placeholder.unparsed(
+													"time_in_hours",
+													DurationFormat.fancifyTime(Playtime.getTimePlayed(sender), TimeUnit.HOURS)
+											),
+											Placeholder.unparsed("time", DurationFormat.fancifyTime(Playtime.getTimePlayed(sender)))
+									)
+							))
+					);
+				});
 
-    commandManager.command(main);
-  }
+		commandManager.command(main);
+	}
 
 }

@@ -14,55 +14,55 @@ import static org.incendo.cloud.description.Description.description;
 
 public final class GameModeCommands {
 
-  private final LangConfig langConfig;
+	private final LangConfig langConfig;
 
-  @Inject
-  public GameModeCommands(
-      final LangConfig langConfig
-  ) {
-    this.langConfig = langConfig;
-  }
+	@Inject
+	public GameModeCommands(
+			final LangConfig langConfig
+	) {
+		this.langConfig = langConfig;
+	}
 
-  public void register(final PaperCommandManager<Source> commandManager) {
-    final var main = commandManager.commandBuilder("gamemode", "gm")
-        .permission(Permission.GAMEMODE)
-        .senderType(PlayerSource.class)
-        .commandDescription(description("Change your game mode."));
+	public void register(final PaperCommandManager<Source> commandManager) {
+		final var main = commandManager.commandBuilder("gamemode", "gm")
+				.permission(Permission.GAMEMODE)
+				.senderType(PlayerSource.class)
+				.commandDescription(description("Change your game mode."));
 
-    final var survival = main.literal("survival", "s")
-        .handler(c -> {
-          final var sender = c.sender().source();
-          sender.setGameMode(GameMode.SURVIVAL);
-          sender.sendMessage(this.langConfig.c(
-              NodePath.path("gamemode", "change"),
-              Placeholder.unparsed("gamemode", "Survival")
-          ));
-        });
+		final var survival = main.literal("survival", "s")
+				.handler(c -> {
+					final var sender = c.sender().source();
+					sender.setGameMode(GameMode.SURVIVAL);
+					sender.sendMessage(this.langConfig.c(
+							NodePath.path("gamemode", "change"),
+							Placeholder.unparsed("gamemode", "Survival")
+					));
+				});
 
-    final var creative = main.literal("creative", "c")
-        .handler(c -> {
-          final var sender = c.sender().source();
-          sender.setGameMode(GameMode.CREATIVE);
-          sender.sendMessage(this.langConfig.c(
-              NodePath.path("gamemode", "change"),
-              Placeholder.unparsed("gamemode", "Creative")
-          ));
-        });
+		final var creative = main.literal("creative", "c")
+				.handler(c -> {
+					final var sender = c.sender().source();
+					sender.setGameMode(GameMode.CREATIVE);
+					sender.sendMessage(this.langConfig.c(
+							NodePath.path("gamemode", "change"),
+							Placeholder.unparsed("gamemode", "Creative")
+					));
+				});
 
-    final var adventure = main.literal("adventure", "a")
-        .handler(c -> {
-          final var sender = c.sender().source();
-          sender.setGameMode(GameMode.ADVENTURE);
-          sender.sendMessage(this.langConfig.c(
-              NodePath.path("gamemode", "change"),
-              Placeholder.unparsed("gamemode", "Adventure")
-          ));
-        });
+		final var adventure = main.literal("adventure", "a")
+				.handler(c -> {
+					final var sender = c.sender().source();
+					sender.setGameMode(GameMode.ADVENTURE);
+					sender.sendMessage(this.langConfig.c(
+							NodePath.path("gamemode", "change"),
+							Placeholder.unparsed("gamemode", "Adventure")
+					));
+				});
 
-    commandManager.command(main);
-    commandManager.command(survival);
-    commandManager.command(creative);
-    commandManager.command(adventure);
-  }
+		commandManager.command(main);
+		commandManager.command(survival);
+		commandManager.command(creative);
+		commandManager.command(adventure);
+	}
 
 }

@@ -44,226 +44,226 @@ import static love.broccolai.corn.minecraft.item.special.BundleBuilder.bundleBui
 
 public final class TransportationListener implements Listener {
 
-  private static final List<PotionEffectType> ONEROUS_BANNED_EFFECTS = List.of(
-      PotionEffectType.SPEED,
-      PotionEffectType.JUMP_BOOST,
-      PotionEffectType.SLOW_FALLING,
-      PotionEffectType.LEVITATION
-  );
+	private static final List<PotionEffectType> ONEROUS_BANNED_EFFECTS = List.of(
+			PotionEffectType.SPEED,
+			PotionEffectType.JUMP_BOOST,
+			PotionEffectType.SLOW_FALLING,
+			PotionEffectType.LEVITATION
+	);
 
-  private final LangConfig langConfig;
-  private final Helios plugin;
-  private final Charon charon;
+	private final LangConfig langConfig;
+	private final Helios plugin;
+	private final Charon charon;
 
-  @Inject
-  public TransportationListener(
-      final LangConfig langConfig,
-      final Helios plugin,
-      final Charon charon
-  ) {
-    this.langConfig = langConfig;
-    this.plugin = plugin;
-    this.charon = charon;
-  }
+	@Inject
+	public TransportationListener(
+			final LangConfig langConfig,
+			final Helios plugin,
+			final Charon charon
+	) {
+		this.langConfig = langConfig;
+		this.plugin = plugin;
+		this.charon = charon;
+	}
 
-  /**
-   * Prevents spectator mode.
-   */
-  @EventHandler
-  public void onModeToSpectator(final PlayerGameModeChangeEvent event) {
-    if (event.getNewGameMode() == GameMode.SPECTATOR) {
-      event.setCancelled(true);
-      final var player = event.getPlayer();
-      player.setGameMode(GameMode.ADVENTURE);
-      player.setFireTicks(100);
-      player.getWorld().strikeLightning(player.getLocation());
-    }
-  }
+	/**
+	 * Prevents spectator mode.
+	 */
+	@EventHandler
+	public void onModeToSpectator(final PlayerGameModeChangeEvent event) {
+		if (event.getNewGameMode() == GameMode.SPECTATOR) {
+			event.setCancelled(true);
+			final var player = event.getPlayer();
+			player.setGameMode(GameMode.ADVENTURE);
+			player.setFireTicks(100);
+			player.getWorld().strikeLightning(player.getLocation());
+		}
+	}
 
-  /**
-   * Prevents ender pearls and chorus fruit teleportation except in docile realms.
-   */
-  @EventHandler
-  public void onTeleport(final PlayerTeleportEvent event) {
-    final var cause = event.getCause();
-    if (cause != PlayerTeleportEvent.TeleportCause.CONSUMABLE_EFFECT
-        && cause != PlayerTeleportEvent.TeleportCause.ENDER_PEARL) {
-      return;
-    }
+	/**
+	 * Prevents ender pearls and chorus fruit teleportation except in docile realms.
+	 */
+	@EventHandler
+	public void onTeleport(final PlayerTeleportEvent event) {
+		final var cause = event.getCause();
+		if (cause != PlayerTeleportEvent.TeleportCause.CONSUMABLE_EFFECT
+				&& cause != PlayerTeleportEvent.TeleportCause.ENDER_PEARL) {
+			return;
+		}
 
-    // allow teleportation in the end.
-    if (Milieu.of(event.getPlayer()) == Milieu.DOCILE) {
-      return;
-    }
+		// allow teleportation in the end.
+		if (Milieu.of(event.getPlayer()) == Milieu.DOCILE) {
+			return;
+		}
 
-    event.setCancelled(true);
-    event.getTo().getWorld().spawnParticle(Particle.SMOKE, event.getTo(), 200, 0.1, 0.1, 0.1, 0.1);
-  }
+		event.setCancelled(true);
+		event.getTo().getWorld().spawnParticle(Particle.SMOKE, event.getTo(), 200, 0.1, 0.1, 0.1, 0.1);
+	}
 
-  /**
-   * Prevents vehicle usage in onerous realms.
-   */
-  @EventHandler
-  public void onVehicleEnter(final VehicleEnterEvent event) {
-    if (Milieu.of(event.getEntered()) != Milieu.ONEROUS) {
-      return;
-    }
+	/**
+	 * Prevents vehicle usage in onerous realms.
+	 */
+	@EventHandler
+	public void onVehicleEnter(final VehicleEnterEvent event) {
+		if (Milieu.of(event.getEntered()) != Milieu.ONEROUS) {
+			return;
+		}
 
-    if (event.getEntered() instanceof final Player player) {
-      final Vehicle vehicle = event.getVehicle();
+		if (event.getEntered() instanceof final Player player) {
+			final Vehicle vehicle = event.getVehicle();
 
-      if (vehicle.getType() == EntityType.ARROW) {
-        // allow sitting in the nether. (chairs plugin uses arrow vehicles.)
-        return;
-      }
+			if (vehicle.getType() == EntityType.ARROW) {
+				// allow sitting in the nether. (chairs plugin uses arrow vehicles.)
+				return;
+			}
 
-      vehicle.getWorld().createExplosion(vehicle, 2, true, false);
-      vehicle.remove();
-      player.sendMessage(this.langConfig.c(NodePath.path("no-vehicle")));
-    } else {
-      event.setCancelled(true);
-    }
-  }
+			vehicle.getWorld().createExplosion(vehicle, 2, true, false);
+			vehicle.remove();
+			player.sendMessage(this.langConfig.c(NodePath.path("no-vehicle")));
+		} else {
+			event.setCancelled(true);
+		}
+	}
 
-  /**
-   * Prevents movement-enhancing potions in onerous realms.
-   */
-  @EventHandler
-  public void onPotionEffect(final EntityPotionEffectEvent event) {
-    if (!(event.getEntity() instanceof final Player player)
-        || Milieu.of(player) != Milieu.ONEROUS
-        || event.getNewEffect() == null) {
-      return;
-    }
+	/**
+	 * Prevents movement-enhancing potions in onerous realms.
+	 */
+	@EventHandler
+	public void onPotionEffect(final EntityPotionEffectEvent event) {
+		if (!(event.getEntity() instanceof final Player player)
+				|| Milieu.of(player) != Milieu.ONEROUS
+				|| event.getNewEffect() == null) {
+			return;
+		}
 
-    final PotionEffectType type = event.getNewEffect().getType();
-    if (ONEROUS_BANNED_EFFECTS.contains(type)) {
-      event.setCancelled(true);
-      player.setGameMode(GameMode.ADVENTURE);
-      player.addPotionEffect(PotEff.visible(PotionEffectType.WITHER, 160, 100));
-    }
-  }
+		final PotionEffectType type = event.getNewEffect().getType();
+		if (ONEROUS_BANNED_EFFECTS.contains(type)) {
+			event.setCancelled(true);
+			player.setGameMode(GameMode.ADVENTURE);
+			player.addPotionEffect(PotEff.visible(PotionEffectType.WITHER, 160, 100));
+		}
+	}
 
-  /**
-   * Remove leftover or banned effects.
-   */
-  @EventHandler
-  public void onWorldChange(final PlayerChangedWorldEvent event) {
-    final Player player = event.getPlayer();
+	/**
+	 * Remove leftover or banned effects.
+	 */
+	@EventHandler
+	public void onWorldChange(final PlayerChangedWorldEvent event) {
+		final Player player = event.getPlayer();
 
-    // remove leftover blindness from the nether.
-    final @Nullable PotionEffect blindness = player.getPotionEffect(PotionEffectType.BLINDNESS);
-    if (blindness != null && blindness.isInfinite()) {
-      player.removePotionEffect(PotionEffectType.BLINDNESS);
-    }
+		// remove leftover blindness from the nether.
+		final @Nullable PotionEffect blindness = player.getPotionEffect(PotionEffectType.BLINDNESS);
+		if (blindness != null && blindness.isInfinite()) {
+			player.removePotionEffect(PotionEffectType.BLINDNESS);
+		}
 
-    // remove banned effects when going into nether.
-    if (Milieu.of(player) == Milieu.ONEROUS) {
-      for (final PotionEffectType type : ONEROUS_BANNED_EFFECTS) {
-        player.removePotionEffect(type);
-      }
-    }
-  }
+		// remove banned effects when going into nether.
+		if (Milieu.of(player) == Milieu.ONEROUS) {
+			for (final PotionEffectType type : ONEROUS_BANNED_EFFECTS) {
+				player.removePotionEffect(type);
+			}
+		}
+	}
 
-  /**
-   * Prevents elytra usage outside docile realms.
-   */
-  @EventHandler
-  public void onElytra(final EntityToggleGlideEvent event) {
-    if (!(event.getEntity() instanceof final Player player)
-        || Milieu.of(player) == Milieu.DOCILE
-        || !event.isGliding()) {
-      return;
-    }
+	/**
+	 * Prevents elytra usage outside docile realms.
+	 */
+	@EventHandler
+	public void onElytra(final EntityToggleGlideEvent event) {
+		if (!(event.getEntity() instanceof final Player player)
+				|| Milieu.of(player) == Milieu.DOCILE
+				|| !event.isGliding()) {
+			return;
+		}
 
-    player.setGliding(false);
-    player.playSound(player.getLocation(), Sound.ENTITY_TURTLE_EGG_CRACK, SoundCategory.MASTER, 100, 2);
+		player.setGliding(false);
+		player.playSound(player.getLocation(), Sound.ENTITY_TURTLE_EGG_CRACK, SoundCategory.MASTER, 100, 2);
 
-    // remove their elytra.
-    final PlayerInventory inventory = player.getInventory();
-    if (inventory.getChestplate() != null && inventory.getChestplate().getType() == Material.ELYTRA) {
-      inventory.setChestplate(new ItemStack(Material.AIR));
-    }
-  }
+		// remove their elytra.
+		final PlayerInventory inventory = player.getInventory();
+		if (inventory.getChestplate() != null && inventory.getChestplate().getType() == Material.ELYTRA) {
+			inventory.setChestplate(new ItemStack(Material.AIR));
+		}
+	}
 
-  /**
-   * Prevents sprinting in onerous realms. Additionally, handles the nether watcher.
-   */
-  @EventHandler
-  public void onSprint(final PlayerToggleSprintEvent event) {
-    final Player player = event.getPlayer();
-    if (Milieu.of(player) != Milieu.ONEROUS || !event.isSprinting()) {
-      return;
-    }
+	/**
+	 * Prevents sprinting in onerous realms. Additionally, handles the nether watcher.
+	 */
+	@EventHandler
+	public void onSprint(final PlayerToggleSprintEvent event) {
+		final Player player = event.getPlayer();
+		if (Milieu.of(player) != Milieu.ONEROUS || !event.isSprinting()) {
+			return;
+		}
 
-    player.setSprinting(false);
-    // stop their sprint again in a few ticks to catch any glitchiness.
-    player.getServer().getScheduler().runTaskLater(this.plugin, () -> player.setSprinting(false), 5);
+		player.setSprinting(false);
+		// stop their sprint again in a few ticks to catch any glitchiness.
+		player.getServer().getScheduler().runTaskLater(this.plugin, () -> player.setSprinting(false), 5);
 
-    // add gnarly effects. blindness prevents client-side sprint activation.
-    player.addPotionEffect(PotEff.hidden(PotionEffectType.SLOWNESS, 100, 4));
-    player.addPotionEffect(PotEff.hidden(PotionEffectType.BLINDNESS, PotEff.INF, 1));
-    player.playSound(player.getLocation(), Sound.ENTITY_IRON_GOLEM_DAMAGE, SoundCategory.MASTER, 100, 0.5F);
-    player.playSound(player.getLocation(), Sound.ENTITY_IRON_GOLEM_DEATH, SoundCategory.MASTER, 100, 0.5F);
-    player.playSound(player.getLocation(), Sound.AMBIENT_WARPED_FOREST_MOOD, SoundCategory.MASTER, 100, 1);
+		// add gnarly effects. blindness prevents client-side sprint activation.
+		player.addPotionEffect(PotEff.hidden(PotionEffectType.SLOWNESS, 100, 4));
+		player.addPotionEffect(PotEff.hidden(PotionEffectType.BLINDNESS, PotEff.INF, 1));
+		player.playSound(player.getLocation(), Sound.ENTITY_IRON_GOLEM_DAMAGE, SoundCategory.MASTER, 100, 0.5F);
+		player.playSound(player.getLocation(), Sound.ENTITY_IRON_GOLEM_DEATH, SoundCategory.MASTER, 100, 0.5F);
+		player.playSound(player.getLocation(), Sound.AMBIENT_WARPED_FOREST_MOOD, SoundCategory.MASTER, 100, 1);
 
-    if (Realm.of(player) == Realm.NETHER) {
-      // nether watcher time!
-      final Soul soul = this.charon.grab(player);
+		if (Realm.of(player) == Realm.NETHER) {
+			// nether watcher time!
+			final Soul soul = this.charon.grab(player);
 
-      soul.netherInfractions(soul.netherInfractions() + 1);
+			soul.netherInfractions(soul.netherInfractions() + 1);
 
-      switch (soul.netherInfractions()) {
-        case 1, 2, 3, 5, 8, 10, 15, 20, 25 -> player.sendMessage(this.langConfig.c(NodePath.path("no-sprint", "1")));
-        case 30 -> player.sendMessage(this.langConfig.c(NodePath.path("no-sprint", "2")));
-        case 40 -> player.sendMessage(this.langConfig.c(NodePath.path("no-sprint", "3")));
-        case 50 -> player.sendMessage(this.langConfig.c(NodePath.path("no-sprint", "4")));
-        case 60 -> player.sendMessage(this.langConfig.c(NodePath.path("no-sprint", "5")));
-        case 70 -> player.sendMessage(this.langConfig.c(NodePath.path("no-sprint", "6")));
-        case 80 -> player.sendMessage(this.langConfig.c(NodePath.path("no-sprint", "7")));
-        case 100 -> {
-          player.sendMessage(this.langConfig.c(NodePath.path("no-sprint", "8")));
+			switch (soul.netherInfractions()) {
+				case 1, 2, 3, 5, 8, 10, 15, 20, 25 -> player.sendMessage(this.langConfig.c(NodePath.path("no-sprint", "1")));
+				case 30 -> player.sendMessage(this.langConfig.c(NodePath.path("no-sprint", "2")));
+				case 40 -> player.sendMessage(this.langConfig.c(NodePath.path("no-sprint", "3")));
+				case 50 -> player.sendMessage(this.langConfig.c(NodePath.path("no-sprint", "4")));
+				case 60 -> player.sendMessage(this.langConfig.c(NodePath.path("no-sprint", "5")));
+				case 70 -> player.sendMessage(this.langConfig.c(NodePath.path("no-sprint", "6")));
+				case 80 -> player.sendMessage(this.langConfig.c(NodePath.path("no-sprint", "7")));
+				case 100 -> {
+					player.sendMessage(this.langConfig.c(NodePath.path("no-sprint", "8")));
 
-          final BundleBuilder bundleBuilder = bundleBuilder()
-              .name(Component.text("Nether Watcher's Gift").color(NamedTextColor.RED))
-              .loreList(Component.text("Maybe you should open it.").color(NamedTextColor.GRAY))
-              .addItem(
-                  bookBuilder(Material.WRITTEN_BOOK)
-                      .title(Component.text("A Letter"))
-                      .author(Component.text("The Nether Watcher"))
-                      .addPage(Component.text("""
-                          listen. i appreciate you giving me company,
-                          but holy shit. the whole point of the nether is *not* to sprint,
-                          yet you somehow managed to do it a hundred times!?
-                          have you got something wrong in the head? take this, and fuck off.
-                          """).color(NamedTextColor.DARK_GRAY))
-                      .addPage(Component.text("""
+					final BundleBuilder bundleBuilder = bundleBuilder()
+							.name(Component.text("Nether Watcher's Gift").color(NamedTextColor.RED))
+							.loreList(Component.text("Maybe you should open it.").color(NamedTextColor.GRAY))
+							.addItem(
+									bookBuilder(Material.WRITTEN_BOOK)
+											.title(Component.text("A Letter"))
+											.author(Component.text("The Nether Watcher"))
+											.addPage(Component.text("""
+													listen. i appreciate you giving me company,
+													but holy shit. the whole point of the nether is *not* to sprint,
+													yet you somehow managed to do it a hundred times!?
+													have you got something wrong in the head? take this, and fuck off.
+													""").color(NamedTextColor.DARK_GRAY))
+											.addPage(Component.text("""
 
-                          ..
+													..
 
-                          still love you, tho.
-                          """).color(NamedTextColor.DARK_GRAY))
-                      .build(),
-                  itemBuilder(Material.SLIME_BALL)
-                      .name(Component.text("Ball of Slime"))
-                      .loreList(Component.text("It's.. uh, a ball of slime.").color(NamedTextColor.GRAY))
-                      .build(),
-                  itemBuilder(Material.GOLD_NUGGET)
-                      .name(Component.text("Gold Medal"))
-                      .loreList(
-                          Component.text("There's an inscription on").color(NamedTextColor.GRAY),
-                          Component.text("the back. It says \"#1 Idiot\".").color(NamedTextColor.GRAY)
-                      )
-                      .build(),
-                  Milk.splash()
-              );
+													still love you, tho.
+													""").color(NamedTextColor.DARK_GRAY))
+											.build(),
+									itemBuilder(Material.SLIME_BALL)
+											.name(Component.text("Ball of Slime"))
+											.loreList(Component.text("It's.. uh, a ball of slime.").color(NamedTextColor.GRAY))
+											.build(),
+									itemBuilder(Material.GOLD_NUGGET)
+											.name(Component.text("Gold Medal"))
+											.loreList(
+													Component.text("There's an inscription on").color(NamedTextColor.GRAY),
+													Component.text("the back. It says \"#1 Idiot\".").color(NamedTextColor.GRAY)
+											)
+											.build(),
+									Milk.splash()
+							);
 
-          player.getInventory().addItem(bundleBuilder.build());
-        }
-        default -> {
-        }
-      }
-    }
-  }
+					player.getInventory().addItem(bundleBuilder.build());
+				}
+				default -> {
+				}
+			}
+		}
+	}
 
 }

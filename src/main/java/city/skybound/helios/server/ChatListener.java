@@ -32,158 +32,158 @@ import java.util.regex.Pattern;
 
 public final class ChatListener implements Listener {
 
-  private static final TextColor GREENTEXT_COLOR = TextColor.fromHexString("#789922");
-  private static final Pattern GREENTEXT_PATTERN = Pattern.compile("^>[a-zA-Z0-9!?.]");
+	private static final TextColor GREENTEXT_COLOR = TextColor.fromHexString("#789922");
+	private static final Pattern GREENTEXT_PATTERN = Pattern.compile("^>[a-zA-Z0-9!?.]");
 
-  private static final Pattern BOLD_PATTERN = Pattern.compile("\\*\\*(.*)\\*\\*");
-  private static final Pattern ITALIC_PATTERN = Pattern.compile("\\*(.*?)\\*");
-  private static final Pattern UNDERLINED_PATTERN = Pattern.compile("__(.*)__");
-  private static final Pattern STRIKETHROUGH_PATTERN = Pattern.compile("~~(.*)~~");
+	private static final Pattern BOLD_PATTERN = Pattern.compile("\\*\\*(.*)\\*\\*");
+	private static final Pattern ITALIC_PATTERN = Pattern.compile("\\*(.*?)\\*");
+	private static final Pattern UNDERLINED_PATTERN = Pattern.compile("__(.*)__");
+	private static final Pattern STRIKETHROUGH_PATTERN = Pattern.compile("~~(.*)~~");
 
-  private static final net.kyori.adventure.sound.Sound PING_SOUND = net.kyori.adventure.sound.Sound.sound(
-      Sound.BLOCK_NOTE_BLOCK_PLING,
-      net.kyori.adventure.sound.Sound.Source.MASTER,
-      1000,
-      2
-  );
+	private static final net.kyori.adventure.sound.Sound PING_SOUND = net.kyori.adventure.sound.Sound.sound(
+			Sound.BLOCK_NOTE_BLOCK_PLING,
+			net.kyori.adventure.sound.Sound.Source.MASTER,
+			1000,
+			2
+	);
 
-  private final EmotesConfig emotesConfig;
-  private final LangConfig langConfig;
-  private final Charon charon;
+	private final EmotesConfig emotesConfig;
+	private final LangConfig langConfig;
+	private final Charon charon;
 
-  @Inject
-  public ChatListener(
-      final EmotesConfig emotesConfig,
-      final LangConfig langConfig,
-      final Charon charon
-  ) {
-    this.emotesConfig = emotesConfig;
-    this.langConfig = langConfig;
-    this.charon = charon;
-  }
+	@Inject
+	public ChatListener(
+			final EmotesConfig emotesConfig,
+			final LangConfig langConfig,
+			final Charon charon
+	) {
+		this.emotesConfig = emotesConfig;
+		this.langConfig = langConfig;
+		this.charon = charon;
+	}
 
-  @EventHandler
-  public void onDecorate(final AsyncChatDecorateEvent event) {
-    final @Nullable Player source = event.player();
-    if (source == null) {
-      // no use!
-      return;
-    }
+	@EventHandler
+	public void onDecorate(final AsyncChatDecorateEvent event) {
+		final @Nullable Player source = event.player();
+		if (source == null) {
+			// no use!
+			return;
+		}
 
-    event.result(this.colorCodes(event.result(), source));
-    event.result(this.markdown(event.result(), source));
-    event.result(this.colorPingedPlayers(event.result(), source));
-    event.result(this.replaceEmotes(event.result()));
-    event.result(this.greentext(event.result())); // greentext last to overwrite all other colors.
-  }
+		event.result(this.colorCodes(event.result(), source));
+		event.result(this.markdown(event.result(), source));
+		event.result(this.colorPingedPlayers(event.result(), source));
+		event.result(this.replaceEmotes(event.result()));
+		event.result(this.greentext(event.result())); // greentext last to overwrite all other colors.
+	}
 
-  @EventHandler
-  public void onChat(final AsyncChatEvent event) {
-    final Player source = event.getPlayer();
+	@EventHandler
+	public void onChat(final AsyncChatEvent event) {
+		final Player source = event.getPlayer();
 
-    this.annoyPingedPlayers(event.message(), source);
-    event.message(this.chatFormat(event.message(), source.displayName()));
+		this.annoyPingedPlayers(event.message(), source);
+		event.message(this.chatFormat(event.message(), source.displayName()));
 
-    event.setCancelled(true); // I can't be bothered to deal with that.
-    source.getServer().sendMessage(event.message());
-  }
+		event.setCancelled(true); // I can't be bothered to deal with that.
+		source.getServer().sendMessage(event.message());
+	}
 
-  private Component colorCodes(final Component component, final Player source) {
-    if (source.hasPermission(Permission.CHAT_COLOR)) {
-      return ChatFormat.legacyWithUrls(component);
-    }
-    return component;
-  }
+	private Component colorCodes(final Component component, final Player source) {
+		if (source.hasPermission(Permission.CHAT_COLOR)) {
+			return ChatFormat.legacyWithUrls(component);
+		}
+		return component;
+	}
 
-  private Component greentext(final Component component) {
-    if (GREENTEXT_PATTERN.matcher(ChatFormat.plain(component)).find()) {
-      return component.color(GREENTEXT_COLOR);
-    }
-    return component;
-  }
+	private Component greentext(final Component component) {
+		if (GREENTEXT_PATTERN.matcher(ChatFormat.plain(component)).find()) {
+			return component.color(GREENTEXT_COLOR);
+		}
+		return component;
+	}
 
-  private Component markdown(final Component component, final Player source) {
-    if (!this.charon.grab(source).markdown()) {
-      return component;
-    }
+	private Component markdown(final Component component, final Player source) {
+		if (!this.charon.grab(source).markdown()) {
+			return component;
+		}
 
-    return component
-        .replaceText(t -> t
-            .match(BOLD_PATTERN)
-            .replacement((m, b) -> Component.text(m.group(1)).decorate(TextDecoration.BOLD)))
-        .replaceText(t -> t
-            .match(ITALIC_PATTERN)
-            .replacement((m, b) -> Component.text(m.group(1)).decorate(TextDecoration.ITALIC)))
-        .replaceText(t -> t
-            .match(UNDERLINED_PATTERN)
-            .replacement((m, b) -> Component.text(m.group(1)).decorate(TextDecoration.UNDERLINED)))
-        .replaceText(t -> t
-            .match(STRIKETHROUGH_PATTERN)
-            .replacement((m, b) -> Component.text(m.group(1)).decorate(TextDecoration.STRIKETHROUGH)));
-  }
+		return component
+				.replaceText(t -> t
+						.match(BOLD_PATTERN)
+						.replacement((m, b) -> Component.text(m.group(1)).decorate(TextDecoration.BOLD)))
+				.replaceText(t -> t
+						.match(ITALIC_PATTERN)
+						.replacement((m, b) -> Component.text(m.group(1)).decorate(TextDecoration.ITALIC)))
+				.replaceText(t -> t
+						.match(UNDERLINED_PATTERN)
+						.replacement((m, b) -> Component.text(m.group(1)).decorate(TextDecoration.UNDERLINED)))
+				.replaceText(t -> t
+						.match(STRIKETHROUGH_PATTERN)
+						.replacement((m, b) -> Component.text(m.group(1)).decorate(TextDecoration.STRIKETHROUGH)));
+	}
 
-  private Component colorPingedPlayers(final Component component, final Player source) {
-    Component result = component;
+	private Component colorPingedPlayers(final Component component, final Player source) {
+		Component result = component;
 
-    for (final Player player : this.getPingedPlayers(component, source)) {
-      result = result.replaceText(TextReplacementConfig.builder()
-          .match(Pattern.compile(ChatFormat.plain(player.displayName()), Pattern.CASE_INSENSITIVE))
-          .replacement((m, b) -> Component.text(m.group(0)).color(NamedTextColor.GOLD))
-          .build());
-    }
+		for (final Player player : this.getPingedPlayers(component, source)) {
+			result = result.replaceText(TextReplacementConfig.builder()
+					.match(Pattern.compile(ChatFormat.plain(player.displayName()), Pattern.CASE_INSENSITIVE))
+					.replacement((m, b) -> Component.text(m.group(0)).color(NamedTextColor.GOLD))
+					.build());
+		}
 
-    return result;
-  }
+		return result;
+	}
 
-  private void annoyPingedPlayers(final Component component, final Player source) {
-    for (final Player player : this.getPingedPlayers(component, source)) {
-      player.playSound(PING_SOUND);
-    }
-  }
+	private void annoyPingedPlayers(final Component component, final Player source) {
+		for (final Player player : this.getPingedPlayers(component, source)) {
+			player.playSound(PING_SOUND);
+		}
+	}
 
-  private List<Player> getPingedPlayers(final Component component, final Player source) {
-    final List<Player> list = new ArrayList<>();
+	private List<Player> getPingedPlayers(final Component component, final Player source) {
+		final List<Player> list = new ArrayList<>();
 
-    for (final Player onlinePlayer : source.getServer().getOnlinePlayers()) {
-      if (onlinePlayer.getUniqueId().equals(source.getUniqueId())) {
-        continue;
-      }
+		for (final Player onlinePlayer : source.getServer().getOnlinePlayers()) {
+			if (onlinePlayer.getUniqueId().equals(source.getUniqueId())) {
+				continue;
+			}
 
-      final String playerName = ChatFormat.plain(onlinePlayer.displayName());
-      if (this.containsIgnoreCase(ChatFormat.plain(component), playerName)) {
-        list.add(onlinePlayer);
-      }
-    }
+			final String playerName = ChatFormat.plain(onlinePlayer.displayName());
+			if (this.containsIgnoreCase(ChatFormat.plain(component), playerName)) {
+				list.add(onlinePlayer);
+			}
+		}
 
-    return list;
-  }
+		return list;
+	}
 
-  private boolean containsIgnoreCase(final String string, final String that) {
-    return string.toLowerCase(Locale.ROOT).contains(that.toLowerCase(Locale.ROOT));
-  }
+	private boolean containsIgnoreCase(final String string, final String that) {
+		return string.toLowerCase(Locale.ROOT).contains(that.toLowerCase(Locale.ROOT));
+	}
 
-  private Component replaceEmotes(final Component component) {
-    Component result = component;
+	private Component replaceEmotes(final Component component) {
+		Component result = component;
 
-    final CommentedConfigurationNode emotes = this.emotesConfig.rootNode();
-    for (final Map.Entry<Object, CommentedConfigurationNode> entry : emotes.childrenMap().entrySet()) {
-      result = result.replaceText(TextReplacementConfig.builder()
-          .match("(" + entry.getKey() + ")")
-          .replacement(ChatFormat.miniMessage(Objects.requireNonNull(entry.getValue().getString())))
-          .build());
-    }
+		final CommentedConfigurationNode emotes = this.emotesConfig.rootNode();
+		for (final Map.Entry<Object, CommentedConfigurationNode> entry : emotes.childrenMap().entrySet()) {
+			result = result.replaceText(TextReplacementConfig.builder()
+					.match("(" + entry.getKey() + ")")
+					.replacement(ChatFormat.miniMessage(Objects.requireNonNull(entry.getValue().getString())))
+					.build());
+		}
 
-    return result;
-  }
+		return result;
+	}
 
-  private Component chatFormat(final Component component, final Component sourceDisplayName) {
-    return this.langConfig.c(
-        NodePath.path("chat-format"),
-        TagResolver.resolver(
-            Placeholder.component("sender", sourceDisplayName),
-            Placeholder.component("message", component)
-        )
-    );
-  }
+	private Component chatFormat(final Component component, final Component sourceDisplayName) {
+		return this.langConfig.c(
+				NodePath.path("chat-format"),
+				TagResolver.resolver(
+						Placeholder.component("sender", sourceDisplayName),
+						Placeholder.component("message", component)
+				)
+		);
+	}
 
 }

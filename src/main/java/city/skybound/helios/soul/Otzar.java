@@ -21,39 +21,39 @@ import java.util.UUID;
  */
 public final class Otzar extends AbstractDataConfig<HoconConfigurateWrapper, Otzar.Data> {
 
-  @Inject
-  public Otzar(final @Named("dataFolder") Path dataFolder) {
-    super(new HoconConfigurateWrapper(
-        dataFolder.resolve("otzar.conf"), HoconConfigurationLoader.builder()
-        .path(dataFolder.resolve("otzar.conf"))
-        .build()
-    ));
-  }
+	@Inject
+	public Otzar(final @Named("dataFolder") Path dataFolder) {
+		super(new HoconConfigurateWrapper(
+				dataFolder.resolve("otzar.conf"), HoconConfigurationLoader.builder()
+				.path(dataFolder.resolve("otzar.conf"))
+				.build()
+		));
+	}
 
-  public void save() throws ConfigurateException {
-    final CommentedConfigurationNode rootNode = Objects.requireNonNull(this.wrapper().rootNode());
-    rootNode.set(this.dataClass(), this.data);
-    this.wrapper().save();
-  }
+	public void save() throws ConfigurateException {
+		final CommentedConfigurationNode rootNode = Objects.requireNonNull(this.wrapper().rootNode());
+		rootNode.set(this.dataClass(), this.data);
+		this.wrapper().save();
+	}
 
-  public Map<UUID, Data.Spirit> spirits() {
-    return this.data().spirits();
-  }
+	public Map<UUID, Data.Spirit> spirits() {
+		return this.data().spirits();
+	}
 
-  @Override
-  protected Class<Otzar.Data> dataClass() {
-    return Otzar.Data.class;
-  }
+	@Override
+	protected Class<Otzar.Data> dataClass() {
+		return Otzar.Data.class;
+	}
 
-  @ConfigSerializable
-  public record Data(Map<UUID, Spirit> spirits) {
+	@ConfigSerializable
+	public record Data(Map<UUID, Spirit> spirits) {
 
-    @ConfigSerializable
-    public record Spirit(Integer netherInfractions,
-                         Boolean markdown) {
+		@ConfigSerializable
+		public record Spirit(Integer netherInfractions,
+		                     Boolean markdown) {
 
-    }
+		}
 
-  }
+	}
 
 }

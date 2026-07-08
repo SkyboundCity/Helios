@@ -79,181 +79,181 @@ import static org.incendo.cloud.paper.util.sender.PaperSimpleSenderMapper.simple
  */
 public final class Helios extends JavaPlugin {
 
-  private @MonotonicNonNull PaperCommandManager<Source> commandManager;
-  private @MonotonicNonNull Injector injector;
+	private @MonotonicNonNull PaperCommandManager<Source> commandManager;
+	private @MonotonicNonNull Injector injector;
 
-  @Override
-  public void onEnable() {
-    try {
-      this.injector = Guice.createInjector(
-          new PluginModule(this),
-          new SingletonModule()
-      );
-    } catch (final Exception e) {
-      this.getSLF4JLogger().error("An error occurred while creating the Guice injector.");
-      this.getSLF4JLogger().error("Disabling plugin.");
-      disableSelf(this);
-      this.getSLF4JLogger().error("Printing stack trace. Please send this to the developers:", e);
-      return;
-    }
+	@Override
+	public void onEnable() {
+		try {
+			this.injector = Guice.createInjector(
+					new PluginModule(this),
+					new SingletonModule()
+			);
+		} catch (final Exception e) {
+			this.getSLF4JLogger().error("An error occurred while creating the Guice injector.");
+			this.getSLF4JLogger().error("Disabling plugin.");
+			disableSelf(this);
+			this.getSLF4JLogger().error("Printing stack trace. Please send this to the developers:", e);
+			return;
+		}
 
-    if (!this.injector.getInstance(LuckPermsService.class).load()) {
-      this.getSLF4JLogger().error("LuckPerms dependency not found. Disabling plugin.");
-      disableSelf(this);
-      return;
-    }
+		if (!this.injector.getInstance(LuckPermsService.class).load()) {
+			this.getSLF4JLogger().error("LuckPerms dependency not found. Disabling plugin.");
+			disableSelf(this);
+			return;
+		}
 
-    if (!this.loadConfiguration()) {
-      disableSelf(this);
-      return;
-    }
-    if (!this.initCommands()) {
-      disableSelf(this);
-      return;
-    }
-    this.initListeners();
-    this.initTasks();
+		if (!this.loadConfiguration()) {
+			disableSelf(this);
+			return;
+		}
+		if (!this.initCommands()) {
+			disableSelf(this);
+			return;
+		}
+		this.initListeners();
+		this.initTasks();
 
-    // world creation must occur as a delayed init task.
-    this.getServer().getScheduler().runTask(this, () -> this.injector.getInstance(WorldService.class).init());
-  }
+		// world creation must occur as a delayed init task.
+		this.getServer().getScheduler().runTask(this, () -> this.injector.getInstance(WorldService.class).init());
+	}
 
-  @Override
-  public void onDisable() {
-    this.injector.getInstance(Nate.class).killNextbots();
+	@Override
+	public void onDisable() {
+		this.injector.getInstance(Nate.class).killNextbots();
 
-    try {
-      this.injector.getInstance(Charon.class).save();
-    } catch (final ConfigurateException e) {
-      this.getSLF4JLogger().error(
-          "An error occurred while saving config file {}. Please ensure that the file is valid.",
-          this.injector.getInstance(Otzar.class).wrapper().path()
-      );
-      this.getSLF4JLogger().error("Printing stack trace:", e);
-    }
+		try {
+			this.injector.getInstance(Charon.class).save();
+		} catch (final ConfigurateException e) {
+			this.getSLF4JLogger().error(
+					"An error occurred while saving config file {}. Please ensure that the file is valid.",
+					this.injector.getInstance(Otzar.class).wrapper().path()
+			);
+			this.getSLF4JLogger().error("Printing stack trace:", e);
+		}
 
-    this.getServer().getScheduler().cancelTasks(this);
-  }
+		this.getServer().getScheduler().cancelTasks(this);
+	}
 
-  /**
-   * Loads the plugin's configuration.
-   * <p>
-   * If there is an error while loading a config file, the exception is logged
-   * and the file is skipped.
-   *
-   * @return whether all config files were successfully loaded
-   */
-  public boolean loadConfiguration() {
-    saveResourceSilently(this, "books.conf");
-    saveResourceSilently(this, "config.conf");
-    saveResourceSilently(this, "emotes.conf");
-    saveResourceSilently(this, "lang.conf");
-    saveResourceSilently(this, "piano-notes.conf");
+	/**
+	 * Loads the plugin's configuration.
+	 * <p>
+	 * If there is an error while loading a config file, the exception is logged
+	 * and the file is skipped.
+	 *
+	 * @return whether all config files were successfully loaded
+	 */
+	public boolean loadConfiguration() {
+		saveResourceSilently(this, "books.conf");
+		saveResourceSilently(this, "config.conf");
+		saveResourceSilently(this, "emotes.conf");
+		saveResourceSilently(this, "lang.conf");
+		saveResourceSilently(this, "piano-notes.conf");
 
-    final List<Config> configsToLoad = List.of(
-        this.injector.getInstance(Otzar.class),
-        this.injector.getInstance(BooksConfig.class),
-        this.injector.getInstance(ConfigConfig.class),
-        this.injector.getInstance(EmotesConfig.class),
-        this.injector.getInstance(LangConfig.class),
-        this.injector.getInstance(PianoNotesConfig.class)
-    );
+		final List<Config> configsToLoad = List.of(
+				this.injector.getInstance(Otzar.class),
+				this.injector.getInstance(BooksConfig.class),
+				this.injector.getInstance(ConfigConfig.class),
+				this.injector.getInstance(EmotesConfig.class),
+				this.injector.getInstance(LangConfig.class),
+				this.injector.getInstance(PianoNotesConfig.class)
+		);
 
-    boolean wasSuccessful = true;
-    for (final Config config : configsToLoad) {
-      try {
-        config.load();
-      } catch (final ConfigurateException e) {
-        this.getSLF4JLogger().error(
-            "An error occurred while loading config file {}. Please ensure that the file is valid.",
-            config.wrapper().path()
-        );
-        this.getSLF4JLogger().error("Printing stack trace:", e);
-        wasSuccessful = false;
-      }
-    }
+		boolean wasSuccessful = true;
+		for (final Config config : configsToLoad) {
+			try {
+				config.load();
+			} catch (final ConfigurateException e) {
+				this.getSLF4JLogger().error(
+						"An error occurred while loading config file {}. Please ensure that the file is valid.",
+						config.wrapper().path()
+				);
+				this.getSLF4JLogger().error("Printing stack trace:", e);
+				wasSuccessful = false;
+			}
+		}
 
-    if (wasSuccessful) {
-      this.getSLF4JLogger().info("Successfully loaded configuration.");
-    }
-    return wasSuccessful;
-  }
+		if (wasSuccessful) {
+			this.getSLF4JLogger().info("Successfully loaded configuration.");
+		}
+		return wasSuccessful;
+	}
 
-  /**
-   * @return whether it was successful
-   */
-  private boolean initCommands() {
-    if (this.commandManager != null) {
-      throw new IllegalStateException("The CommandManager is already instantiated");
-    }
+	/**
+	 * @return whether it was successful
+	 */
+	private boolean initCommands() {
+		if (this.commandManager != null) {
+			throw new IllegalStateException("The CommandManager is already instantiated");
+		}
 
-    this.commandManager = PaperCommandManager
-        .builder(simpleSenderMapper())
-        .executionCoordinator(simpleCoordinator())
-        .buildOnEnable(this);
+		this.commandManager = PaperCommandManager
+				.builder(simpleSenderMapper())
+				.executionCoordinator(simpleCoordinator())
+				.buildOnEnable(this);
 
-    this.injector.getInstance(ActCommands.class).register(this.commandManager);
-    this.injector.getInstance(AscendCommand.class).register(this.commandManager);
-    this.injector.getInstance(BroadcastCommand.class).register(this.commandManager);
-    this.injector.getInstance(DiscordCommand.class).register(this.commandManager);
-    this.injector.getInstance(HeliosCommand.class).register(this.commandManager);
-    this.injector.getInstance(FlyCommand.class).register(this.commandManager);
-    this.injector.getInstance(FunCommands.class).register(this.commandManager);
-    this.injector.getInstance(GameModeCommands.class).register(this.commandManager);
-    this.injector.getInstance(HatCommand.class).register(this.commandManager);
-    this.injector.getInstance(MilkCommand.class).register(this.commandManager);
-    this.injector.getInstance(MarkdownCommand.class).register(this.commandManager);
-    this.injector.getInstance(NextbotCommand.class).register(this.commandManager);
-    this.injector.getInstance(PackCommand.class).register(this.commandManager);
-    this.injector.getInstance(PianoCommand.class).register(this.commandManager);
-    this.injector.getInstance(PlaytimeCommand.class).register(this.commandManager);
-    this.injector.getInstance(RulesCommand.class).register(this.commandManager);
-    this.injector.getInstance(TagCommand.class).register(this.commandManager);
-    this.injector.getInstance(TransposeCommands.class).register(this.commandManager);
-    this.injector.getInstance(VoteCommand.class).register(this.commandManager);
+		this.injector.getInstance(ActCommands.class).register(this.commandManager);
+		this.injector.getInstance(AscendCommand.class).register(this.commandManager);
+		this.injector.getInstance(BroadcastCommand.class).register(this.commandManager);
+		this.injector.getInstance(DiscordCommand.class).register(this.commandManager);
+		this.injector.getInstance(HeliosCommand.class).register(this.commandManager);
+		this.injector.getInstance(FlyCommand.class).register(this.commandManager);
+		this.injector.getInstance(FunCommands.class).register(this.commandManager);
+		this.injector.getInstance(GameModeCommands.class).register(this.commandManager);
+		this.injector.getInstance(HatCommand.class).register(this.commandManager);
+		this.injector.getInstance(MilkCommand.class).register(this.commandManager);
+		this.injector.getInstance(MarkdownCommand.class).register(this.commandManager);
+		this.injector.getInstance(NextbotCommand.class).register(this.commandManager);
+		this.injector.getInstance(PackCommand.class).register(this.commandManager);
+		this.injector.getInstance(PianoCommand.class).register(this.commandManager);
+		this.injector.getInstance(PlaytimeCommand.class).register(this.commandManager);
+		this.injector.getInstance(RulesCommand.class).register(this.commandManager);
+		this.injector.getInstance(TagCommand.class).register(this.commandManager);
+		this.injector.getInstance(TransposeCommands.class).register(this.commandManager);
+		this.injector.getInstance(VoteCommand.class).register(this.commandManager);
 
-    return true;
-  }
+		return true;
+	}
 
-  private void initListeners() {
-    registerListeners(
-        this,
-        this.injector.getInstance(ChatListener.class),
-        this.injector.getInstance(FishingListener.class),
-        this.injector.getInstance(FlightListener.class),
-        this.injector.getInstance(FlingerListener.class),
-        this.injector.getInstance(JoinQuitListener.class),
-        this.injector.getInstance(MadlandsMoverListener.class),
-        this.injector.getInstance(MilkListener.class),
-        this.injector.getInstance(VoidDamageListener.class),
-        this.injector.getInstance(Nate.class),
-        this.injector.getInstance(PianoPlayListener.class),
-        this.injector.getInstance(RainMusicListener.class),
-        this.injector.getInstance(PlayerSpawnListener.class),
-        this.injector.getInstance(ServerPingListener.class),
-        this.injector.getInstance(SpaceBreakListener.class),
-        this.injector.getInstance(WorldSpawnProtectionListener.class),
-        this.injector.getInstance(TagListener.class),
-        this.injector.getInstance(PortalListener.class),
-        this.injector.getInstance(TransportationListener.class),
-        this.injector.getInstance(WorldProtectionListener.class)
-    );
-  }
+	private void initListeners() {
+		registerListeners(
+				this,
+				this.injector.getInstance(ChatListener.class),
+				this.injector.getInstance(FishingListener.class),
+				this.injector.getInstance(FlightListener.class),
+				this.injector.getInstance(FlingerListener.class),
+				this.injector.getInstance(JoinQuitListener.class),
+				this.injector.getInstance(MadlandsMoverListener.class),
+				this.injector.getInstance(MilkListener.class),
+				this.injector.getInstance(VoidDamageListener.class),
+				this.injector.getInstance(Nate.class),
+				this.injector.getInstance(PianoPlayListener.class),
+				this.injector.getInstance(RainMusicListener.class),
+				this.injector.getInstance(PlayerSpawnListener.class),
+				this.injector.getInstance(ServerPingListener.class),
+				this.injector.getInstance(SpaceBreakListener.class),
+				this.injector.getInstance(WorldSpawnProtectionListener.class),
+				this.injector.getInstance(TagListener.class),
+				this.injector.getInstance(PortalListener.class),
+				this.injector.getInstance(TransportationListener.class),
+				this.injector.getInstance(WorldProtectionListener.class)
+		);
+	}
 
-  private void initTasks() {
-    this.injector.getInstance(ElevatorMusicJockey.class).start();
-    this.injector.getInstance(PlayerVoidLoopTask.class).start();
-    this.injector.getInstance(RandomSpooks.class).start();
-    this.injector.getInstance(TransportationTask.class).start();
-    this.injector.getInstance(WarpTask.class).start();
-  }
+	private void initTasks() {
+		this.injector.getInstance(ElevatorMusicJockey.class).start();
+		this.injector.getInstance(PlayerVoidLoopTask.class).start();
+		this.injector.getInstance(RandomSpooks.class).start();
+		this.injector.getInstance(TransportationTask.class).start();
+		this.injector.getInstance(WarpTask.class).start();
+	}
 
-  @Override
-  public ChunkGenerator getDefaultWorldGenerator(
-      final @NotNull String worldName,
-      final @Nullable String id
-  ) {
-    return new VoidGenerator();
-  }
+	@Override
+	public ChunkGenerator getDefaultWorldGenerator(
+			final @NotNull String worldName,
+			final @Nullable String id
+	) {
+		return new VoidGenerator();
+	}
 
 }

@@ -18,22 +18,22 @@ import com.google.inject.AbstractModule;
 
 public final class SingletonModule extends AbstractModule {
 
-  @Override
-  protected void configure() {
-    this.bind(FlightService.class).asEagerSingleton();
-    this.bind(LuckPermsService.class).asEagerSingleton();
-    this.bind(TagGame.class).asEagerSingleton();
-    this.bind(Charon.class).asEagerSingleton();
-    this.bind(WorldService.class).asEagerSingleton();
-    this.bind(Transposer.class).asEagerSingleton();
-    this.bind(Nate.class).asEagerSingleton();
-    this.bind(PortalListener.class).asEagerSingleton();
-    this.bind(BooksConfig.class).asEagerSingleton();
-    this.bind(ConfigConfig.class).asEagerSingleton();
-    this.bind(EmotesConfig.class).asEagerSingleton();
-    this.bind(PianoNotesConfig.class).asEagerSingleton();
-    this.bind(LangConfig.class).asEagerSingleton();
-    this.bind(Otzar.class).asEagerSingleton();
-  }
+	@Override
+	protected void configure() {
+		this.bind(FlightService.class).asEagerSingleton();
+		this.bind(LuckPermsService.class).asEagerSingleton();
+		this.bind(TagGame.class).asEagerSingleton();
+		this.bind(Charon.class).asEagerSingleton();
+		this.bind(WorldService.class).asEagerSingleton();
+		this.bind(Transposer.class).asEagerSingleton();
+		this.bind(Nate.class).asEagerSingleton();
+		this.bind(PortalListener.class).asEagerSingleton();
+		this.bind(BooksConfig.class).asEagerSingleton();
+		this.bind(ConfigConfig.class).asEagerSingleton();
+		this.bind(EmotesConfig.class).asEagerSingleton();
+		this.bind(PianoNotesConfig.class).asEagerSingleton();
+		this.bind(LangConfig.class).asEagerSingleton();
+		this.bind(Otzar.class).asEagerSingleton();
+	}
 
 }

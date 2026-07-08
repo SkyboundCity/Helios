@@ -11,35 +11,35 @@ import org.bukkit.entity.Entity;
  * to avoid conflicts with {@link Realm}.
  */
 public enum Habitat {
-  WHITE,
-  RED,
-  BLACK;
+	WHITE,
+	RED,
+	BLACK;
 
-  public static Habitat from(final World.Environment env) {
-    return switch (env) {
-      case NORMAL, CUSTOM -> Habitat.WHITE;
-      case NETHER -> Habitat.RED;
-      case THE_END -> Habitat.BLACK;
-    };
-  }
+	public static Habitat from(final World.Environment env) {
+		return switch (env) {
+			case NORMAL, CUSTOM -> Habitat.WHITE;
+			case NETHER -> Habitat.RED;
+			case THE_END -> Habitat.BLACK;
+		};
+	}
 
-  public static Habitat of(final World world) {
-    return from(world.getEnvironment());
-  }
+	public static Habitat of(final World world) {
+		return from(world.getEnvironment());
+	}
 
-  public static Habitat of(final Location location) {
-    return of(location.getWorld());
-  }
+	public static Habitat of(final Location location) {
+		return of(location.getWorld());
+	}
 
-  public static Habitat of(final Entity entity) {
-    return of(entity.getWorld());
-  }
+	public static Habitat of(final Entity entity) {
+		return of(entity.getWorld());
+	}
 
-  public World.Environment environment() {
-    return switch (this) {
-      case WHITE -> World.Environment.NORMAL;
-      case RED -> World.Environment.NETHER;
-      case BLACK -> World.Environment.THE_END;
-    };
-  }
+	public World.Environment environment() {
+		return switch (this) {
+			case WHITE -> World.Environment.NORMAL;
+			case RED -> World.Environment.NETHER;
+			case BLACK -> World.Environment.THE_END;
+		};
+	}
 }

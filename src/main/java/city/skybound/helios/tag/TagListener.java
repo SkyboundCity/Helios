@@ -18,84 +18,84 @@ import org.spongepowered.configurate.NodePath;
 
 public final class TagListener implements Listener {
 
-  private final TagGame tagGame;
-  private final LangConfig langConfig;
+	private final TagGame tagGame;
+	private final LangConfig langConfig;
 
-  @Inject
-  public TagListener(
-      final TagGame tagGame,
-      final LangConfig langConfig
-  ) {
-    this.tagGame = tagGame;
-    this.langConfig = langConfig;
-  }
+	@Inject
+	public TagListener(
+			final TagGame tagGame,
+			final LangConfig langConfig
+	) {
+		this.tagGame = tagGame;
+		this.langConfig = langConfig;
+	}
 
-  /**
-   * Prevents potion effects other than damage resistance and saturation during tag.
-   * <p>
-   * Grants an exception for blindness in onerous realms.
-   */
-  @EventHandler
-  public void onPotionEffect(final EntityPotionEffectEvent event) {
-    if (!(event.getEntity() instanceof final Player player)
-        || !this.tagGame.isPlaying(player)
-        || event.getNewEffect() == null) {
-      return;
-    }
+	/**
+	 * Prevents potion effects other than damage resistance and saturation during tag.
+	 * <p>
+	 * Grants an exception for blindness in onerous realms.
+	 */
+	@EventHandler
+	public void onPotionEffect(final EntityPotionEffectEvent event) {
+		if (!(event.getEntity() instanceof final Player player)
+				|| !this.tagGame.isPlaying(player)
+				|| event.getNewEffect() == null) {
+			return;
+		}
 
-    if (event.getNewEffect().getType().equals(PotionEffectType.BLINDNESS)
-        && Milieu.of(player) == Milieu.ONEROUS) {
-      return;
-    }
+		if (event.getNewEffect().getType().equals(PotionEffectType.BLINDNESS)
+				&& Milieu.of(player) == Milieu.ONEROUS) {
+			return;
+		}
 
-    if (!(event.getNewEffect().getType().equals(PotionEffectType.RESISTANCE))
-        && !(event.getNewEffect().getType().equals(PotionEffectType.SATURATION))) {
-      event.setCancelled(true);
-    }
-  }
+		if (!(event.getNewEffect().getType().equals(PotionEffectType.RESISTANCE))
+				&& !(event.getNewEffect().getType().equals(PotionEffectType.SATURATION))) {
+			event.setCancelled(true);
+		}
+	}
 
-  /**
-   * Handles "it" transfer.
-   */
-  @EventHandler
-  public void onPunch(final EntityDamageByEntityEvent event) {
-    if (event.getDamager() instanceof final Player damager
-        && event.getEntity() instanceof final Player victim
-        && this.tagGame.isPlaying(damager)
-        && this.tagGame.isPlaying(victim)
-        && damager.equals(this.tagGame.it())) {
-      if (this.tagGame.noTagBacks() && victim.equals(this.tagGame.lastIt())) {
-        damager.sendMessage(this.langConfig.c(NodePath.path("tag", "no-tag-backs")));
-        damager.playSound(damager.getEyeLocation(), Sound.ITEM_SHIELD_BREAK, 1, 0.9F);
-        return;
-      }
+	/**
+	 * Handles "it" transfer.
+	 */
+	@EventHandler
+	public void onPunch(final EntityDamageByEntityEvent event) {
+		if (event.getDamager() instanceof final Player damager
+				&& event.getEntity() instanceof final Player victim
+				&& this.tagGame.isPlaying(damager)
+				&& this.tagGame.isPlaying(victim)
+				&& damager.equals(this.tagGame.it())) {
+			if (this.tagGame.noTagBacks() && victim.equals(this.tagGame.lastIt())) {
+				damager.sendMessage(this.langConfig.c(NodePath.path("tag", "no-tag-backs")));
+				damager.playSound(damager.getEyeLocation(), Sound.ITEM_SHIELD_BREAK, 1, 0.9F);
+				return;
+			}
 
-      this.tagGame.it(victim);
-      victim.sendMessage(this.langConfig.c(NodePath.path("tag", "now-it")));
-      victim.playSound(victim.getEyeLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1.5F);
-      damager.sendMessage(this.langConfig.c(
-          NodePath.path("tag", "tagged-player"),
-          Placeholder.component("player", victim.displayName())
-      ));
-      damager.playSound(damager.getEyeLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 1, 0.7F);
-    }
-  }
+			this.tagGame.it(victim);
+			victim.sendMessage(this.langConfig.c(NodePath.path("tag", "now-it")));
+			victim.playSound(victim.getEyeLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1.5F);
+			damager.sendMessage(this.langConfig.c(
+					NodePath.path("tag", "tagged-player"),
+					Placeholder.component("player", victim.displayName())
+			));
+			damager.playSound(damager.getEyeLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 1, 0.7F);
+		}
+	}
 
-  /**
-   * Prevents game modes other than adventure mode during tag.
-   */
-  @EventHandler
-  public void onGameModeChange(final PlayerGameModeChangeEvent event) {
-    if (this.tagGame.isPlaying(event.getPlayer())
-        && event.getNewGameMode() != GameMode.ADVENTURE) {
-      event.setCancelled(true);
-      event.getPlayer().sendMessage(this.langConfig.c(NodePath.path("tag", "adventure-only")));
-    }
-  }
+	/**
+	 * Prevents game modes other than adventure mode during tag.
+	 */
+	@EventHandler
+	public void onGameModeChange(final PlayerGameModeChangeEvent event) {
+		if (this.tagGame.isPlaying(event.getPlayer())
+				&& event.getNewGameMode() != GameMode.ADVENTURE) {
+			event.setCancelled(true);
+			event.getPlayer().sendMessage(this.langConfig.c(NodePath.path("tag", "adventure-only")));
+		}
+	}
 
-  @EventHandler
-  public void onQuit(final PlayerQuitEvent event) {
-    this.tagGame.removePlayer(event.getPlayer());
-  }
+	@EventHandler
+	public void onQuit(final PlayerQuitEvent event) {
+		this.tagGame.removePlayer(event.getPlayer());
+	}
 
 }

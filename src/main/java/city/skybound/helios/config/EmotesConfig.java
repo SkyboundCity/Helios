@@ -10,9 +10,9 @@ import java.nio.file.Path;
  */
 public final class EmotesConfig extends AbstractRawHoconConfig {
 
-  @Inject
-  public EmotesConfig(final @Named("dataFolder") Path dataFolder) {
-    super(dataFolder.resolve("emotes.conf"));
-  }
+	@Inject
+	public EmotesConfig(final @Named("dataFolder") Path dataFolder) {
+		super(dataFolder.resolve("emotes.conf"));
+	}
 
 }

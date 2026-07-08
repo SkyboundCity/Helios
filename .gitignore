@@ -101,13 +101,16 @@ $RECYCLE.BIN/
 *.lnk
 
 .gradle
-/build/
+.kotlin
+build/
 
 # Ignore Gradle GUI config
 gradle-app.setting
 
 # Cache of project
 .gradletasknamecache
+
+**/build/
 
 # Common working directory
 run/

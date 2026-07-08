@@ -1,8 +1,8 @@
 package city.skybound.helios.tag;
 
 public enum GlowSetting {
-  ALL,    // all
-  NOT_IT, // many
-  IT,     // one
-  NONE,   // none
+	ALL,    // all
+	NOT_IT, // many
+	IT,     // one
+	NONE,   // none
 }

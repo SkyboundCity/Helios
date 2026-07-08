@@ -29,108 +29,108 @@ import org.spongepowered.configurate.NodePath;
  */
 public final class WorldProtectionListener implements Listener {
 
-  private final LangConfig langConfig;
+	private final LangConfig langConfig;
 
-  @Inject
-  public WorldProtectionListener(
-      final LangConfig langConfig
-  ) {
-    this.langConfig = langConfig;
-  }
+	@Inject
+	public WorldProtectionListener(
+			final LangConfig langConfig
+	) {
+		this.langConfig = langConfig;
+	}
 
-  @EventHandler(priority = EventPriority.LOW)
-  public void onBlockPlace(final BlockPlaceEvent event) {
-    this.handle(event, event.getPlayer());
-  }
+	@EventHandler(priority = EventPriority.LOW)
+	public void onBlockPlace(final BlockPlaceEvent event) {
+		this.handle(event, event.getPlayer());
+	}
 
-  @EventHandler(priority = EventPriority.LOW)
-  public void onBlockBreak(final BlockBreakEvent event) {
-    this.handle(event, event.getPlayer());
-  }
+	@EventHandler(priority = EventPriority.LOW)
+	public void onBlockBreak(final BlockBreakEvent event) {
+		this.handle(event, event.getPlayer());
+	}
 
-  @EventHandler(priority = EventPriority.LOW)
-  public void onHangingPlace(final HangingPlaceEvent event) {
-    if (event.getPlayer() != null) {
-      this.handle(event, event.getPlayer());
-    }
-  }
+	@EventHandler(priority = EventPriority.LOW)
+	public void onHangingPlace(final HangingPlaceEvent event) {
+		if (event.getPlayer() != null) {
+			this.handle(event, event.getPlayer());
+		}
+	}
 
-  @EventHandler(priority = EventPriority.LOW)
-  public void onHangingBreak(final HangingBreakByEntityEvent event) {
-    if (event.getRemover() instanceof final Player player) {
-      this.handle(event, player);
-    }
-  }
+	@EventHandler(priority = EventPriority.LOW)
+	public void onHangingBreak(final HangingBreakByEntityEvent event) {
+		if (event.getRemover() instanceof final Player player) {
+			this.handle(event, player);
+		}
+	}
 
-  @EventHandler(priority = EventPriority.LOW)
-  public void onBucketFill(final PlayerBucketFillEvent event) {
-    this.handle(event);
-  }
+	@EventHandler(priority = EventPriority.LOW)
+	public void onBucketFill(final PlayerBucketFillEvent event) {
+		this.handle(event);
+	}
 
-  @EventHandler(priority = EventPriority.LOW)
-  public void onBucketEmpty(final PlayerBucketEmptyEvent event) {
-    this.handle(event);
-  }
+	@EventHandler(priority = EventPriority.LOW)
+	public void onBucketEmpty(final PlayerBucketEmptyEvent event) {
+		this.handle(event);
+	}
 
-  @EventHandler(priority = EventPriority.LOW)
-  public void onItemPickup(final PlayerAttemptPickupItemEvent event) {
-    this.handle(event, false);
-  }
+	@EventHandler(priority = EventPriority.LOW)
+	public void onItemPickup(final PlayerAttemptPickupItemEvent event) {
+		this.handle(event, false);
+	}
 
-  @EventHandler(priority = EventPriority.LOW)
-  public void onItemDrop(final PlayerDropItemEvent event) {
-    this.handle(event, false);
-  }
+	@EventHandler(priority = EventPriority.LOW)
+	public void onItemDrop(final PlayerDropItemEvent event) {
+		this.handle(event, false);
+	}
 
-  @EventHandler(priority = EventPriority.LOW)
-  public void onInteract(final PlayerInteractEvent event) {
-    this.handle(event, event.getAction() != Action.PHYSICAL);
-  }
+	@EventHandler(priority = EventPriority.LOW)
+	public void onInteract(final PlayerInteractEvent event) {
+		this.handle(event, event.getAction() != Action.PHYSICAL);
+	}
 
-  @EventHandler(priority = EventPriority.LOW)
-  public void onEntityDamageByEntity(final EntityDamageByEntityEvent event) {
-    if (event.getDamager() instanceof final Player player) {
-      this.handle(event, player);
-    }
-  }
+	@EventHandler(priority = EventPriority.LOW)
+	public void onEntityDamageByEntity(final EntityDamageByEntityEvent event) {
+		if (event.getDamager() instanceof final Player player) {
+			this.handle(event, player);
+		}
+	}
 
-  @EventHandler(priority = EventPriority.LOW)
-  public void onArmorStandManipulate(final PlayerArmorStandManipulateEvent event) {
-    this.handle(event);
-  }
+	@EventHandler(priority = EventPriority.LOW)
+	public void onArmorStandManipulate(final PlayerArmorStandManipulateEvent event) {
+		this.handle(event);
+	}
 
-  @EventHandler(priority = EventPriority.LOW)
-  public void onInteractEntity(final PlayerInteractEntityEvent event) {
-    this.handle(event);
-  }
+	@EventHandler(priority = EventPriority.LOW)
+	public void onInteractEntity(final PlayerInteractEntityEvent event) {
+		this.handle(event);
+	}
 
-  private <T extends PlayerEvent & Cancellable> void handle(final T event, final boolean sendMessage) {
-    this.handle(event, event.getPlayer(), sendMessage);
-  }
+	private <T extends PlayerEvent & Cancellable> void handle(final T event, final boolean sendMessage) {
+		this.handle(event, event.getPlayer(), sendMessage);
+	}
 
-  private <T extends Cancellable> void handle(final T event, final Player player) {
-    this.handle(event, player, true);
-  }
+	private <T extends Cancellable> void handle(final T event, final Player player) {
+		this.handle(event, player, true);
+	}
 
-  private <T extends PlayerEvent & Cancellable> void handle(final T event) {
-    this.handle(event, true);
-  }
+	private <T extends PlayerEvent & Cancellable> void handle(final T event) {
+		this.handle(event, true);
+	}
 
-  private <T extends Cancellable> void handle(final T event, final Player player, final boolean sendMessage) {
-    final var permission = switch (Realm.of(player)) {
-      case MADLANDS -> Permission.REALM_MADLANDS;
-      case OVERWORLD -> Permission.REALM_OVERWORLD;
-      case NETHER -> Permission.REALM_NETHER;
-      case END -> Permission.REALM_END;
-      case BACKROOMS -> Permission.REALM_BACKROOMS;
-    };
+	private <T extends Cancellable> void handle(final T event, final Player player, final boolean sendMessage) {
+		final var permission = switch (Realm.of(player)) {
+			case MADLANDS -> Permission.REALM_MADLANDS;
+			case OVERWORLD -> Permission.REALM_OVERWORLD;
+			case NETHER -> Permission.REALM_NETHER;
+			case END -> Permission.REALM_END;
+			case BACKROOMS -> Permission.REALM_BACKROOMS;
+		};
 
-    if (!player.hasPermission(permission)) {
-      if (sendMessage) {
-        player.sendMessage(this.langConfig.c(NodePath.path("no-build")));
-      }
-      event.setCancelled(true);
-    }
-  }
+		if (!player.hasPermission(permission)) {
+			if (sendMessage) {
+				player.sendMessage(this.langConfig.c(NodePath.path("no-build")));
+			}
+			event.setCancelled(true);
+		}
+	}
 
 }

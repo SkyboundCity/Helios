@@ -11,27 +11,27 @@ import java.nio.file.Path;
 
 public final class PluginModule extends AbstractModule {
 
-  private final Helios plugin;
+	private final Helios plugin;
 
-  public PluginModule(final Helios plugin) {
-    this.plugin = plugin;
-  }
+	public PluginModule(final Helios plugin) {
+		this.plugin = plugin;
+	}
 
-  @Override
-  protected void configure() {
-    this.bind(Helios.class).toInstance(this.plugin);
-    this.bind(JavaPlugin.class).toInstance(this.plugin);
-  }
+	@Override
+	protected void configure() {
+		this.bind(Helios.class).toInstance(this.plugin);
+		this.bind(JavaPlugin.class).toInstance(this.plugin);
+	}
 
-  @Provides
-  public Logger provideSLF4JLogger() {
-    return this.plugin.getSLF4JLogger();
-  }
+	@Provides
+	public Logger provideSLF4JLogger() {
+		return this.plugin.getSLF4JLogger();
+	}
 
-  @Provides
-  @Named("dataFolder")
-  public Path provideDataFolder() {
-    return this.plugin.getDataFolder().toPath();
-  }
+	@Provides
+	@Named("dataFolder")
+	public Path provideDataFolder() {
+		return this.plugin.getDataFolder().toPath();
+	}
 
 }

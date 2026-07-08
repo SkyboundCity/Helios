@@ -13,32 +13,32 @@ import java.nio.file.Path;
  */
 public final class ConfigConfig extends AbstractDataConfig<HoconConfigurateWrapper, ConfigConfig.Data> {
 
-  @Inject
-  public ConfigConfig(final @Named("dataFolder") Path dataFolder) {
-    super(new HoconConfigurateWrapper(
-        dataFolder.resolve("config.conf"), HoconConfigurationLoader.builder()
-        .path(dataFolder.resolve("config.conf"))
-        .defaultOptions(opts -> opts.implicitInitialization(false))
-        .build()
-    ));
-  }
+	@Inject
+	public ConfigConfig(final @Named("dataFolder") Path dataFolder) {
+		super(new HoconConfigurateWrapper(
+				dataFolder.resolve("config.conf"), HoconConfigurationLoader.builder()
+				.path(dataFolder.resolve("config.conf"))
+				.defaultOptions(opts -> opts.implicitInitialization(false))
+				.build()
+		));
+	}
 
-  @Override
-  protected Class<Data> dataClass() {
-    return Data.class;
-  }
+	@Override
+	protected Class<Data> dataClass() {
+		return Data.class;
+	}
 
-  @ConfigSerializable
-  public record Data(PokeForce pokeForce,
-                     String resourcePackUrl,
-                     String resourcePackHash,
-                     boolean madlandsEnabled) {
+	@ConfigSerializable
+	public record Data(PokeForce pokeForce,
+	                   String resourcePackUrl,
+	                   String resourcePackHash,
+	                   boolean madlandsEnabled) {
 
-    @ConfigSerializable
-    public record PokeForce(double minY, double maxY, double minXZ, double maxXZ) {
+		@ConfigSerializable
+		public record PokeForce(double minY, double maxY, double minXZ, double maxXZ) {
 
-    }
+		}
 
-  }
+	}
 
 }

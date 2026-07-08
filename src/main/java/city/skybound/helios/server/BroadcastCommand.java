@@ -10,14 +10,14 @@ import static org.incendo.cloud.parser.standard.StringParser.greedyStringParser;
 
 public final class BroadcastCommand {
 
-  public void register(final PaperCommandManager<Source> commandManager) {
-    final var main = commandManager.commandBuilder("broadcast")
-        .commandDescription(description("Broadcast a message to the server."))
-        .permission(Permission.BROADCAST)
-        .required("message", greedyStringParser())
-        .handler(c -> c.sender().source().getServer().sendMessage(ChatFormat.miniMessage(c.<String>get("message"))));
+	public void register(final PaperCommandManager<Source> commandManager) {
+		final var main = commandManager.commandBuilder("broadcast")
+				.commandDescription(description("Broadcast a message to the server."))
+				.permission(Permission.BROADCAST)
+				.required("message", greedyStringParser())
+				.handler(c -> c.sender().source().getServer().sendMessage(ChatFormat.miniMessage(c.<String>get("message"))));
 
-    commandManager.command(main);
-  }
+		commandManager.command(main);
+	}
 
 }

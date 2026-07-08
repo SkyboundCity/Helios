@@ -13,30 +13,30 @@ import org.bukkit.event.player.PlayerJoinEvent;
  */
 public final class MadlandsMoverListener implements Listener {
 
-  private final ConfigConfig configConfig;
-  private final Transposer transposer;
+	private final ConfigConfig configConfig;
+	private final Transposer transposer;
 
-  @Inject
-  public MadlandsMoverListener(
-      final ConfigConfig configConfig,
-      final Transposer transposer
-  ) {
-    this.configConfig = configConfig;
-    this.transposer = transposer;
-  }
+	@Inject
+	public MadlandsMoverListener(
+			final ConfigConfig configConfig,
+			final Transposer transposer
+	) {
+		this.configConfig = configConfig;
+		this.transposer = transposer;
+	}
 
-  @EventHandler
-  public void onPlayerJoin(final PlayerJoinEvent event) {
-    if (this.configConfig.data().madlandsEnabled()) {
-      return;
-    }
+	@EventHandler
+	public void onPlayerJoin(final PlayerJoinEvent event) {
+		if (this.configConfig.data().madlandsEnabled()) {
+			return;
+		}
 
-    final Player player = event.getPlayer();
-    if (Realm.of(player) != Realm.MADLANDS) {
-      return;
-    }
+		final Player player = event.getPlayer();
+		if (Realm.of(player) != Realm.MADLANDS) {
+			return;
+		}
 
-    this.transposer.transpose(player, Realm.OVERWORLD);
-  }
+		this.transposer.transpose(player, Realm.OVERWORLD);
+	}
 
 }

@@ -13,24 +13,24 @@ import static love.broccolai.corn.minecraft.item.ItemBuilder.itemBuilder;
 
 public final class PianoNoteItems {
 
-  private final NamespacedKey pitchKey;
+	private final NamespacedKey pitchKey;
 
-  @Inject
-  public PianoNoteItems(
-      final JavaPlugin javaPlugin
-  ) {
-    this.pitchKey = new NamespacedKey(javaPlugin, "piano-pitch");
-  }
+	@Inject
+	public PianoNoteItems(
+			final JavaPlugin javaPlugin
+	) {
+		this.pitchKey = new NamespacedKey(javaPlugin, "piano-pitch");
+	}
 
-  public @Nullable Float getPitch(final ItemStack item) {
-    return itemBuilder(item).data(this.pitchKey, PersistentDataType.FLOAT);
-  }
+	public @Nullable Float getPitch(final ItemStack item) {
+		return itemBuilder(item).data(this.pitchKey, PersistentDataType.FLOAT);
+	}
 
-  public ItemStack createItem(final Material material, final Component name, final float pitch) {
-    return itemBuilder(material)
-        .name(name)
-        .data(this.pitchKey, PersistentDataType.FLOAT, pitch)
-        .build();
-  }
+	public ItemStack createItem(final Material material, final Component name, final float pitch) {
+		return itemBuilder(material)
+				.name(name)
+				.data(this.pitchKey, PersistentDataType.FLOAT, pitch)
+				.build();
+	}
 
 }

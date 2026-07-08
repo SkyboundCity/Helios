@@ -8,11 +8,11 @@ import java.time.Duration;
 
 public final class Playtime {
 
-  private Playtime() {
-  }
+	private Playtime() {
+	}
 
-  public static Duration getTimePlayed(final Player player) {
-    return Ticks.duration(player.getStatistic(Statistic.PLAY_ONE_MINUTE));
-  }
+	public static Duration getTimePlayed(final Player player) {
+		return Ticks.duration(player.getStatistic(Statistic.PLAY_ONE_MINUTE));
+	}
 
 }

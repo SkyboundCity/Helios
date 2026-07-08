@@ -16,32 +16,32 @@ import org.bukkit.event.entity.EntityDamageEvent;
  */
 public final class VoidDamageListener implements Listener {
 
-  @EventHandler
-  public void onVoidDamage(final EntityDamageEvent event) {
-    if (event.getCause() == EntityDamageEvent.DamageCause.VOID) {
-      event.setCancelled(true); // void damage? no such thing.
-    }
+	@EventHandler
+	public void onVoidDamage(final EntityDamageEvent event) {
+		if (event.getCause() == EntityDamageEvent.DamageCause.VOID) {
+			event.setCancelled(true); // void damage? no such thing.
+		}
 
-    final Entity entity = event.getEntity();
-    if (entity instanceof Player) {
-      // players will be handled in PlayerVoidLoop, no need to handle them here.
-      return;
-    }
+		final Entity entity = event.getEntity();
+		if (entity instanceof Player) {
+			// players will be handled in PlayerVoidLoop, no need to handle them here.
+			return;
+		}
 
-    if (entity.getFallDistance() > 10_000) {
-      // lore-wise, they burnt up due to friction.
-      // practically, they're probably abandoned.
-      entity.remove();
-      return;
-    }
+		if (entity.getFallDistance() > 10_000) {
+			// lore-wise, they burnt up due to friction.
+			// practically, they're probably abandoned.
+			entity.remove();
+			return;
+		}
 
-    final Location loc = entity.getLocation();
-    final Habitat habitat = Habitat.of(entity);
-    if (loc.getY() > LoopPositions.lowEngage(habitat)) {
-      return;
-    }
-    loc.setY(LoopPositions.lowTo(habitat));
-    Teleport.relative(entity, loc);
-  }
+		final Location loc = entity.getLocation();
+		final Habitat habitat = Habitat.of(entity);
+		if (loc.getY() > LoopPositions.lowEngage(habitat)) {
+			return;
+		}
+		loc.setY(LoopPositions.lowTo(habitat));
+		Teleport.relative(entity, loc);
+	}
 
 }
