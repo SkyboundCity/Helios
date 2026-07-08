@@ -7,7 +7,7 @@ plugins {
 
 group = "city.skybound"
 version = "0.1.0-SNAPSHOT"
-description = "The core, monolithic plugin for The Floating City."
+description = "The core, monolithic plugin for Skybound City."
 
 java {
 	toolchain.languageVersion.set(JavaLanguageVersion.of(25))

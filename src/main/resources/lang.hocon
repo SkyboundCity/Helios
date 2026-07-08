@@ -1,4 +1,4 @@
-banner: "<dark_gray>-=-=-=-=-=-=-=-[<gray> -=[ <#55AAFF>The <#55FFFF>Floating <#55FFAA>City <gray>]=- <dark_gray>]-=-=-=-=-=-=-=-"
+banner: "<dark_gray>-=-=-=-=-=-=-=-<<gray> -=[ <gradient:#55AAFF:#55FFAA>Skybound City</gradient> <gray>]=- <dark_gray>>-=-=-=-=-=-=-=-"
 chat-format: "<gray><sender><dark_gray>:<reset> <message>"
 
 markdown: {
@@ -13,9 +13,9 @@ join: "<gray>[<dark_green>+<gray>]<white> <green><player></green> joined the gam
 join-new: "<gray>[<dark_purple>+<gray>]<white> <light_purple><player></light_purple> has joined for the first time!"
 leave: "<gray>[<dark_red>-<gray>]<white> <red><player></red> left the game."
 
-server-motd: "<gray>                  -=[ <#55AAFF>The <#55FFFF>Floating <#55FFAA>City <gray>]=-\n<#777777><catch>"
+server-motd: "<gray>                   -=[ <gradient:#55AAFF:#55FFAA>Skybound City</gradient> <gray>]=-\n<#777777><catch>"
 
-discord: "<gray>»<white> Visit our Discord at <underlined><hover:show_text:'<i>*click*'><click:open_url:https://thefloating.city/discord><#BB77FF>thefloating.city/discord</#BB77FF></click></hover></underlined>."
+discord: "<gray>»<white> Visit our Discord at <underlined><hover:show_text:'<i>*click*'><click:open_url:https://skybound.city/discord><#BB77FF>skybound.city/discord</#BB77FF></click></hover></underlined>."
 vote: """<gray>»<white> We'd really appreciate if you voted for us. Thanks ;D
 <dark_gray>- <hover:show_text:'<i><#EEAAFF>*click*'><click:open_url:'https://minecraft-server-list.com/server/482660/vote/'><#EEAAFF>minecraft-server-list.com
 <dark_gray>- <hover:show_text:'<i><#DDBBFF>*click*'><click:open_url:'https://best-minecraft-servers.co/server-the-floating-city.1755/vote'><#DDBBFF>best-minecraft-servers.co
@@ -57,7 +57,7 @@ to <#dddd99>allow</#dddd99> or <#dddd99>prompt</#dddd99> in the server list sett
 	fail-kick: """The resource pack failed to load.
 
 <gray>If this issue persists, visit our Discord server
-at <#BB77FF>thefloating.city/discord</#BB77FF> and ask staff for help."""
+at <#BB77FF>skybound.city/discord</#BB77FF> and ask staff for help."""
 }
 
 tag: {

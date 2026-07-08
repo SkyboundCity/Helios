@@ -7,7 +7,7 @@ import org.bukkit.entity.Entity;
 import java.util.Locale;
 
 /**
- * The "worlds" that exist in The Floating City.
+ * The "worlds" that exist in Skybound City.
  * <p>
  * Each realm is tied to a distinct Minecraft world.
  */

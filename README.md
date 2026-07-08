@@ -10,8 +10,8 @@
 As did [Helios](https://en.wikipedia.org/wiki/Helios), the god personifying the sun in
 [Greek mythology](https://en.wikipedia.org/wiki/Greek_mythology),
 confiscate Icarus of his ability to fly, so too does Helios prevent players in
-[The Floating City](https://thefloating.city) from using creative mode flight.
+[Skybound City](https://skybound.city) from using creative mode flight.
 
-More broadly, Helios implements all of The Floating City's custom functionality.
+More broadly, Helios implements all of Skybound City's custom functionality.
 Ranging from flight restriction to custom world generation, Helios' features are
-uniquely written for The Floating City, so Helios does not have much use elsewhere.
+uniquely written for Skybound City, so Helios has little use elsewhere.

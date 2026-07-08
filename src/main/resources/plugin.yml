@@ -1,7 +1,7 @@
 name: Helios
 description: ${description}
 authors: [ TehBrian ]
-website: https://github.com/thefloatingcity/Helios
+website: https://github.com/SkyboundCity/Helios
 
 version: ${version}
 main: city.skybound.helios.Helios
