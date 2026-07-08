@@ -27,7 +27,6 @@ dependencies {
 	implementation("com.google.inject:guice:7.0.0")
 	implementation("dev.tehbrian:agna-paper:1.0.6")
 	implementation("org.incendo:cloud-paper:2.0.0-beta.17")
-	implementation("org.incendo:cloud-minecraft-extras:2.0.0-beta.17")
 	implementation("org.spongepowered:configurate-hocon:4.2.0")
 }
 
@@ -37,13 +36,18 @@ tasks {
 	}
 
 	processResources {
-		filesMatching("**/plugin.yml") {
-			expand(mapOf("version" to project.version, "description" to project.description))
+		filesMatching("plugin.yml") {
+			expand(
+					mapOf(
+							"version" to project.version,
+							"description" to project.description
+					)
+			)
 		}
 	}
 
-	jar {
-		archiveBaseName.set("Helios")
+	base {
+		archivesName.set("Helios")
 	}
 
 	shadowJar {
@@ -57,16 +61,20 @@ tasks {
 		}
 
 		moveToLibs(
-				"broccolai.corn",
-				"org.incendo.cloud",
-				"com.typesafe",
-				"com.google",
+				"com.google.common",
+				"com.google.errorprone",
+				"com.google.inject",
+				"com.google.j2objc",
+				"com.google.thirdparty",
 				"dev.tehbrian.agna",
 				"io.leangen",
 				"jakarta.inject",
 				"javax.annotation",
+				"love.broccolai.corn",
+				"net.kyori.option",
 				"org.aopalliance",
 				"org.checkerframework",
+				"org.incendo.cloud",
 				"org.spongepowered",
 		)
 	}
