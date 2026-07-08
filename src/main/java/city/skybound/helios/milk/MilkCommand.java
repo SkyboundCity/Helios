@@ -1,20 +1,21 @@
 package city.skybound.helios.milk;
 
 import city.skybound.helios.Permission;
-import cloud.commandframework.meta.CommandMeta;
-import cloud.commandframework.paper.PaperCommandManager;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+import org.incendo.cloud.paper.PaperCommandManager;
+import org.incendo.cloud.paper.util.sender.PlayerSource;
+import org.incendo.cloud.paper.util.sender.Source;
+
+import static org.incendo.cloud.description.Description.description;
 
 public final class MilkCommand {
 
-  public void register(final PaperCommandManager<CommandSender> commandManager) {
+  public void register(final PaperCommandManager<Source> commandManager) {
     final var main = commandManager.commandBuilder("milk")
-        .meta(CommandMeta.DESCRIPTION, "Milk.")
+        .commandDescription(description("Milk."))
         .permission(Permission.MILK)
-        .senderType(Player.class)
+        .senderType(PlayerSource.class)
         .handler(c -> {
-          final var sender = (Player) c.getSender();
+          final var sender = c.sender().source();
           sender.getInventory().addItem(Milk.regular());
         });
 

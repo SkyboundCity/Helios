@@ -84,6 +84,7 @@ public final class Nate implements Listener {
   private final Helios helios;
 
   private final Map<UUID, Location> laggedLocation = new HashMap<>();
+
   @Inject
   public Nate(
       final Helios helios

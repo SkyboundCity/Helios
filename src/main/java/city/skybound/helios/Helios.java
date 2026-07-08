@@ -54,32 +54,32 @@ import city.skybound.helios.transportation.FlyCommand;
 import city.skybound.helios.transportation.PortalListener;
 import city.skybound.helios.transportation.TransportationListener;
 import city.skybound.helios.transportation.TransportationTask;
-import cloud.commandframework.execution.CommandExecutionCoordinator;
-import cloud.commandframework.paper.PaperCommandManager;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import dev.tehbrian.agna.configurate.Config;
-import org.bukkit.command.CommandSender;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.incendo.cloud.paper.PaperCommandManager;
+import org.incendo.cloud.paper.util.sender.Source;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.ConfigurateException;
 
 import java.util.List;
-import java.util.function.Function;
 
 import static dev.tehbrian.agna.paper.PluginUtils.disableSelf;
 import static dev.tehbrian.agna.paper.PluginUtils.registerListeners;
 import static dev.tehbrian.agna.paper.PluginUtils.saveResourceSilently;
+import static org.incendo.cloud.execution.ExecutionCoordinator.simpleCoordinator;
+import static org.incendo.cloud.paper.util.sender.PaperSimpleSenderMapper.simpleSenderMapper;
 
 /**
  * The main class for the Helios plugin.
  */
 public final class Helios extends JavaPlugin {
 
-  private @MonotonicNonNull PaperCommandManager<CommandSender> commandManager;
+  private @MonotonicNonNull PaperCommandManager<Source> commandManager;
   private @MonotonicNonNull Injector injector;
 
   @Override
@@ -184,21 +184,13 @@ public final class Helios extends JavaPlugin {
    */
   private boolean initCommands() {
     if (this.commandManager != null) {
-      throw new IllegalStateException("The CommandManager is already instantiated.");
+      throw new IllegalStateException("The CommandManager is already instantiated");
     }
 
-    try {
-      this.commandManager = new PaperCommandManager<>(
-          this,
-          CommandExecutionCoordinator.simpleCoordinator(),
-          Function.identity(),
-          Function.identity()
-      );
-    } catch (final Exception e) {
-      this.getSLF4JLogger().error("Failed to create the CommandManager.");
-      this.getSLF4JLogger().error("Printing stack trace. Please send this to the developers:", e);
-      return false;
-    }
+    this.commandManager = PaperCommandManager
+        .builder(simpleSenderMapper())
+        .executionCoordinator(simpleCoordinator())
+        .buildOnEnable(this);
 
     this.injector.getInstance(ActCommands.class).register(this.commandManager);
     this.injector.getInstance(AscendCommand.class).register(this.commandManager);

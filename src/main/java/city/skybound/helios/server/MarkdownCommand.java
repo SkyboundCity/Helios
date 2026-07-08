@@ -2,12 +2,13 @@ package city.skybound.helios.server;
 
 import city.skybound.helios.config.LangConfig;
 import city.skybound.helios.soul.Charon;
-import cloud.commandframework.meta.CommandMeta;
-import cloud.commandframework.paper.PaperCommandManager;
 import com.google.inject.Inject;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+import org.incendo.cloud.paper.PaperCommandManager;
+import org.incendo.cloud.paper.util.sender.PlayerSource;
+import org.incendo.cloud.paper.util.sender.Source;
 import org.spongepowered.configurate.NodePath;
+
+import static org.incendo.cloud.description.Description.description;
 
 public final class MarkdownCommand {
 
@@ -23,12 +24,12 @@ public final class MarkdownCommand {
     this.charon = charon;
   }
 
-  public void register(final PaperCommandManager<CommandSender> commandManager) {
+  public void register(final PaperCommandManager<Source> commandManager) {
     final var main = commandManager.commandBuilder("markdown")
-        .meta(CommandMeta.DESCRIPTION, "Toggle markdown chat formatting.")
-        .senderType(Player.class)
+        .commandDescription(description("Toggle markdown chat formatting."))
+        .senderType(PlayerSource.class)
         .handler(c -> {
-          final Player sender = (Player) c.getSender();
+          final var sender = c.sender().source();
           if (this.charon.grab(sender).toggleMarkdown()) {
             sender.sendMessage(this.langConfig.c(NodePath.path("markdown", "enabled")));
           } else {

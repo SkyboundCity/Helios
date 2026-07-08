@@ -26,7 +26,8 @@ dependencies {
   implementation("love.broccolai.corn:corn-minecraft:4.1.0-SNAPSHOT")
   implementation("com.google.inject:guice:7.0.0")
   implementation("dev.tehbrian:agna-paper:1.0.6")
-  implementation("cloud.commandframework:cloud-paper:1.8.4")
+  implementation("org.incendo:cloud-paper:2.0.0-beta.17")
+  implementation("org.incendo:cloud-minecraft-extras:2.0.0-beta.17")
   implementation("org.spongepowered:configurate-hocon:4.2.0")
 }
 
@@ -57,7 +58,7 @@ tasks {
 
     moveToLibs(
       "broccolai.corn",
-      "cloud.commandframework",
+      "org.incendo.cloud",
       "com.typesafe",
       "com.google",
       "dev.tehbrian.agna",

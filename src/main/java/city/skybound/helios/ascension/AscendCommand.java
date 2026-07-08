@@ -3,17 +3,19 @@ package city.skybound.helios.ascension;
 import city.skybound.helios.DurationFormat;
 import city.skybound.helios.LuckPermsService;
 import city.skybound.helios.config.LangConfig;
-import cloud.commandframework.meta.CommandMeta;
-import cloud.commandframework.paper.PaperCommandManager;
 import com.google.inject.Inject;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.luckperms.api.model.group.Group;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.incendo.cloud.paper.PaperCommandManager;
+import org.incendo.cloud.paper.util.sender.PlayerSource;
+import org.incendo.cloud.paper.util.sender.Source;
 import org.spongepowered.configurate.NodePath;
 
 import java.util.concurrent.TimeUnit;
+
+import static org.incendo.cloud.description.Description.description;
 
 public final class AscendCommand {
 
@@ -29,12 +31,12 @@ public final class AscendCommand {
     this.luckPermsService = luckPermsService;
   }
 
-  public void register(final PaperCommandManager<CommandSender> commandManager) {
+  public void register(final PaperCommandManager<Source> commandManager) {
     final var main = commandManager.commandBuilder("ascend")
-        .meta(CommandMeta.DESCRIPTION, "Arise to a higher level.")
-        .senderType(Player.class)
+        .commandDescription(description("Arise to a higher level."))
+        .senderType(PlayerSource.class)
         .handler(c -> {
-          final var sender = (Player) c.getSender();
+          final var sender = c.sender().source();
 
           final Group nextGroup = this.luckPermsService.getNextGroupInTrack(sender, "player");
           if (nextGroup == null) {

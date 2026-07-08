@@ -3,12 +3,14 @@ package city.skybound.helios.realm;
 import city.skybound.helios.Permission;
 import city.skybound.helios.config.LangConfig;
 import city.skybound.helios.transportation.PortalListener;
-import cloud.commandframework.meta.CommandMeta;
-import cloud.commandframework.paper.PaperCommandManager;
 import com.google.inject.Inject;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.incendo.cloud.paper.PaperCommandManager;
+import org.incendo.cloud.paper.util.sender.PlayerSource;
+import org.incendo.cloud.paper.util.sender.Source;
 import org.spongepowered.configurate.NodePath;
+
+import static org.incendo.cloud.description.Description.description;
 
 public final class TransposeCommands {
 
@@ -27,36 +29,36 @@ public final class TransposeCommands {
     this.portalListener = portalListener;
   }
 
-  public void register(final PaperCommandManager<CommandSender> commandManager) {
+  public void register(final PaperCommandManager<Source> commandManager) {
     final var madlands = commandManager.commandBuilder("madlands")
-        .meta(CommandMeta.DESCRIPTION, "Transpose to the madlands.")
+        .commandDescription(description("Transpose to the madlands."))
         .permission(Permission.REALM_MADLANDS)
-        .senderType(Player.class)
-        .handler(c -> this.tryTranspose((Player) c.getSender(), Realm.MADLANDS));
+        .senderType(PlayerSource.class)
+        .handler(c -> this.tryTranspose(c.sender().source(), Realm.MADLANDS));
 
     final var overworld = commandManager.commandBuilder("overworld")
-        .meta(CommandMeta.DESCRIPTION, "Transpose to the overworld.")
+        .commandDescription(description("Transpose to the overworld."))
         .permission(Permission.REALM_OVERWORLD)
-        .senderType(Player.class)
-        .handler(c -> this.tryTranspose((Player) c.getSender(), Realm.OVERWORLD));
+        .senderType(PlayerSource.class)
+        .handler(c -> this.tryTranspose(c.sender().source(), Realm.OVERWORLD));
 
     final var nether = commandManager.commandBuilder("nether")
-        .meta(CommandMeta.DESCRIPTION, "Transpose to the nether.")
+        .commandDescription(description("Transpose to the nether."))
         .permission(Permission.REALM_NETHER)
-        .senderType(Player.class)
-        .handler(c -> this.tryTranspose((Player) c.getSender(), Realm.NETHER));
+        .senderType(PlayerSource.class)
+        .handler(c -> this.tryTranspose(c.sender().source(), Realm.NETHER));
 
     final var end = commandManager.commandBuilder("end")
-        .meta(CommandMeta.DESCRIPTION, "Transpose to the end.")
+        .commandDescription(description("Transpose to the end."))
         .permission(Permission.REALM_END)
-        .senderType(Player.class)
-        .handler(c -> this.tryTranspose((Player) c.getSender(), Realm.END));
+        .senderType(PlayerSource.class)
+        .handler(c -> this.tryTranspose(c.sender().source(), Realm.END));
 
     final var backrooms = commandManager.commandBuilder("backrooms")
-        .meta(CommandMeta.DESCRIPTION, "Transpose to the backrooms.")
+        .commandDescription(description("Transpose to the backrooms."))
         .permission(Permission.REALM_BACKROOMS)
-        .senderType(Player.class)
-        .handler(c -> this.tryTranspose((Player) c.getSender(), Realm.BACKROOMS));
+        .senderType(PlayerSource.class)
+        .handler(c -> this.tryTranspose(c.sender().source(), Realm.BACKROOMS));
 
     commandManager.command(overworld);
     commandManager.command(nether);

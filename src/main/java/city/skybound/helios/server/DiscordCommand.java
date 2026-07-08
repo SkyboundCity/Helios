@@ -1,11 +1,12 @@
 package city.skybound.helios.server;
 
 import city.skybound.helios.config.LangConfig;
-import cloud.commandframework.meta.CommandMeta;
-import cloud.commandframework.paper.PaperCommandManager;
 import com.google.inject.Inject;
-import org.bukkit.command.CommandSender;
+import org.incendo.cloud.paper.PaperCommandManager;
+import org.incendo.cloud.paper.util.sender.Source;
 import org.spongepowered.configurate.NodePath;
+
+import static org.incendo.cloud.description.Description.description;
 
 public final class DiscordCommand {
 
@@ -16,10 +17,10 @@ public final class DiscordCommand {
     this.langConfig = langConfig;
   }
 
-  public void register(final PaperCommandManager<CommandSender> commandManager) {
+  public void register(final PaperCommandManager<Source> commandManager) {
     final var main = commandManager.commandBuilder("discord")
-        .meta(CommandMeta.DESCRIPTION, "Links you to our Discord.")
-        .handler(c -> c.getSender().sendMessage(this.langConfig.c(NodePath.path("discord"))));
+        .commandDescription(description("Links you to our Discord."))
+        .handler(c -> c.sender().source().sendMessage(this.langConfig.c(NodePath.path("discord"))));
 
     commandManager.command(main);
   }

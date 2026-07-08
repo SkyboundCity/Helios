@@ -2,19 +2,18 @@ package city.skybound.helios.fun;
 
 import city.skybound.helios.Permission;
 import city.skybound.helios.config.LangConfig;
-import cloud.commandframework.arguments.standard.StringArgument;
-import cloud.commandframework.meta.CommandMeta;
-import cloud.commandframework.paper.PaperCommandManager;
 import com.google.inject.Inject;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
-import org.bukkit.Server;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.incendo.cloud.paper.PaperCommandManager;
+import org.incendo.cloud.paper.util.sender.Source;
+import org.incendo.cloud.suggestion.SuggestionProvider;
 import org.spongepowered.configurate.NodePath;
 
-import java.util.ArrayList;
-import java.util.List;
+import static org.incendo.cloud.description.Description.description;
+import static org.incendo.cloud.parser.standard.StringParser.greedyStringParser;
+import static org.incendo.cloud.suggestion.SuggestionProvider.blockingStrings;
 
 public final class FunCommands {
 
@@ -27,105 +26,101 @@ public final class FunCommands {
     this.langConfig = langConfig;
   }
 
-  public void register(final PaperCommandManager<CommandSender> commandManager) {
-    final var stringWithPlayerSuggestionsArgument = StringArgument
-        .<CommandSender>builder("text")
-        .greedy()
-        .withSuggestionsProvider((c, i) -> this.onlinePlayerNames(c.getSender().getServer()));
+  public void register(final PaperCommandManager<Source> commandManager) {
+    final SuggestionProvider<Source> playerSuggestionsProvider = blockingStrings((c, i) ->
+        c.sender().source().getServer().getOnlinePlayers().stream().map(Player::getName).toList());
 
     final var unreadable = commandManager.commandBuilder("unreadable")
-        .meta(CommandMeta.DESCRIPTION, "Untransparent. Is that a word? Opaque?")
+        .commandDescription(description("Untransparent. Is that a word? Opaque?"))
         .permission(Permission.UNREADABLE)
-        .handler(c -> c.getSender().getServer().sendMessage(this.langConfig.c(
+        .handler(c -> c.sender().source().getServer().sendMessage(this.langConfig.c(
             NodePath.path("fun", "unreadable"),
-            Placeholder.unparsed("player", c.getSender().getName())
+            Placeholder.unparsed("player", c.sender().source().getName())
         )));
 
     final var shrug = commandManager.commandBuilder("shrug")
-        .meta(CommandMeta.DESCRIPTION, "You don't know. They don't know.")
+        .commandDescription(description("You don't know. They don't know."))
         .permission(Permission.SHRUG)
-        .handler(c -> c.getSender().getServer().sendMessage(this.langConfig.c(
+        .handler(c -> c.sender().source().getServer().sendMessage(this.langConfig.c(
             NodePath.path("fun", "shrug"),
-            Placeholder.unparsed("player", c.getSender().getName())
+            Placeholder.unparsed("player", c.sender().source().getName())
         )));
 
     final var spook = commandManager.commandBuilder("spook")
-        .meta(CommandMeta.DESCRIPTION, "OoooOOooOoOOoOOoo")
+        .commandDescription(description("OoooOOooOoOOoOOoo"))
         .permission(Permission.SPOOK)
-        .handler(c -> c.getSender().getServer().sendMessage(this.langConfig.c(
+        .handler(c -> c.sender().source().getServer().sendMessage(this.langConfig.c(
             NodePath.path("fun", "spook"),
-            Placeholder.unparsed("player", c.getSender().getName())
+            Placeholder.unparsed("player", c.sender().source().getName())
         )));
 
     final var hug = commandManager.commandBuilder("hug")
-        .meta(CommandMeta.DESCRIPTION, "D'aww that's so cute!")
+        .commandDescription(description("D'aww that's so cute!"))
         .permission(Permission.HUG)
-        .argument(stringWithPlayerSuggestionsArgument.build())
-        .handler(c -> c.getSender().getServer().sendMessage(this.langConfig.c(
+        .required("text", greedyStringParser(), playerSuggestionsProvider)
+        .handler(c -> c.sender().source().getServer().sendMessage(this.langConfig.c(
             NodePath.path("fun", "hug"),
             TagResolver.resolver(
-                Placeholder.unparsed("player", c.getSender().getName()),
+                Placeholder.unparsed("player", c.sender().source().getName()),
                 Placeholder.unparsed("text", c.get("text"))
             )
         )));
 
     final var smooch = commandManager.commandBuilder("smooch")
-        .meta(CommandMeta.DESCRIPTION, "Give 'em a smooch.")
+        .commandDescription(description("Give 'em a smooch."))
         .permission(Permission.SMOOCH)
-        .argument(stringWithPlayerSuggestionsArgument.build())
-        .handler(c -> c.getSender().getServer().sendMessage(this.langConfig.c(
+        .required("text", greedyStringParser(), playerSuggestionsProvider)
+        .handler(c -> c.sender().source().getServer().sendMessage(this.langConfig.c(
             NodePath.path("fun", "smooch"),
             TagResolver.resolver(
-                Placeholder.unparsed("player", c.getSender().getName()),
+                Placeholder.unparsed("player", c.sender().source().getName()),
                 Placeholder.unparsed("text", c.get("text"))
             )
         )));
 
     final var blame = commandManager.commandBuilder("blame")
-        .meta(CommandMeta.DESCRIPTION, "It's their fault, not yours.")
+        .commandDescription(description("It's their fault, not yours."))
         .permission(Permission.BLAME)
-        .argument(stringWithPlayerSuggestionsArgument.build())
-        .handler(c -> c.getSender().getServer().sendMessage(this.langConfig.c(
+        .required("text", greedyStringParser(), playerSuggestionsProvider)
+        .handler(c -> c.sender().source().getServer().sendMessage(this.langConfig.c(
             NodePath.path("fun", "blame"),
             TagResolver.resolver(
-                Placeholder.unparsed("player", c.getSender().getName()),
+                Placeholder.unparsed("player", c.sender().source().getName()),
                 Placeholder.unparsed("text", c.get("text"))
             )
         )));
 
     final var highfive = commandManager.commandBuilder("highfive")
-        .meta(CommandMeta.DESCRIPTION, "Up high! Down low! Too slow!")
+        .commandDescription(description("Up high! Down low! Too slow!"))
         .permission(Permission.HIGHFIVE)
-        .argument(stringWithPlayerSuggestionsArgument.build())
-        .handler(c -> c.getSender().getServer().sendMessage(this.langConfig.c(
+        .required("text", greedyStringParser(), playerSuggestionsProvider)
+        .handler(c -> c.sender().source().getServer().sendMessage(this.langConfig.c(
             NodePath.path("fun", "highfive"),
             TagResolver.resolver(
-                Placeholder.unparsed("player", c.getSender().getName()),
+                Placeholder.unparsed("player", c.sender().source().getName()),
                 Placeholder.unparsed("text", c.get("text"))
             )
         )));
 
     final var sue = commandManager.commandBuilder("sue")
         .permission(Permission.SUE)
-        .meta(CommandMeta.DESCRIPTION, "Court fixes everything.. right?")
-        .argument(stringWithPlayerSuggestionsArgument.asOptional().build())
-        .handler(c -> c.<String>getOptional("text").ifPresentOrElse(
+        .commandDescription(description("Court fixes everything.. right?"))
+        .optional("text", greedyStringParser(), playerSuggestionsProvider)
+        .handler(c -> c.<String>optional("text").ifPresentOrElse(
             (text) -> c
-                .getSender()
-                .getServer()
+                .sender().source().getServer()
                 .sendMessage(this.langConfig.c(
                     NodePath.path("fun", "sue-extra"),
                     TagResolver.resolver(
-                        Placeholder.unparsed("player", c.getSender().getName()),
+                        Placeholder.unparsed("player", c.sender().source().getName()),
                         Placeholder.unparsed("text", text)
                     )
                 )),
             () -> c
-                .getSender()
-                .getServer()
+                .sender().source().getServer()
                 .sendMessage(this.langConfig.c(
                     NodePath.path("fun", "sue"),
-                    Placeholder.unparsed("player", c.getSender().getName())
+                    Placeholder.unparsed("player", c.sender().source().getName())
                 ))
         ));
 
@@ -137,16 +132,6 @@ public final class FunCommands {
     commandManager.command(blame);
     commandManager.command(highfive);
     commandManager.command(sue);
-  }
-
-  private List<String> onlinePlayerNames(final Server server) {
-    final List<String> output = new ArrayList<>();
-
-    for (final Player player : server.getOnlinePlayers()) {
-      output.add(player.getName());
-    }
-
-    return output;
   }
 
 }

@@ -6,16 +6,18 @@ import city.skybound.helios.config.BookDeserializer;
 import city.skybound.helios.config.BooksConfig;
 import city.skybound.helios.config.ConfigConfig;
 import city.skybound.helios.config.LangConfig;
-import cloud.commandframework.ArgumentDescription;
-import cloud.commandframework.arguments.standard.IntegerArgument;
-import cloud.commandframework.meta.CommandMeta;
-import cloud.commandframework.paper.PaperCommandManager;
 import com.google.inject.Inject;
 import org.bukkit.Server;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.incendo.cloud.paper.PaperCommandManager;
+import org.incendo.cloud.paper.util.sender.PlayerSource;
+import org.incendo.cloud.paper.util.sender.Source;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.NodePath;
+
+import static org.incendo.cloud.component.DefaultValue.constant;
+import static org.incendo.cloud.description.Description.description;
+import static org.incendo.cloud.parser.standard.IntegerParser.integerParser;
 
 public final class RulesCommand {
 
@@ -37,24 +39,21 @@ public final class RulesCommand {
     this.configConfig = configConfig;
   }
 
-  public void register(final PaperCommandManager<CommandSender> commandManager) {
+  public void register(final PaperCommandManager<Source> commandManager) {
     final var main = commandManager.commandBuilder("rules")
-        .meta(CommandMeta.DESCRIPTION, "The rules for the server.");
+        .commandDescription(description("The rules for the server."));
 
     final var page = main
-        .argument(IntegerArgument.<CommandSender>builder("page")
-            .withMin(1)
-            .withMax(BookDeserializer.pageCount(this.bookNode())) // FIXME: won't work with plugin reload.
-            .asOptionalWithDefault(1)
-            .build())
-        .handler(c -> c.getSender().sendMessage(
+        // FIXME: max won't adjust with plugin reload.
+        .optional("page", integerParser(1, BookDeserializer.pageCount(this.bookNode())), constant(1))
+        .handler(c -> c.sender().source().sendMessage(
             BookDeserializer.deserializePage(this.bookNode(), c.<Integer>get("page"))
         ));
 
-    final var accept = main.literal("accept", ArgumentDescription.of("Whew, that was a lot of reading."))
-        .senderType(Player.class)
+    final var accept = main.literal("accept", description("Whew, that was a lot of reading."))
+        .senderType(PlayerSource.class)
         .handler(c -> {
-          final Player sender = (Player) c.getSender();
+          final var sender = c.sender().source();
           if (sender.hasPermission(Permission.REALM_MADLANDS)) {
             sender.sendMessage(this.langConfig.c(NodePath.path("rules", "already-accepted")));
           } else {

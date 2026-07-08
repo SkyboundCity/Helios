@@ -3,18 +3,20 @@ package city.skybound.helios.fun;
 import city.skybound.helios.Permission;
 import city.skybound.helios.config.ConfigConfig;
 import city.skybound.helios.config.LangConfig;
-import cloud.commandframework.bukkit.parsers.PlayerArgument;
-import cloud.commandframework.meta.CommandMeta;
-import cloud.commandframework.paper.PaperCommandManager;
 import com.google.inject.Inject;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
+import org.incendo.cloud.paper.PaperCommandManager;
+import org.incendo.cloud.paper.util.sender.PlayerSource;
+import org.incendo.cloud.paper.util.sender.Source;
 import org.spongepowered.configurate.NodePath;
 
 import java.util.Random;
+
+import static org.incendo.cloud.bukkit.parser.PlayerParser.playerParser;
+import static org.incendo.cloud.description.Description.description;
 
 public final class ActCommands {
 
@@ -30,19 +32,19 @@ public final class ActCommands {
     this.configConfig = configConfig;
   }
 
-  public void register(final PaperCommandManager<CommandSender> commandManager) {
+  public void register(final PaperCommandManager<Source> commandManager) {
     final var zap = commandManager.commandBuilder("zap")
-        .senderType(Player.class)
+        .senderType(PlayerSource.class)
         .permission(Permission.ZAP)
-        .meta(CommandMeta.DESCRIPTION, "Kentucky Fried Player")
-        .argument(PlayerArgument.optional("player"))
+        .commandDescription(description("Kentucky Fried Player"))
+        .optional("player", playerParser())
         .handler(c -> {
-          final Player sender = (Player) c.getSender();
-          final Player target = c.<Player>getOptional("player").orElse((sender));
+          final var sender = c.sender().source();
+          final Player target = c.<Player>optional("player").orElse((sender));
 
           target.getWorld().strikeLightning(target.getLocation());
 
-          if (c.<Player>getOptional("player").isPresent()) {
+          if (c.<Player>optional("player").isPresent()) {
             sender.getServer().sendMessage(this.langConfig.c(
                 NodePath.path("act", "zap-other"),
                 TagResolver.resolver(
@@ -61,13 +63,13 @@ public final class ActCommands {
         });
 
     final var poke = commandManager.commandBuilder("poke")
-        .senderType(Player.class)
+        .senderType(PlayerSource.class)
         .permission(Permission.POKE)
-        .meta(CommandMeta.DESCRIPTION, "Useful for annoying others.")
-        .argument(PlayerArgument.optional("player"))
+        .commandDescription(description("Useful for annoying others."))
+        .optional("player", playerParser())
         .handler(c -> {
-          final Player sender = (Player) c.getSender();
-          final Player target = c.<Player>getOptional("player").orElse((sender));
+          final var sender = c.sender().source();
+          final Player target = c.<Player>optional("player").orElse((sender));
 
           final ConfigConfig.Data.PokeForce pokeForce = this.configConfig.data().pokeForce();
           final double maxY = pokeForce.maxY();
@@ -83,7 +85,7 @@ public final class ActCommands {
 
           target.setVelocity(randomVector);
 
-          if (c.<Player>getOptional("player").isPresent()) {
+          if (c.<Player>optional("player").isPresent()) {
             sender.getServer().sendMessage(this.langConfig.c(
                 NodePath.path("act", "poke-other"),
                 TagResolver.resolver(

@@ -2,15 +2,16 @@ package city.skybound.helios.fun;
 
 import city.skybound.helios.Permission;
 import city.skybound.helios.config.LangConfig;
-import cloud.commandframework.meta.CommandMeta;
-import cloud.commandframework.paper.PaperCommandManager;
 import com.google.inject.Inject;
 import org.bukkit.Material;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.incendo.cloud.paper.PaperCommandManager;
+import org.incendo.cloud.paper.util.sender.PlayerSource;
+import org.incendo.cloud.paper.util.sender.Source;
 import org.spongepowered.configurate.NodePath;
+
+import static org.incendo.cloud.description.Description.description;
 
 public final class HatCommand {
 
@@ -23,13 +24,13 @@ public final class HatCommand {
     this.langConfig = langConfig;
   }
 
-  public void register(final PaperCommandManager<CommandSender> commandManager) {
+  public void register(final PaperCommandManager<Source> commandManager) {
     final var main = commandManager.commandBuilder("hat")
-        .meta(CommandMeta.DESCRIPTION, "Put fancy things on your head!")
+        .commandDescription(description("Put fancy things on your head!"))
         .permission(Permission.HAT)
-        .senderType(Player.class)
+        .senderType(PlayerSource.class)
         .handler(c -> {
-          final Player sender = (Player) c.getSender();
+          final var sender = c.sender().source();
           final PlayerInventory inventory = sender.getInventory();
           final ItemStack heldItem = inventory.getItemInMainHand();
 

@@ -2,17 +2,19 @@ package city.skybound.helios.ascension;
 
 import city.skybound.helios.DurationFormat;
 import city.skybound.helios.config.LangConfig;
-import cloud.commandframework.bukkit.parsers.PlayerArgument;
-import cloud.commandframework.meta.CommandMeta;
-import cloud.commandframework.paper.PaperCommandManager;
 import com.google.inject.Inject;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.incendo.cloud.paper.PaperCommandManager;
+import org.incendo.cloud.paper.util.sender.PlayerSource;
+import org.incendo.cloud.paper.util.sender.Source;
 import org.spongepowered.configurate.NodePath;
 
 import java.util.concurrent.TimeUnit;
+
+import static org.incendo.cloud.bukkit.parser.PlayerParser.playerParser;
+import static org.incendo.cloud.description.Description.description;
 
 public final class PlaytimeCommand {
 
@@ -25,15 +27,15 @@ public final class PlaytimeCommand {
     this.langConfig = langConfig;
   }
 
-  public void register(final PaperCommandManager<CommandSender> commandManager) {
+  public void register(final PaperCommandManager<Source> commandManager) {
     final var main = commandManager.commandBuilder("playtime")
-        .meta(CommandMeta.DESCRIPTION, "Check how long you've played.")
-        .senderType(Player.class)
-        .argument(PlayerArgument.optional("player"))
+        .commandDescription(description("Check how long you've played."))
+        .senderType(PlayerSource.class)
+        .optional("player", playerParser())
         .handler(c -> {
-          final var sender = (Player) c.getSender();
+          final var sender = c.sender().source();
 
-          c.<Player>getOptional("player").ifPresentOrElse(
+          c.<Player>optional("player").ifPresentOrElse(
               (target) -> sender.sendMessage(this.langConfig.c(
                   NodePath.path("playtime", "other"),
                   TagResolver.resolver(

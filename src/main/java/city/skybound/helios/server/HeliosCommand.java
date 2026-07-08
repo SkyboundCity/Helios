@@ -3,12 +3,12 @@ package city.skybound.helios.server;
 import city.skybound.helios.Helios;
 import city.skybound.helios.Permission;
 import city.skybound.helios.config.LangConfig;
-import cloud.commandframework.ArgumentDescription;
-import cloud.commandframework.meta.CommandMeta;
-import cloud.commandframework.paper.PaperCommandManager;
 import com.google.inject.Inject;
-import org.bukkit.command.CommandSender;
+import org.incendo.cloud.paper.PaperCommandManager;
+import org.incendo.cloud.paper.util.sender.Source;
 import org.spongepowered.configurate.NodePath;
+
+import static org.incendo.cloud.description.Description.description;
 
 public final class HeliosCommand {
 
@@ -24,17 +24,17 @@ public final class HeliosCommand {
     this.langConfig = langConfig;
   }
 
-  public void register(final PaperCommandManager<CommandSender> commandManager) {
+  public void register(final PaperCommandManager<Source> commandManager) {
     final var main = commandManager.commandBuilder("helios")
-        .meta(CommandMeta.DESCRIPTION, "Core commands for Helios.");
+        .commandDescription(description("Core commands for Helios."));
 
-    final var reload = main.literal("reload", ArgumentDescription.of("Reload the plugin's configs."))
+    final var reload = main.literal("reload", description("Reload the plugin's configs."))
         .permission(Permission.RELOAD)
         .handler(c -> {
           if (this.plugin.loadConfiguration()) {
-            c.getSender().sendMessage(this.langConfig.c(NodePath.path("reload", "successful")));
+            c.sender().source().sendMessage(this.langConfig.c(NodePath.path("reload", "successful")));
           } else {
-            c.getSender().sendMessage(this.langConfig.c(NodePath.path("reload", "unsuccessful")));
+            c.sender().source().sendMessage(this.langConfig.c(NodePath.path("reload", "unsuccessful")));
           }
         });
 

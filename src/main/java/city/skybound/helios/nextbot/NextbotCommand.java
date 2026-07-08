@@ -1,13 +1,13 @@
 package city.skybound.helios.nextbot;
 
 import city.skybound.helios.Permission;
-import cloud.commandframework.ArgumentDescription;
-import cloud.commandframework.arguments.standard.EnumArgument;
-import cloud.commandframework.meta.CommandMeta;
-import cloud.commandframework.paper.PaperCommandManager;
 import com.google.inject.Inject;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+import org.incendo.cloud.paper.PaperCommandManager;
+import org.incendo.cloud.paper.util.sender.PlayerSource;
+import org.incendo.cloud.paper.util.sender.Source;
+
+import static org.incendo.cloud.description.Description.description;
+import static org.incendo.cloud.parser.standard.EnumParser.enumParser;
 
 public final class NextbotCommand {
 
@@ -20,19 +20,19 @@ public final class NextbotCommand {
     this.nate = nate;
   }
 
-  public void register(final PaperCommandManager<CommandSender> commandManager) {
+  public void register(final PaperCommandManager<Source> commandManager) {
     final var nextbot = commandManager.commandBuilder("nextbot")
-        .meta(CommandMeta.DESCRIPTION, "Manage nextbots.")
+        .commandDescription(description("Manage nextbots."))
         .permission(Permission.NEXTBOT);
 
-    final var killAll = nextbot.literal("kill-all", ArgumentDescription.of("Kill all nextbots globally."))
+    final var killAll = nextbot.literal("kill-all", description("Kill all nextbots globally."))
         .handler(c -> this.nate.killNextbots());
 
-    final var summon = nextbot.literal("summon", ArgumentDescription.of("Summon a nextbot."))
-        .senderType(Player.class)
-        .argument(EnumArgument.of(Nextbot.Type.class, "type"))
+    final var summon = nextbot.literal("summon", description("Summon a nextbot."))
+        .senderType(PlayerSource.class)
+        .required("type", enumParser(Nextbot.Type.class))
         .handler(c -> {
-          final var sender = (Player) c.getSender();
+          final var sender = c.sender().source();
           this.nate.createNextbot(c.get("type"), sender.getLocation());
         });
 
