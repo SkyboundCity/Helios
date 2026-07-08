@@ -12,6 +12,7 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.title.Title;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Tag;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
@@ -59,7 +60,7 @@ public final class PlayerSpawnListener implements Listener {
       return;
     }
 
-    if (!MaterialTags.BEDS.isTagged(playerSpawn.getBlock())) {
+    if (!Tag.BEDS.isTagged(playerSpawn.getBlock().getType())) {
       // bed destroyed. reset player's spawn.
       event.setRespawnLocation(this.worldService.ornateSpawn(realm));
       this.removePlayerSpawn(player, realm);
