@@ -48,7 +48,7 @@ public final class TagListener implements Listener {
       return;
     }
 
-    if (!(event.getNewEffect().getType().equals(PotionEffectType.DAMAGE_RESISTANCE))
+    if (!(event.getNewEffect().getType().equals(PotionEffectType.RESISTANCE))
         && !(event.getNewEffect().getType().equals(PotionEffectType.SATURATION))) {
       event.setCancelled(true);
     }

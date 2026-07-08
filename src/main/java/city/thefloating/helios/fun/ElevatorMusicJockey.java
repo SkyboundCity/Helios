@@ -34,14 +34,16 @@ public final class ElevatorMusicJockey {
 
   public void start() {
     final Server server = this.plugin.getServer();
-    server.getScheduler().runTaskTimer(this.plugin, () -> {
-      for (final Player player : server.getOnlinePlayers()) {
-        if (Milieu.of(player) != Milieu.CANON) {
-          continue;
-        }
-        this.refresh(player);
-      }
-    }, 1, 20);
+    server.getScheduler().runTaskTimer(
+        this.plugin, () -> {
+          for (final Player player : server.getOnlinePlayers()) {
+            if (Milieu.of(player) != Milieu.CANON) {
+              continue;
+            }
+            this.refresh(player);
+          }
+        }, 1, 20
+    );
   }
 
   private void refresh(final Player player) {

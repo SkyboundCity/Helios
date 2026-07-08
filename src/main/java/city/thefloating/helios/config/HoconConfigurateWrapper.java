@@ -11,9 +11,11 @@ public class HoconConfigurateWrapper extends ConfigurateWrapper<HoconConfigurati
    * @param filePath the file path for the config
    */
   public HoconConfigurateWrapper(final Path filePath) {
-    super(filePath, HoconConfigurationLoader.builder()
-        .path(filePath)
-        .build());
+    super(
+        filePath, HoconConfigurationLoader.builder()
+            .path(filePath)
+            .build()
+    );
   }
 
   /**

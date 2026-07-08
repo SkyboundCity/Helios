@@ -59,7 +59,7 @@ public final class FlingerListener implements Listener {
             1F, 1F
         ), player.getX(), player.getY(), player.getZ()
     );
-    player.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, player.getLocation(), 1);
+    player.getWorld().spawnParticle(Particle.EXPLOSION_EMITTER, player.getLocation(), 1);
   }
 
   private void flingPlayer(final Player player, final Block flinger) {

@@ -46,7 +46,7 @@ public final class Transposer {
     this.transpose(player, Realm.BACKROOMS);
 
     player.addPotionEffect(PotEff.hidden(PotionEffectType.BLINDNESS, 60, 10));
-    player.getWorld().spawnParticle(Particle.SMOKE_LARGE, nextLocation, 40, 2, 2, 2);
+    player.getWorld().spawnParticle(Particle.LARGE_SMOKE, nextLocation, 40, 2, 2, 2);
     player.playSound(nextLocation, Sound.BLOCK_PORTAL_TRAVEL, SoundCategory.MASTER, 4, 1);
   }
 

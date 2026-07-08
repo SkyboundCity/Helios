@@ -1,6 +1,5 @@
 package city.thefloating.helios.piano;
 
-import broccolai.corn.paper.item.PaperItemBuilder;
 import com.google.inject.Inject;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
@@ -9,6 +8,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.Nullable;
+
+import static love.broccolai.corn.minecraft.item.ItemBuilder.itemBuilder;
 
 public final class PianoNoteItems {
 
@@ -22,13 +23,13 @@ public final class PianoNoteItems {
   }
 
   public @Nullable Float getPitch(final ItemStack item) {
-    return PaperItemBuilder.of(item).getData(this.pitchKey, PersistentDataType.FLOAT);
+    return itemBuilder(item).data(this.pitchKey, PersistentDataType.FLOAT);
   }
 
   public ItemStack createItem(final Material material, final Component name, final float pitch) {
-    return PaperItemBuilder.ofType(material)
+    return itemBuilder(material)
         .name(name)
-        .setData(this.pitchKey, PersistentDataType.FLOAT, pitch)
+        .data(this.pitchKey, PersistentDataType.FLOAT, pitch)
         .build();
   }
 

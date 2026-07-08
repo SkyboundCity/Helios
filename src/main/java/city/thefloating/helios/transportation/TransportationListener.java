@@ -1,8 +1,5 @@
 package city.thefloating.helios.transportation;
 
-import broccolai.corn.paper.item.PaperItemBuilder;
-import broccolai.corn.paper.item.special.BookBuilder;
-import broccolai.corn.paper.item.special.BundleBuilder;
 import city.thefloating.helios.Helios;
 import city.thefloating.helios.PotEff;
 import city.thefloating.helios.config.LangConfig;
@@ -12,6 +9,7 @@ import city.thefloating.helios.realm.Realm;
 import city.thefloating.helios.soul.Charon;
 import city.thefloating.helios.soul.Soul;
 import com.google.inject.Inject;
+import love.broccolai.corn.minecraft.item.special.BundleBuilder;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.GameMode;
@@ -40,11 +38,15 @@ import org.spongepowered.configurate.NodePath;
 import javax.annotation.Nullable;
 import java.util.List;
 
+import static love.broccolai.corn.minecraft.item.ItemBuilder.itemBuilder;
+import static love.broccolai.corn.minecraft.item.special.BookBuilder.bookBuilder;
+import static love.broccolai.corn.minecraft.item.special.BundleBuilder.bundleBuilder;
+
 public final class TransportationListener implements Listener {
 
   private static final List<PotionEffectType> ONEROUS_BANNED_EFFECTS = List.of(
       PotionEffectType.SPEED,
-      PotionEffectType.JUMP,
+      PotionEffectType.JUMP_BOOST,
       PotionEffectType.SLOW_FALLING,
       PotionEffectType.LEVITATION
   );
@@ -84,7 +86,7 @@ public final class TransportationListener implements Listener {
   @EventHandler
   public void onTeleport(final PlayerTeleportEvent event) {
     final var cause = event.getCause();
-    if (cause != PlayerTeleportEvent.TeleportCause.CHORUS_FRUIT
+    if (cause != PlayerTeleportEvent.TeleportCause.CONSUMABLE_EFFECT
         && cause != PlayerTeleportEvent.TeleportCause.ENDER_PEARL) {
       return;
     }
@@ -95,7 +97,7 @@ public final class TransportationListener implements Listener {
     }
 
     event.setCancelled(true);
-    event.getTo().getWorld().spawnParticle(Particle.SMOKE_NORMAL, event.getTo(), 200, 0.1, 0.1, 0.1, 0.1);
+    event.getTo().getWorld().spawnParticle(Particle.SMOKE, event.getTo(), 200, 0.1, 0.1, 0.1, 0.1);
   }
 
   /**
@@ -199,7 +201,7 @@ public final class TransportationListener implements Listener {
     player.getServer().getScheduler().runTaskLater(this.plugin, () -> player.setSprinting(false), 5);
 
     // add gnarly effects. blindness prevents client-side sprint activation.
-    player.addPotionEffect(PotEff.hidden(PotionEffectType.SLOW, 100, 4));
+    player.addPotionEffect(PotEff.hidden(PotionEffectType.SLOWNESS, 100, 4));
     player.addPotionEffect(PotEff.hidden(PotionEffectType.BLINDNESS, PotEff.INF, 1));
     player.playSound(player.getLocation(), Sound.ENTITY_IRON_GOLEM_DAMAGE, SoundCategory.MASTER, 100, 0.5F);
     player.playSound(player.getLocation(), Sound.ENTITY_IRON_GOLEM_DEATH, SoundCategory.MASTER, 100, 0.5F);
@@ -222,11 +224,11 @@ public final class TransportationListener implements Listener {
         case 100 -> {
           player.sendMessage(this.langConfig.c(NodePath.path("no-sprint", "8")));
 
-          final BundleBuilder bundleBuilder = BundleBuilder.ofBundle()
+          final BundleBuilder bundleBuilder = bundleBuilder()
               .name(Component.text("Nether Watcher's Gift").color(NamedTextColor.RED))
               .loreList(Component.text("Maybe you should open it.").color(NamedTextColor.GRAY))
               .addItem(
-                  BookBuilder.ofType(Material.WRITTEN_BOOK)
+                  bookBuilder(Material.WRITTEN_BOOK)
                       .title(Component.text("A Letter"))
                       .author(Component.text("The Nether Watcher"))
                       .addPage(Component.text("""
@@ -242,11 +244,11 @@ public final class TransportationListener implements Listener {
                           still love you, tho.
                           """).color(NamedTextColor.DARK_GRAY))
                       .build(),
-                  PaperItemBuilder.ofType(Material.SLIME_BALL)
+                  itemBuilder(Material.SLIME_BALL)
                       .name(Component.text("Ball of Slime"))
                       .loreList(Component.text("It's.. uh, a ball of slime.").color(NamedTextColor.GRAY))
                       .build(),
-                  PaperItemBuilder.ofType(Material.GOLD_NUGGET)
+                  itemBuilder(Material.GOLD_NUGGET)
                       .name(Component.text("Gold Medal"))
                       .loreList(
                           Component.text("There's an inscription on").color(NamedTextColor.GRAY),

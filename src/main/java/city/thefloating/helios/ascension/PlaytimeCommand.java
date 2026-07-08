@@ -33,26 +33,28 @@ public final class PlaytimeCommand {
         .handler(c -> {
           final var sender = (Player) c.getSender();
 
-          c.<Player>getOptional("player").ifPresentOrElse((target) -> sender.sendMessage(this.langConfig.c(
-              NodePath.path("playtime", "other"),
-              TagResolver.resolver(
-                  Placeholder.unparsed(
-                      "time_in_hours",
-                      DurationFormat.fancifyTime(Playtime.getTimePlayed(target), TimeUnit.HOURS)
-                  ),
-                  Placeholder.unparsed("time", DurationFormat.fancifyTime(Playtime.getTimePlayed(target))),
-                  Placeholder.unparsed("player", target.getName())
-              )
-          )), () -> sender.sendMessage(this.langConfig.c(
-              NodePath.path("playtime", "self"),
-              TagResolver.resolver(
-                  Placeholder.unparsed(
-                      "time_in_hours",
-                      DurationFormat.fancifyTime(Playtime.getTimePlayed(sender), TimeUnit.HOURS)
-                  ),
-                  Placeholder.unparsed("time", DurationFormat.fancifyTime(Playtime.getTimePlayed(sender)))
-              )
-          )));
+          c.<Player>getOptional("player").ifPresentOrElse(
+              (target) -> sender.sendMessage(this.langConfig.c(
+                  NodePath.path("playtime", "other"),
+                  TagResolver.resolver(
+                      Placeholder.unparsed(
+                          "time_in_hours",
+                          DurationFormat.fancifyTime(Playtime.getTimePlayed(target), TimeUnit.HOURS)
+                      ),
+                      Placeholder.unparsed("time", DurationFormat.fancifyTime(Playtime.getTimePlayed(target))),
+                      Placeholder.unparsed("player", target.getName())
+                  )
+              )), () -> sender.sendMessage(this.langConfig.c(
+                  NodePath.path("playtime", "self"),
+                  TagResolver.resolver(
+                      Placeholder.unparsed(
+                          "time_in_hours",
+                          DurationFormat.fancifyTime(Playtime.getTimePlayed(sender), TimeUnit.HOURS)
+                      ),
+                      Placeholder.unparsed("time", DurationFormat.fancifyTime(Playtime.getTimePlayed(sender)))
+                  )
+              ))
+          );
         });
 
     commandManager.command(main);

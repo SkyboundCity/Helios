@@ -108,14 +108,12 @@ public final class VoidGenerator extends ChunkGenerator {
 
     @Override
     public @NotNull Biome getBiome(@NotNull final WorldInfo worldInfo, final int x, final int y, final int z) {
-      final long seed = Long.parseLong(new StringBuilder()
-          // depend on signs of x and z because we take absolute values below.
-          .append(x >= 0 ? 1 : 0)
-          .append(z >= 0 ? 1 : 0)
-          // concatenate x and z to avoid additive commutativity. note the integer (floored) division.
-          .append(Math.abs(x) / BIOME_CHUNK_SIZE)
-          .append(Math.abs(z) / BIOME_CHUNK_SIZE)
-          .toString()
+      final long seed = Long.parseLong(// depend on signs of x and z because we take absolute values below.
+          String.valueOf(x >= 0 ? 1 : 0)
+              + (z >= 0 ? 1 : 0)
+              // concatenate x and z to avoid additive commutativity. note the integer (floored) division.
+              + Math.abs(x) / BIOME_CHUNK_SIZE
+              + Math.abs(z) / BIOME_CHUNK_SIZE
       );
       final Random random = new Random(seed);
 

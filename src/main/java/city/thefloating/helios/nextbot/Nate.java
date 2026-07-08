@@ -19,13 +19,13 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDismountEvent;
 import org.bukkit.event.entity.PlayerLeashEntityEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
-import org.spigotmc.event.entity.EntityDismountEvent;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -41,10 +41,49 @@ import java.util.UUID;
  */
 public final class Nate implements Listener {
 
-  private final List<Nextbot> nextbots = new ArrayList<>();
+  // nextbot speed constants for variable acceleration.
+  private static final double NBS_MEASURE_MIN = 0.012;
+  private static final double NBS_MEASURE_MAX = 0.036;
+  private static final double NBS_TARGET_MIN = 0.9;
+  private static final double NBS_TARGET_MAX = 1.5;
 
+  // player speed constants for speed boost when being chased.
+  private static final double PS_MIN_DIST = 20;
+  private static final double PS_MIN_DIST_SQR = (int) Math.pow(PS_MIN_DIST, 2);
+  private static final double PS_MIN_ZERO = 1.1;
+
+  private static final double PS_MIN_ONE = 1.3;
+  private static final double PS_MIN_TWO = 1.4;
+
+  /**
+   * The rough maximum value of velocity.lengthSquared() when not moving.
+   */
+  private static final double STILL_VELOCITY = 0.007;
+
+  private static final int LAG_AMOUNT = 60;
+  private static final Duration JUMP_COOLDOWN = Duration.ofSeconds(4);
+
+  /**
+   * Players within this radius will have their music started.
+   */
+  private static final int START_RADIUS = 32;
+
+  /**
+   * Players outside this radius will have their music stopped.
+   * <p>
+   * This was <b>not</b> added to restart music. That is only an unfortunate
+   * side effect. This was added to deal with sound from emitters permanently
+   * stopping outside a certain radius. I observed that behavior, but it doesn't
+   * seem to be documented anywhere.
+   * <p>
+   * This number seems to be the magic number for the entities that nextbots use.
+   */
+  private static final int STOP_RADIUS = 64;
+
+  private final List<Nextbot> nextbots = new ArrayList<>();
   private final Helios helios;
 
+  private final Map<UUID, Location> laggedLocation = new HashMap<>();
   @Inject
   public Nate(
       final Helios helios
@@ -52,7 +91,14 @@ public final class Nate implements Listener {
     this.helios = helios;
   }
 
-  //<editor-fold desc="creation and deletion">
+  private static void givePlayerRunningSpeed(final Player player, final int amplifier) {
+    player.addPotionEffect(PotEff.hidden(PotionEffectType.SPEED, 30, amplifier));
+  }
+
+  private static <T> List<T> clone(final List<T> list) {
+    return new ArrayList<>(list);
+  }
+
   private void killNextbot(final Nextbot nextbot) {
     nextbot.pf().getPassengers().forEach(Entity::remove); // remove text.
     nextbot.pf().remove();
@@ -80,7 +126,7 @@ public final class Nate implements Listener {
           self.customName(Component.text(attributes.iconChar()));
           self.setCustomNameVisible(true);
           self.setDuration(214748364);
-          self.setParticle(Particle.BLOCK_CRACK, Material.AIR.createBlockData());
+          self.setParticle(Particle.BLOCK_CRUMBLE, Material.AIR.createBlockData());
         }
     );
     final Mob pathfinder = (Mob) loc.getWorld().spawnEntity(
@@ -102,9 +148,6 @@ public final class Nate implements Listener {
     this.startMusicTask(nextbot);
     this.nextbots.add(nextbot);
   }
-  //</editor-fold>
-
-  //<editor-fold desc="nextbot-specific listeners (for deletion)">
 
   /**
    * Prevent fox from being leashed.
@@ -146,26 +189,6 @@ public final class Nate implements Listener {
       this.killNextbot(nextbot);
     }
   }
-  //</editor-fold>
-
-  //<editor-fold desc="chasing">
-  // nextbot speed constants for variable acceleration.
-  private static final double NBS_MEASURE_MIN = 0.012;
-  private static final double NBS_MEASURE_MAX = 0.036;
-  private static final double NBS_TARGET_MIN = 0.9;
-  private static final double NBS_TARGET_MAX = 1.5;
-
-  // player speed constants for speed boost when being chased.
-  private static final double PS_MIN_DIST = 20;
-  private static final double PS_MIN_DIST_SQR = (int) Math.pow(PS_MIN_DIST, 2);
-  private static final double PS_MIN_ZERO = 1.1;
-  private static final double PS_MIN_ONE = 1.3;
-  private static final double PS_MIN_TWO = 1.4;
-
-  /**
-   * The rough maximum value of velocity.lengthSquared() when not moving.
-   */
-  private static final double STILL_VELOCITY = 0.007;
 
   private void startTargetingTask(final Nextbot nextbot) {
     final var pf = nextbot.pf();
@@ -226,15 +249,6 @@ public final class Nate implements Listener {
     );
   }
 
-  private static void givePlayerRunningSpeed(final Player player, final int amplifier) {
-    player.addPotionEffect(PotEff.hidden(PotionEffectType.SPEED, 30, amplifier));
-  }
-  //</editor-fold>
-
-  //<editor-fold desc="lagged location">
-  private static final int LAG_AMOUNT = 60;
-  private final Map<UUID, Location> laggedLocation = new HashMap<>();
-
   private Location requestLaggedLocation(final Player player) {
     this.helios.getServer().getScheduler().runTaskLater(
         this.helios,
@@ -243,15 +257,11 @@ public final class Nate implements Listener {
     );
     return this.laggedLocation.getOrDefault(player.getUniqueId(), player.getLocation());
   }
-  //</editor-fold>
 
-  //<editor-fold desc="jump">
   private void jump(final Nextbot nextbot, final int amplifier) {
-    nextbot.pf().addPotionEffect(PotEff.hidden(PotionEffectType.JUMP, 5, amplifier));
+    nextbot.pf().addPotionEffect(PotEff.hidden(PotionEffectType.JUMP_BOOST, 5, amplifier));
     nextbot.pf().setJumping(true);
   }
-
-  private static final Duration JUMP_COOLDOWN = Duration.ofSeconds(4);
 
   /**
    * Calls {@link #jump(Nextbot, int)} but also juggles the cooldown.
@@ -273,24 +283,6 @@ public final class Nate implements Listener {
       nextbot.lastJump(Instant.now());
     }
   }
-  //</editor-fold>
-
-  //<editor-fold desc="music">
-  /**
-   * Players within this radius will have their music started.
-   */
-  private static final int START_RADIUS = 32;
-  /**
-   * Players outside this radius will have their music stopped.
-   * <p>
-   * This was <b>not</b> added to restart music. That is only an unfortunate
-   * side effect. This was added to deal with sound from emitters permanently
-   * stopping outside a certain radius. I observed that behavior, but it doesn't
-   * seem to be documented anywhere.
-   * <p>
-   * This number seems to be the magic number for the entities that nextbots use.
-   */
-  private static final int STOP_RADIUS = 64;
 
   private Collection<Player> playersInsideRadius(final Location location, final int radius) {
     return location.getWorld().getNearbyPlayers(location, radius);
@@ -373,11 +365,6 @@ public final class Nate implements Listener {
         () -> this.removeFromAllMusic(player),
         Ticks.in(delay)
     );
-  }
-  //</editor-fold>
-
-  private static <T> List<T> clone(final List<T> list) {
-    return new ArrayList<>(list);
   }
 
 }

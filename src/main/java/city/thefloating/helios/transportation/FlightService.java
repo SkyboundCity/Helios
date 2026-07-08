@@ -36,22 +36,26 @@ public final class FlightService {
   }
 
   public void enableFlight(final Player player) {
-    this.plugin.getServer().getScheduler().runTask(this.plugin, () -> {
-      if (!player.getAllowFlight()) {
-        player.setAllowFlight(true);
-      }
-    });
+    this.plugin.getServer().getScheduler().runTask(
+        this.plugin, () -> {
+          if (!player.getAllowFlight()) {
+            player.setAllowFlight(true);
+          }
+        }
+    );
   }
 
   public void disableFlight(final Player player) {
-    this.plugin.getServer().getScheduler().runTask(this.plugin, () -> {
-      if (player.getAllowFlight()) {
-        player.setAllowFlight(false);
-      }
-      if (player.isFlying()) {
-        player.setFlying(false);
-      }
-    });
+    this.plugin.getServer().getScheduler().runTask(
+        this.plugin, () -> {
+          if (player.getAllowFlight()) {
+            player.setAllowFlight(false);
+          }
+          if (player.isFlying()) {
+            player.setFlying(false);
+          }
+        }
+    );
   }
 
 }

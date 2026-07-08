@@ -14,11 +14,10 @@ public final class Teleport {
   ) {
     entity.teleport(
         loc,
-        TeleportFlag.Relative.X,
-        TeleportFlag.Relative.Y,
-        TeleportFlag.Relative.Z,
-        TeleportFlag.Relative.YAW,
-        TeleportFlag.Relative.PITCH
+        TeleportFlag.Relative.VELOCITY_ROTATION,
+        TeleportFlag.Relative.VELOCITY_X,
+        TeleportFlag.Relative.VELOCITY_Y,
+        TeleportFlag.Relative.VELOCITY_Z
     );
   }
 

@@ -15,14 +15,16 @@ public final class ConfigConfig extends AbstractDataConfig<HoconConfigurateWrapp
 
   @Inject
   public ConfigConfig(final @Named("dataFolder") Path dataFolder) {
-    super(new HoconConfigurateWrapper(dataFolder.resolve("config.conf"), HoconConfigurationLoader.builder()
+    super(new HoconConfigurateWrapper(
+        dataFolder.resolve("config.conf"), HoconConfigurationLoader.builder()
         .path(dataFolder.resolve("config.conf"))
         .defaultOptions(opts -> opts.implicitInitialization(false))
-        .build()));
+        .build()
+    ));
   }
 
   @Override
-  protected Class<Data> getDataClass() {
+  protected Class<Data> dataClass() {
     return Data.class;
   }
 

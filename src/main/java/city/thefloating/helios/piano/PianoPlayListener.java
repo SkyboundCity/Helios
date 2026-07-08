@@ -64,8 +64,7 @@ public final class PianoPlayListener implements Listener {
       if (item != null) {
         this.tryPlay(player, item);
       }
-    } else if (event.getAction() == InventoryAction.HOTBAR_SWAP
-        || event.getAction() == InventoryAction.HOTBAR_MOVE_AND_READD) {
+    } else if (event.getAction() == InventoryAction.HOTBAR_SWAP) {
       event.setCancelled(true);
 
       final @Nullable ItemStack hotbarItem = player.getInventory().getItem(event.getHotbarButton());

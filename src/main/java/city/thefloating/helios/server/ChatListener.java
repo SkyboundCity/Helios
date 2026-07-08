@@ -32,6 +32,21 @@ import java.util.regex.Pattern;
 
 public final class ChatListener implements Listener {
 
+  private static final TextColor GREENTEXT_COLOR = TextColor.fromHexString("#789922");
+  private static final Pattern GREENTEXT_PATTERN = Pattern.compile("^>[a-zA-Z0-9!?.]");
+
+  private static final Pattern BOLD_PATTERN = Pattern.compile("\\*\\*(.*)\\*\\*");
+  private static final Pattern ITALIC_PATTERN = Pattern.compile("\\*(.*?)\\*");
+  private static final Pattern UNDERLINED_PATTERN = Pattern.compile("__(.*)__");
+  private static final Pattern STRIKETHROUGH_PATTERN = Pattern.compile("~~(.*)~~");
+
+  private static final net.kyori.adventure.sound.Sound PING_SOUND = net.kyori.adventure.sound.Sound.sound(
+      Sound.BLOCK_NOTE_BLOCK_PLING,
+      net.kyori.adventure.sound.Sound.Source.MASTER,
+      1000,
+      2
+  );
+
   private final EmotesConfig emotesConfig;
   private final LangConfig langConfig;
   private final Charon charon;
@@ -80,20 +95,12 @@ public final class ChatListener implements Listener {
     return component;
   }
 
-  private static final TextColor GREENTEXT_COLOR = TextColor.fromHexString("#789922");
-  private static final Pattern GREENTEXT_PATTERN = Pattern.compile("^>[a-zA-Z0-9!?.]");
-
   private Component greentext(final Component component) {
     if (GREENTEXT_PATTERN.matcher(ChatFormat.plain(component)).find()) {
       return component.color(GREENTEXT_COLOR);
     }
     return component;
   }
-
-  private static final Pattern BOLD_PATTERN = Pattern.compile("\\*\\*(.*)\\*\\*");
-  private static final Pattern ITALIC_PATTERN = Pattern.compile("\\*(.*?)\\*");
-  private static final Pattern UNDERLINED_PATTERN = Pattern.compile("__(.*)__");
-  private static final Pattern STRIKETHROUGH_PATTERN = Pattern.compile("~~(.*)~~");
 
   private Component markdown(final Component component, final Player source) {
     if (!this.charon.grab(source).markdown()) {
@@ -127,13 +134,6 @@ public final class ChatListener implements Listener {
 
     return result;
   }
-
-  private static final net.kyori.adventure.sound.Sound PING_SOUND = net.kyori.adventure.sound.Sound.sound(
-      Sound.BLOCK_NOTE_BLOCK_PLING.key(),
-      net.kyori.adventure.sound.Sound.Source.MASTER,
-      1000,
-      2
-  );
 
   private void annoyPingedPlayers(final Component component, final Player source) {
     for (final Player player : this.getPingedPlayers(component, source)) {

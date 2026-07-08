@@ -11,10 +11,12 @@ public abstract class AbstractRawHoconConfig extends AbstractRawConfig<HoconConf
    * @param file the config file
    */
   public AbstractRawHoconConfig(final Path file) {
-    super(new HoconConfigurateWrapper(file, HoconConfigurationLoader.builder()
+    super(new HoconConfigurateWrapper(
+        file, HoconConfigurationLoader.builder()
         .path(file)
         .defaultOptions(opts -> opts.implicitInitialization(false))
-        .build()));
+        .build()
+    ));
   }
 
 }

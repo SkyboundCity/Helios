@@ -7,13 +7,11 @@ import java.util.UUID;
 public final class Soul {
 
   private final UUID uuid;
-
+  private final Piano piano = new Piano(false, Instrument.HARP);
   private boolean flyBypassEnabled = false;
   private int netherInfractions = 0;
   private boolean markdown = true;
   private boolean elevatorMusicPlaying = false;
-
-  private final Piano piano = new Piano(false, Instrument.HARP);
 
   public Soul(final UUID uuid) {
     this.uuid = uuid;

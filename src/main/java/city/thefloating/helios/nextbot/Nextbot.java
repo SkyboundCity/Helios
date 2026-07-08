@@ -18,9 +18,8 @@ public final class Nextbot {
   private final Mob pathfinder;
   private final AreaEffectCloud icon;
   private final Nextbot.Attributes attributes;
-
-  private Instant lastJump = null;
   private final Map<Player, Instant> startedMusic = new HashMap<>();
+  private Instant lastJump = null;
 
   public Nextbot(
       final Mob pathfinder,

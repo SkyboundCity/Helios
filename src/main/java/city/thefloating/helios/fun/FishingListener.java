@@ -1,6 +1,5 @@
 package city.thefloating.helios.fun;
 
-import broccolai.corn.paper.item.PaperItemBuilder;
 import city.thefloating.helios.realm.Realm;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -10,6 +9,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerFishEvent;
+
+import static love.broccolai.corn.minecraft.item.ItemBuilder.itemBuilder;
 
 public final class FishingListener implements Listener {
 
@@ -26,7 +27,7 @@ public final class FishingListener implements Listener {
 
     final Player player = event.getPlayer();
     switch (Realm.of(player)) {
-      case OVERWORLD -> player.getInventory().addItem(PaperItemBuilder.ofType(Material.COD)
+      case OVERWORLD -> player.getInventory().addItem(itemBuilder(Material.COD)
           .name(Component.text("Floaty Fish").color(NamedTextColor.AQUA))
           .loreList(
               Component.text("\"It's just.. floating there.\"").color(NamedTextColor.WHITE),
@@ -34,7 +35,7 @@ public final class FishingListener implements Listener {
               Component.text("This fish seems important.").color(NamedTextColor.GRAY)
           )
           .build());
-      case NETHER -> player.getInventory().addItem(PaperItemBuilder.ofType(Material.TROPICAL_FISH)
+      case NETHER -> player.getInventory().addItem(itemBuilder(Material.TROPICAL_FISH)
           .name(Component.text("Fiery Fish").color(NamedTextColor.RED))
           .loreList(
               Component.text("Likes to set things ablaze.").color(NamedTextColor.WHITE),
@@ -42,7 +43,7 @@ public final class FishingListener implements Listener {
               Component.text("This fish seems important.").color(NamedTextColor.GRAY)
           )
           .build());
-      case END -> player.getInventory().addItem(PaperItemBuilder.ofType(Material.SALMON)
+      case END -> player.getInventory().addItem(itemBuilder(Material.SALMON)
           .name(Component.text("Abyss Fish").color(NamedTextColor.DARK_PURPLE))
           .loreList(
               Component.text("Has a mystical, purple-ish aura.").color(NamedTextColor.WHITE),
@@ -50,7 +51,7 @@ public final class FishingListener implements Listener {
               Component.text("This fish seems important.").color(NamedTextColor.GRAY)
           )
           .build());
-      default -> player.getInventory().addItem(PaperItemBuilder.ofType(Material.PUFFERFISH)
+      default -> player.getInventory().addItem(itemBuilder(Material.PUFFERFISH)
           .name(Component.text("Odd Fish").color(NamedTextColor.GOLD))
           .loreList(
               Component.text("It doesn't look very appetizing.").color(NamedTextColor.WHITE),

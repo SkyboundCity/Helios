@@ -123,7 +123,7 @@ public final class Helios extends TehPlugin {
     } catch (final ConfigurateException e) {
       this.getSLF4JLogger().error(
           "An error occurred while saving config file {}. Please ensure that the file is valid.",
-          this.injector.getInstance(Otzar.class).configurateWrapper().filePath()
+          this.injector.getInstance(Otzar.class).wrapper().path()
       );
       this.getSLF4JLogger().error("Printing stack trace:", e);
     }
@@ -162,7 +162,7 @@ public final class Helios extends TehPlugin {
       } catch (final ConfigurateException e) {
         this.getSLF4JLogger().error(
             "An error occurred while loading config file {}. Please ensure that the file is valid.",
-            config.configurateWrapper().filePath()
+            config.wrapper().path()
         );
         this.getSLF4JLogger().error("Printing stack trace:", e);
         wasSuccessful = false;

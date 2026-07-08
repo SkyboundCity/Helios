@@ -67,7 +67,7 @@ public final class TagGame {
     this.setGlowing(player);
 
     player.addPotionEffect(PotEff.hidden(PotionEffectType.SATURATION, PotEff.INF, 100));
-    player.addPotionEffect(PotEff.hidden(PotionEffectType.DAMAGE_RESISTANCE, PotEff.INF, 100));
+    player.addPotionEffect(PotEff.hidden(PotionEffectType.RESISTANCE, PotEff.INF, 100));
   }
 
   public void removePlayer(final Player player) {

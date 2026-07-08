@@ -128,7 +128,7 @@ public final class PlayerSpawnListener implements Listener {
         Component.text("for the " + Realm.of(player).toString()).color(NamedTextColor.GRAY),
         Title.Times.times(Duration.ofMillis(500), Duration.ofSeconds(5), Duration.ofSeconds(1))
     ));
-    player.addPotionEffect(PotEff.hidden(PotionEffectType.CONFUSION, 160, 1));
+    player.addPotionEffect(PotEff.hidden(PotionEffectType.NAUSEA, 160, 1));
     player.playSound(Sound.sound(org.bukkit.Sound.BLOCK_RESPAWN_ANCHOR_SET_SPAWN, Sound.Source.MASTER, 1F, 1.3F));
     this.setPlayerSpawn(player, player.getLocation());
   }

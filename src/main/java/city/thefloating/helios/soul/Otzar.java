@@ -23,15 +23,17 @@ public final class Otzar extends AbstractDataConfig<HoconConfigurateWrapper, Otz
 
   @Inject
   public Otzar(final @Named("dataFolder") Path dataFolder) {
-    super(new HoconConfigurateWrapper(dataFolder.resolve("otzar.conf"), HoconConfigurationLoader.builder()
+    super(new HoconConfigurateWrapper(
+        dataFolder.resolve("otzar.conf"), HoconConfigurationLoader.builder()
         .path(dataFolder.resolve("otzar.conf"))
-        .build()));
+        .build()
+    ));
   }
 
   public void save() throws ConfigurateException {
-    final CommentedConfigurationNode rootNode = Objects.requireNonNull(this.configurateWrapper.get());
-    rootNode.set(this.getDataClass(), this.data);
-    this.configurateWrapper.save();
+    final CommentedConfigurationNode rootNode = Objects.requireNonNull(this.wrapper().rootNode());
+    rootNode.set(this.dataClass(), this.data);
+    this.wrapper().save();
   }
 
   public Map<UUID, Data.Spirit> spirits() {
@@ -39,7 +41,7 @@ public final class Otzar extends AbstractDataConfig<HoconConfigurateWrapper, Otz
   }
 
   @Override
-  protected Class<Otzar.Data> getDataClass() {
+  protected Class<Otzar.Data> dataClass() {
     return Otzar.Data.class;
   }
 

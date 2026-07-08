@@ -2,7 +2,7 @@ package city.thefloating.helios.realm;
 
 import city.thefloating.helios.backrooms.BackroomsGenerator;
 import com.google.inject.Inject;
-import org.bukkit.GameRule;
+import org.bukkit.GameRules;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
@@ -69,34 +69,34 @@ public final class WorldService {
   private void setGameRules() {
     for (final Realm realm : Realm.values()) {
       final World world = this.getWorld(realm);
-      world.setGameRule(GameRule.SPAWN_RADIUS, 0);
-      world.setGameRule(GameRule.DO_FIRE_TICK, false);
-      world.setGameRule(GameRule.MOB_GRIEFING, false);
-      world.setGameRule(GameRule.DO_VINES_SPREAD, false);
-      world.setGameRule(GameRule.DO_WEATHER_CYCLE, true);
+      world.setGameRule(GameRules.RESPAWN_RADIUS, 0);
+      world.setGameRule(GameRules.FIRE_SPREAD_RADIUS_AROUND_PLAYER, 0);
+      world.setGameRule(GameRules.MOB_GRIEFING, false);
+      world.setGameRule(GameRules.SPREAD_VINES, false);
+      world.setGameRule(GameRules.ADVANCE_WEATHER, true);
 
       // no mob spawning! >:(
-      world.setGameRule(GameRule.DO_MOB_SPAWNING, false);
-      world.setGameRule(GameRule.DO_PATROL_SPAWNING, false);
-      world.setGameRule(GameRule.DO_TRADER_SPAWNING, false);
-      world.setGameRule(GameRule.DO_WARDEN_SPAWNING, false);
-      world.setGameRule(GameRule.DO_INSOMNIA, false);
-      world.setGameRule(GameRule.DISABLE_RAIDS, true);
+      world.setGameRule(GameRules.SPAWN_MOBS, false);
+      world.setGameRule(GameRules.SPAWN_PATROLS, false);
+      world.setGameRule(GameRules.SPAWN_WANDERING_TRADERS, false);
+      world.setGameRule(GameRules.SPAWN_WARDENS, false);
+      world.setGameRule(GameRules.SPAWN_PHANTOMS, false);
+      world.setGameRule(GameRules.RAIDS, false);
 
       if (realm.milieu() == Milieu.SPOOKY) {
         // eternal night in backrooms.
-        world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
+        world.setGameRule(GameRules.ADVANCE_TIME, false);
         world.setTime(18000); // midnight.
       } else {
-        world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, true);
+        world.setGameRule(GameRules.ADVANCE_TIME, true);
       }
 
       if (realm.milieu() == Milieu.ONEROUS) {
-        world.setGameRule(GameRule.REDUCED_DEBUG_INFO, true);
-        world.setGameRule(GameRule.KEEP_INVENTORY, false);
+        world.setGameRule(GameRules.REDUCED_DEBUG_INFO, true);
+        world.setGameRule(GameRules.KEEP_INVENTORY, false);
       } else {
-        world.setGameRule(GameRule.REDUCED_DEBUG_INFO, false);
-        world.setGameRule(GameRule.KEEP_INVENTORY, true);
+        world.setGameRule(GameRules.REDUCED_DEBUG_INFO, false);
+        world.setGameRule(GameRules.KEEP_INVENTORY, true);
       }
     }
   }

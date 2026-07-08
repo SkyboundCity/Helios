@@ -1,7 +1,7 @@
 package city.thefloating.helios.milk;
 
-import broccolai.corn.paper.item.special.PotionBuilder;
 import city.thefloating.helios.PotEff;
+import love.broccolai.corn.minecraft.item.special.PotionBuilder;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Color;
@@ -32,14 +32,14 @@ public final class Milk {
   }
 
   private static PotionBuilder base() {
-    return PotionBuilder.ofType(Material.POTION)
+    return PotionBuilder.potionBuilder(Material.POTION)
         .loreList(
             Component.text("Milk XXXIV").color(NamedTextColor.BLUE),
             Component.empty(),
             Component.text("Bottled at your local femboy hooters.").color(NamedTextColor.GRAY)
         )
         .addCustomEffect(PotEff.hidden(EFFECT, 100, AMPLIFIER), true)
-        .addFlag(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ITEM_SPECIFICS)
+        .addFlag(ItemFlag.HIDE_ATTRIBUTES) // FIXME: previously ItemFlag.HIDE_ITEM_SPECIFICS
         .color(Color.WHITE);
   }
 

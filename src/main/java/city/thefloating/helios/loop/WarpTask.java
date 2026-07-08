@@ -71,7 +71,7 @@ public final class WarpTask {
       player.teleport(spawn);
 
       player.getWorld().strikeLightningEffect(spawn);
-      player.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, spawn, 1);
+      player.getWorld().spawnParticle(Particle.EXPLOSION_EMITTER, spawn, 1);
       player.getWorld().playSound(spawn, Sound.ENTITY_GENERIC_EXPLODE, SoundCategory.MASTER, 4, 1);
     }
   }
@@ -79,66 +79,72 @@ public final class WarpTask {
   public void start() {
     final Server server = this.plugin.getServer();
     final BukkitScheduler scheduler = server.getScheduler();
-    scheduler.runTaskTimer(this.plugin, () -> {
-      for (final Player player : server.getOnlinePlayers()) {
-        final float fallDistance = player.getFallDistance();
-        if (fallDistance >= 6000) {
-          scheduler.runTaskLater(this.plugin, () -> this.warpPlayer(player), 5);
-        } else if (fallDistance >= 5800) {
-          player.showTitle(Title.title(
-              Component.empty(),
-              this.langConfig.c(NodePath.path("warp", "fourth")),
-              FLASHING_TIMES
-          ));
+    scheduler.runTaskTimer(
+        this.plugin, () -> {
+          for (final Player player : server.getOnlinePlayers()) {
+            final float fallDistance = player.getFallDistance();
+            if (fallDistance >= 6000) {
+              scheduler.runTaskLater(this.plugin, () -> this.warpPlayer(player), 5);
+            } else if (fallDistance >= 5800) {
+              player.showTitle(Title.title(
+                  Component.empty(),
+                  this.langConfig.c(NodePath.path("warp", "fourth")),
+                  FLASHING_TIMES
+              ));
 
-          final Location location = player.getLocation();
-          for (int i = 0; i < 100; i = i + 2) {
-            scheduler.runTaskLater(this.plugin,
-                () -> player.playSound(location, Sound.BLOCK_NOTE_BLOCK_PLING, 1000, 2), i
-            );
-          }
-        } else if (fallDistance >= 5400) {
-          player.showTitle(Title.title(
-              Component.empty(),
-              this.langConfig.c(NodePath.path("warp", "third")),
-              FLASHING_TIMES
-          ));
+              final Location location = player.getLocation();
+              for (int i = 0; i < 100; i = i + 2) {
+                scheduler.runTaskLater(
+                    this.plugin,
+                    () -> player.playSound(location, Sound.BLOCK_NOTE_BLOCK_PLING, 1000, 2), i
+                );
+              }
+            } else if (fallDistance >= 5400) {
+              player.showTitle(Title.title(
+                  Component.empty(),
+                  this.langConfig.c(NodePath.path("warp", "third")),
+                  FLASHING_TIMES
+              ));
 
-          final Location location = player.getLocation();
-          for (int i = 0; i < 100; i = i + 5) {
-            scheduler.runTaskLater(this.plugin,
-                () -> player.playSound(location, Sound.BLOCK_NOTE_BLOCK_PLING, 1000, 1.6F), i
-            );
-          }
-        } else if (fallDistance >= 5000) {
-          player.showTitle(Title.title(
-              Component.empty(),
-              this.langConfig.c(NodePath.path("warp", "second")),
-              FLASHING_TIMES
-          ));
+              final Location location = player.getLocation();
+              for (int i = 0; i < 100; i = i + 5) {
+                scheduler.runTaskLater(
+                    this.plugin,
+                    () -> player.playSound(location, Sound.BLOCK_NOTE_BLOCK_PLING, 1000, 1.6F), i
+                );
+              }
+            } else if (fallDistance >= 5000) {
+              player.showTitle(Title.title(
+                  Component.empty(),
+                  this.langConfig.c(NodePath.path("warp", "second")),
+                  FLASHING_TIMES
+              ));
 
-          final Location location = player.getLocation();
-          for (int i = 0; i < 100; i = i + 10) {
-            scheduler.runTaskLater(this.plugin,
-                () -> player.playSound(location, Sound.BLOCK_NOTE_BLOCK_PLING, 1000, 0.9F), i
-            );
-          }
-        } else if (fallDistance >= 4000) {
-          player.showTitle(Title.title(
-              Component.empty(),
-              this.langConfig.c(NodePath.path("warp", "first")),
-              FLASHING_TIMES
-          ));
+              final Location location = player.getLocation();
+              for (int i = 0; i < 100; i = i + 10) {
+                scheduler.runTaskLater(
+                    this.plugin,
+                    () -> player.playSound(location, Sound.BLOCK_NOTE_BLOCK_PLING, 1000, 0.9F), i
+                );
+              }
+            } else if (fallDistance >= 4000) {
+              player.showTitle(Title.title(
+                  Component.empty(),
+                  this.langConfig.c(NodePath.path("warp", "first")),
+                  FLASHING_TIMES
+              ));
 
-          final Location location = player.getLocation();
-          for (int i = 0; i < 100; i = i + 20) {
-            scheduler.runTaskLater(this.plugin,
-                () -> player.playSound(location, Sound.BLOCK_NOTE_BLOCK_PLING, 1000, 0.5F), i
-            );
+              final Location location = player.getLocation();
+              for (int i = 0; i < 100; i = i + 20) {
+                scheduler.runTaskLater(
+                    this.plugin,
+                    () -> player.playSound(location, Sound.BLOCK_NOTE_BLOCK_PLING, 1000, 0.5F), i
+                );
+              }
+            }
           }
-        }
-      }
-    }, 0, Ticks.in(Duration.ofSeconds(5)));
+        }, 0, Ticks.in(Duration.ofSeconds(5))
+    );
   }
 
 }
