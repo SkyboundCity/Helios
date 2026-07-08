@@ -5,7 +5,7 @@ plugins {
   id("com.github.ben-manes.versions") version "0.54.0"
 }
 
-group = "city.thefloating"
+group = "city.skybound"
 version = "0.1.0-SNAPSHOT"
 description = "The core, monolithic plugin for The Floating City."
 
