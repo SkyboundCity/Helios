@@ -58,10 +58,10 @@ import cloud.commandframework.execution.CommandExecutionCoordinator;
 import cloud.commandframework.paper.PaperCommandManager;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import dev.tehbrian.tehlib.configurate.Config;
-import dev.tehbrian.tehlib.paper.TehPlugin;
+import dev.tehbrian.agna.configurate.Config;
 import org.bukkit.command.CommandSender;
 import org.bukkit.generator.ChunkGenerator;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.jetbrains.annotations.NotNull;
@@ -70,10 +70,14 @@ import org.spongepowered.configurate.ConfigurateException;
 import java.util.List;
 import java.util.function.Function;
 
+import static dev.tehbrian.agna.paper.PluginUtils.disableSelf;
+import static dev.tehbrian.agna.paper.PluginUtils.registerListeners;
+import static dev.tehbrian.agna.paper.PluginUtils.saveResourceSilently;
+
 /**
  * The main class for the Helios plugin.
  */
-public final class Helios extends TehPlugin {
+public final class Helios extends JavaPlugin {
 
   private @MonotonicNonNull PaperCommandManager<CommandSender> commandManager;
   private @MonotonicNonNull Injector injector;
@@ -88,23 +92,23 @@ public final class Helios extends TehPlugin {
     } catch (final Exception e) {
       this.getSLF4JLogger().error("An error occurred while creating the Guice injector.");
       this.getSLF4JLogger().error("Disabling plugin.");
-      this.disableSelf();
+      disableSelf(this);
       this.getSLF4JLogger().error("Printing stack trace. Please send this to the developers:", e);
       return;
     }
 
     if (!this.injector.getInstance(LuckPermsService.class).load()) {
       this.getSLF4JLogger().error("LuckPerms dependency not found. Disabling plugin.");
-      this.disableSelf();
+      disableSelf(this);
       return;
     }
 
     if (!this.loadConfiguration()) {
-      this.disableSelf();
+      disableSelf(this);
       return;
     }
     if (!this.initCommands()) {
-      this.disableSelf();
+      disableSelf(this);
       return;
     }
     this.initListeners();
@@ -140,11 +144,11 @@ public final class Helios extends TehPlugin {
    * @return whether all config files were successfully loaded
    */
   public boolean loadConfiguration() {
-    this.saveResourceSilently("books.conf");
-    this.saveResourceSilently("config.conf");
-    this.saveResourceSilently("emotes.conf");
-    this.saveResourceSilently("lang.conf");
-    this.saveResourceSilently("piano-notes.conf");
+    saveResourceSilently(this, "books.conf");
+    saveResourceSilently(this, "config.conf");
+    saveResourceSilently(this, "emotes.conf");
+    saveResourceSilently(this, "lang.conf");
+    saveResourceSilently(this, "piano-notes.conf");
 
     final List<Config> configsToLoad = List.of(
         this.injector.getInstance(Otzar.class),
@@ -221,6 +225,7 @@ public final class Helios extends TehPlugin {
 
   private void initListeners() {
     registerListeners(
+        this,
         this.injector.getInstance(ChatListener.class),
         this.injector.getInstance(FishingListener.class),
         this.injector.getInstance(FlightListener.class),

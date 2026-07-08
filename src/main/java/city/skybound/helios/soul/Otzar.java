@@ -3,7 +3,7 @@ package city.skybound.helios.soul;
 import city.skybound.helios.config.HoconConfigurateWrapper;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
-import dev.tehbrian.tehlib.configurate.AbstractDataConfig;
+import dev.tehbrian.agna.configurate.AbstractDataConfig;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.ConfigurateException;
 import org.spongepowered.configurate.hocon.HoconConfigurationLoader;

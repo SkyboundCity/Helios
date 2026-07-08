@@ -25,7 +25,7 @@ dependencies {
   compileOnly("net.luckperms:api:5.5")
   implementation("love.broccolai.corn:corn-minecraft:4.1.0-SNAPSHOT")
   implementation("com.google.inject:guice:7.0.0")
-  implementation("dev.tehbrian:tehlib-paper:0.6.0")
+  implementation("dev.tehbrian:agna-paper:1.0.6")
   implementation("cloud.commandframework:cloud-paper:1.8.4")
   implementation("org.spongepowered:configurate-hocon:4.2.0")
 }
@@ -60,7 +60,7 @@ tasks {
       "cloud.commandframework",
       "com.typesafe",
       "com.google",
-      "dev.tehbrian.tehlib",
+      "dev.tehbrian.agna",
       "io.leangen",
       "jakarta.inject",
       "javax.annotation",

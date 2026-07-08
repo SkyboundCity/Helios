@@ -2,7 +2,7 @@ package city.skybound.helios.config;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
-import dev.tehbrian.tehlib.configurate.AbstractDataConfig;
+import dev.tehbrian.agna.configurate.AbstractDataConfig;
 import org.spongepowered.configurate.hocon.HoconConfigurationLoader;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 

@@ -1,6 +1,6 @@
 package city.skybound.helios.config;
 
-import dev.tehbrian.tehlib.configurate.AbstractRawConfig;
+import dev.tehbrian.agna.configurate.AbstractRawConfig;
 import org.spongepowered.configurate.hocon.HoconConfigurationLoader;
 
 import java.nio.file.Path;
