@@ -90,15 +90,14 @@ public final class Helios extends JavaPlugin {
 					new SingletonModule()
 			);
 		} catch (final Exception e) {
-			this.getSLF4JLogger().error("An error occurred while creating the Guice injector.");
-			this.getSLF4JLogger().error("Disabling plugin.");
+			this.getSLF4JLogger().error("Something went wrong while creating the injector. Disabling plugin");
 			disableSelf(this);
-			this.getSLF4JLogger().error("Printing stack trace. Please send this to the developers:", e);
+			this.getSLF4JLogger().error("Printing stack trace. Please send this to the developers", e);
 			return;
 		}
 
 		if (!this.injector.getInstance(LuckPermsService.class).load()) {
-			this.getSLF4JLogger().error("LuckPerms dependency not found. Disabling plugin.");
+			this.getSLF4JLogger().error("LuckPerms dependency not found. Disabling plugin");
 			disableSelf(this);
 			return;
 		}
@@ -107,10 +106,12 @@ public final class Helios extends JavaPlugin {
 			disableSelf(this);
 			return;
 		}
+
 		if (!this.initCommands()) {
 			disableSelf(this);
 			return;
 		}
+
 		this.initListeners();
 		this.initTasks();
 
