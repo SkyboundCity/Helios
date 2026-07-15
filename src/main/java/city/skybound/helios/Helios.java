@@ -56,7 +56,7 @@ import city.skybound.helios.transportation.TransportationListener;
 import city.skybound.helios.transportation.TransportationTask;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import dev.tehbrian.agna.configurate.Config;
+import dev.tehbrian.agna.configurate.ConfigLoader;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
@@ -70,7 +70,6 @@ import java.util.List;
 
 import static dev.tehbrian.agna.paper.PluginUtils.disableSelf;
 import static dev.tehbrian.agna.paper.PluginUtils.registerListeners;
-import static dev.tehbrian.agna.paper.PluginUtils.saveResourceSilently;
 import static org.incendo.cloud.execution.ExecutionCoordinator.simpleCoordinator;
 import static org.incendo.cloud.paper.util.sender.PaperSimpleSenderMapper.simpleSenderMapper;
 
@@ -145,39 +144,14 @@ public final class Helios extends JavaPlugin {
 	 * @return whether all config files were successfully loaded
 	 */
 	public boolean loadConfiguration() {
-		saveResourceSilently(this, "books.conf");
-		saveResourceSilently(this, "config.conf");
-		saveResourceSilently(this, "emotes.conf");
-		saveResourceSilently(this, "lang.conf");
-		saveResourceSilently(this, "piano-notes.conf");
-
-		final List<Config> configsToLoad = List.of(
-				this.injector.getInstance(Otzar.class),
-				this.injector.getInstance(BooksConfig.class),
-				this.injector.getInstance(ConfigConfig.class),
-				this.injector.getInstance(EmotesConfig.class),
-				this.injector.getInstance(LangConfig.class),
-				this.injector.getInstance(PianoNotesConfig.class)
-		);
-
-		boolean wasSuccessful = true;
-		for (final Config config : configsToLoad) {
-			try {
-				config.load();
-			} catch (final ConfigurateException e) {
-				this.getSLF4JLogger().error(
-						"An error occurred while loading config file {}. Please ensure that the file is valid.",
-						config.wrapper().path()
-				);
-				this.getSLF4JLogger().error("Printing stack trace:", e);
-				wasSuccessful = false;
-			}
-		}
-
-		if (wasSuccessful) {
-			this.getSLF4JLogger().info("Successfully loaded configuration.");
-		}
-		return wasSuccessful;
+		return new ConfigLoader(this).load(List.of(
+				ConfigLoader.Loadable.of("otzar.hocon", this.injector.getInstance(Otzar.class)),
+				ConfigLoader.Loadable.of("books.hocon", this.injector.getInstance(BooksConfig.class)),
+				ConfigLoader.Loadable.of("config.hocon", this.injector.getInstance(ConfigConfig.class)),
+				ConfigLoader.Loadable.of("emotes.hocon", this.injector.getInstance(EmotesConfig.class)),
+				ConfigLoader.Loadable.of("lang.hocon", this.injector.getInstance(LangConfig.class)),
+				ConfigLoader.Loadable.of("piano-notes.hocon", this.injector.getInstance(PianoNotesConfig.class))
+		));
 	}
 
 	/**
