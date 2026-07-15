@@ -10,8 +10,7 @@ import org.bukkit.entity.Entity;
  * <p>
  * World behavior is based on this setting (rather than being
  * realm-specific or habitat-specific) to allow for sharing of
- * rules between distinct realms. For example, the overworld and
- * the madlands share the canon milieu.
+ * rules between distinct realms.
  */
 public enum Milieu {
 	CANON,

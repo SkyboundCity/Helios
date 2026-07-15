@@ -84,11 +84,7 @@ public final class JoinQuitListener implements Listener {
 					Placeholder.unparsed("last", DurationFormat.fancifyTime(sinceLastPlayed))
 			));
 		} else {
-			if (this.configConfig.data().madlandsEnabled()) {
-				event.getPlayer().teleport(this.worldService.ornateSpawn(Realm.MADLANDS));
-			} else {
-				event.getPlayer().teleport(this.worldService.ornateSpawn(Realm.OVERWORLD));
-			}
+			event.getPlayer().teleport(this.worldService.ornateSpawn(Realm.OVERWORLD));
 
 			event.joinMessage(this.langConfig.c(
 					NodePath.path("join-new"),

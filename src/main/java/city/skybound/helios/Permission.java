@@ -9,7 +9,6 @@ public final class Permission {
 
 	// build in or transpose to a realm.
 	public static final String REALM = ROOT + ".realm";
-	public static final String REALM_MADLANDS = REALM + ".madlands";
 	public static final String REALM_OVERWORLD = REALM + ".overworld";
 	public static final String REALM_NETHER = REALM + ".nether";
 	public static final String REALM_END = REALM + ".end";

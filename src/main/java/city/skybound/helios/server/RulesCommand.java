@@ -54,20 +54,17 @@ public final class RulesCommand {
 				.senderType(PlayerSource.class)
 				.handler(c -> {
 					final var sender = c.sender().source();
-					if (sender.hasPermission(Permission.REALM_MADLANDS)) {
+					if (sender.hasPermission(Permission.REALM_OVERWORLD)) {
 						sender.sendMessage(this.langConfig.c(NodePath.path("rules", "already-accepted")));
 					} else {
 						// yes, we're going to send a command as the console to promote the
 						// player instead of programmatically doing it with the LuckPerms API.
 						// if you feel extreme grievance about this, feel free to hire me to
 						// remedy this grave issue. my rate is $250/hr.
-						if (this.configConfig.data().madlandsEnabled()) {
-							// /lp user <player> parent settrack player boarding
-							this.setPlayerParent(sender, "mad");
-						} else {
-							// /lp user <player> parent settrack player passenger
-							this.setPlayerParent(sender, "boarding");
-						}
+
+						// /lp user <player> parent settrack player passenger
+						this.setPlayerParent(sender, "boarding");
+
 						sender.sendMessage(this.langConfig.c(NodePath.path("rules", "accept")));
 					}
 				});

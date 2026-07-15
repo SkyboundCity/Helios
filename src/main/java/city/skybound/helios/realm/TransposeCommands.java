@@ -30,12 +30,6 @@ public final class TransposeCommands {
 	}
 
 	public void register(final PaperCommandManager<Source> commandManager) {
-		final var madlands = commandManager.commandBuilder("madlands")
-				.commandDescription(description("Transpose to the madlands."))
-				.permission(Permission.REALM_MADLANDS)
-				.senderType(PlayerSource.class)
-				.handler(c -> this.tryTranspose(c.sender().source(), Realm.MADLANDS));
-
 		final var overworld = commandManager.commandBuilder("overworld")
 				.commandDescription(description("Transpose to the overworld."))
 				.permission(Permission.REALM_OVERWORLD)
@@ -57,7 +51,6 @@ public final class TransposeCommands {
 		commandManager.command(overworld);
 		commandManager.command(nether);
 		commandManager.command(end);
-		commandManager.command(madlands);
 	}
 
 	private void tryTranspose(final Player player, final Realm destination) {

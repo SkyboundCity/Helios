@@ -40,12 +40,6 @@ public final class WorldService {
 
 	private void createWorlds() {
 		for (final Realm realm : Realm.values()) {
-			if (realm == Realm.MADLANDS) {
-				// madlands is created by the server as it is the level-name in server.properties.
-				// this can't be disabled, so we'll simply skip over it here.
-				continue;
-			}
-
 			this.logger.info("Creating world `{}`.", realm.toString());
 			final var key = new NamespacedKey(this.plugin, realm.toString());
 

@@ -7,8 +7,7 @@ import java.util.Locale;
 
 public enum Rank {
 	GROUNDED(null),
-	MAD(null),      // /rules accept if madlands enabled.
-	BOARDING(null), // /rules accept if madlands disabled, otherwise, manual.
+	BOARDING(null), // /rules accept
 	PASSENGER(Duration.ofHours(1)),
 	NAVIGATOR(Duration.ofHours(10)),
 	PILOT(Duration.ofHours(30)),

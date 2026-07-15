@@ -118,7 +118,6 @@ public final class WorldProtectionListener implements Listener {
 
 	private <T extends Cancellable> void handle(final T event, final Player player, final boolean sendMessage) {
 		final var permission = switch (Realm.of(player)) {
-			case MADLANDS -> Permission.REALM_MADLANDS;
 			case OVERWORLD -> Permission.REALM_OVERWORLD;
 			case NETHER -> Permission.REALM_NETHER;
 			case END -> Permission.REALM_END;

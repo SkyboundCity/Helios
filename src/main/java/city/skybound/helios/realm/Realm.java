@@ -12,7 +12,6 @@ import java.util.Locale;
  * Each realm is tied to a distinct Minecraft world.
  */
 public enum Realm {
-	MADLANDS(Milieu.CANON, Habitat.WHITE), // standard for griefers.
 	OVERWORLD(Milieu.CANON, Habitat.WHITE), // standard.
 	NETHER(Milieu.ONEROUS, Habitat.RED), // hellishly difficult.
 	END(Milieu.DOCILE, Habitat.BLACK); // carefree. allows elytras and ender pearls.
@@ -27,7 +26,6 @@ public enum Realm {
 
 	public static Realm from(final World world) {
 		return switch (world.getName()) {
-			case "madlands" -> Realm.MADLANDS;
 			case "overworld" -> Realm.OVERWORLD;
 			case "nether" -> Realm.NETHER;
 			case "end" -> Realm.END;
