@@ -24,7 +24,7 @@ import city.skybound.helios.milk.MilkCommand;
 import city.skybound.helios.milk.MilkListener;
 import city.skybound.helios.piano.PianoCommand;
 import city.skybound.helios.piano.PianoPlayListener;
-import city.skybound.helios.realm.MadlandsMoverListener;
+import city.skybound.helios.realm.InvalidWorldListener;
 import city.skybound.helios.realm.PlayerSpawnListener;
 import city.skybound.helios.realm.TransposeCommands;
 import city.skybound.helios.realm.VoidGenerator;
@@ -191,7 +191,7 @@ public final class Helios extends JavaPlugin {
 				this.injector.getInstance(FlightListener.class),
 				this.injector.getInstance(FlingerListener.class),
 				this.injector.getInstance(JoinQuitListener.class),
-				this.injector.getInstance(MadlandsMoverListener.class),
+				this.injector.getInstance(InvalidWorldListener.class),
 				this.injector.getInstance(MilkListener.class),
 				this.injector.getInstance(VoidDamageListener.class),
 				this.injector.getInstance(PianoPlayListener.class),
