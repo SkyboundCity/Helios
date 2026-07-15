@@ -60,7 +60,7 @@ public final class RulesCommand {
 						// yes, we're going to send a command as the console to promote the
 						// player instead of programmatically doing it with the LuckPerms API.
 						// if you feel extreme grievance about this, feel free to hire me to
-						// remedy this grave issue. my rate is $150/hr.
+						// remedy this grave issue. my rate is $250/hr.
 						if (this.configConfig.data().madlandsEnabled()) {
 							// /lp user <player> parent settrack player boarding
 							this.setPlayerParent(sender, "mad");
