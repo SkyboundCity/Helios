@@ -5,7 +5,7 @@ website: https://github.com/SkyboundCity/Helios
 
 version: ${version}
 main: city.skybound.helios.Helios
-api-version: 1.20
+api-version: 26.2
 
 depend: [ LuckPerms ]
 load: STARTUP

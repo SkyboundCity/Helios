@@ -21,7 +21,7 @@ repositories {
 }
 
 dependencies {
-	compileOnly("io.papermc.paper:paper-api:26.1.2.build.+")
+	compileOnly("io.papermc.paper:paper-api:26.2.build.+")
 	compileOnly("net.luckperms:api:5.5")
 	implementation("love.broccolai.corn:corn-minecraft:4.1.0-SNAPSHOT")
 	implementation("com.google.inject:guice:7.0.0")
