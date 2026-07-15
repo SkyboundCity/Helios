@@ -15,8 +15,7 @@ public enum Realm {
 	MADLANDS(Milieu.CANON, Habitat.WHITE), // standard for griefers.
 	OVERWORLD(Milieu.CANON, Habitat.WHITE), // standard.
 	NETHER(Milieu.ONEROUS, Habitat.RED), // hellishly difficult.
-	END(Milieu.DOCILE, Habitat.BLACK), // carefree. allows elytras and ender pearls.
-	BACKROOMS(Milieu.SPOOKY, Habitat.WHITE); // spooky.
+	END(Milieu.DOCILE, Habitat.BLACK); // carefree. allows elytras and ender pearls.
 
 	private final Milieu milieu;
 	private final Habitat habitat;
@@ -32,7 +31,6 @@ public enum Realm {
 			case "overworld" -> Realm.OVERWORLD;
 			case "nether" -> Realm.NETHER;
 			case "end" -> Realm.END;
-			case "backrooms" -> Realm.BACKROOMS;
 			default -> throw new RuntimeException("Could not find realm for world `" + world.getName() + "`.");
 		};
 	}

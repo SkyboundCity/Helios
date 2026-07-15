@@ -13,7 +13,6 @@ public final class Permission {
 	public static final String REALM_OVERWORLD = REALM + ".overworld";
 	public static final String REALM_NETHER = REALM + ".nether";
 	public static final String REALM_END = REALM + ".end";
-	public static final String REALM_BACKROOMS = REALM + ".backrooms";
 
 	public static final String MILK = ROOT + ".milk";
 	public static final String FLY = ROOT + ".fly";

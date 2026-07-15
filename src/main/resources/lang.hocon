@@ -41,7 +41,6 @@ no-sprint: {
 portal: {
 	in-madlands-no-permission: "<gray>you haven't dreamt long enough to wake up yet."
 	in-madlands: "<gray>this dream does not have other realms. come, awaken to reality: /overworld"
-	in-backrooms: "<gray>this forsaken land is not connected to the other realms."
 }
 
 transpose: {

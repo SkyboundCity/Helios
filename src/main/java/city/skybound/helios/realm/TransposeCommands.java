@@ -54,17 +54,10 @@ public final class TransposeCommands {
 				.senderType(PlayerSource.class)
 				.handler(c -> this.tryTranspose(c.sender().source(), Realm.END));
 
-		final var backrooms = commandManager.commandBuilder("backrooms")
-				.commandDescription(description("Transpose to the backrooms."))
-				.permission(Permission.REALM_BACKROOMS)
-				.senderType(PlayerSource.class)
-				.handler(c -> this.tryTranspose(c.sender().source(), Realm.BACKROOMS));
-
 		commandManager.command(overworld);
 		commandManager.command(nether);
 		commandManager.command(end);
 		commandManager.command(madlands);
-		commandManager.command(backrooms);
 	}
 
 	private void tryTranspose(final Player player, final Realm destination) {

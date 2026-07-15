@@ -55,25 +55,20 @@ public final class WarpTask {
 	}
 
 	private void warpPlayer(final Player player) {
-		// random chance to noclip into the backrooms. 15% chance.
-		if (RANDOM.nextFloat() < 0.15) {
-			this.transposer.noclipIntoBackrooms(player);
-		} else {
-			final Location spawn = this.worldService.ornateSpawn(Realm.of(player));
+		final Location spawn = this.worldService.ornateSpawn(Realm.of(player));
 
-			player.showTitle(Title.title(
-					this.langConfig.c(NodePath.path("warp", "max")),
-					this.langConfig.c(NodePath.path("warp", "max-sub")),
-					INSTANT_IN_TIMES
-			));
+		player.showTitle(Title.title(
+				this.langConfig.c(NodePath.path("warp", "max")),
+				this.langConfig.c(NodePath.path("warp", "max-sub")),
+				INSTANT_IN_TIMES
+		));
 
-			player.setFallDistance(0);
-			player.teleport(spawn);
+		player.setFallDistance(0);
+		player.teleport(spawn);
 
-			player.getWorld().strikeLightningEffect(spawn);
-			player.getWorld().spawnParticle(Particle.EXPLOSION_EMITTER, spawn, 1);
-			player.getWorld().playSound(spawn, Sound.ENTITY_GENERIC_EXPLODE, SoundCategory.MASTER, 4, 1);
-		}
+		player.getWorld().strikeLightningEffect(spawn);
+		player.getWorld().spawnParticle(Particle.EXPLOSION_EMITTER, spawn, 1);
+		player.getWorld().playSound(spawn, Sound.ENTITY_GENERIC_EXPLODE, SoundCategory.MASTER, 4, 1);
 	}
 
 	public void start() {

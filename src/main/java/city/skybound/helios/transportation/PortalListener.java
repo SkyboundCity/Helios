@@ -24,8 +24,7 @@ import java.util.Random;
 /**
  * Sends players to the correct realms upon entering a portal.
  * <p>
- * Messages players in the madlands, backrooms, or other disconnected realms
- * information regarding their circumstance.
+ * Messages players in the madlands regarding their circumstance.
  * <p>
  * <b>This task functions under the assumption that allow-end and
  * allow-nether are false in bukkit.yml and server.properties respectively.</b>
@@ -98,9 +97,8 @@ public final class PortalListener implements Listener {
 					this.sendRateLimitedMessage(player, this.langConfig.c(NodePath.path("portal", "in-madlands-no-permission")));
 				}
 			}
-			case BACKROOMS -> this.sendRateLimitedMessage(player, this.langConfig.c(NodePath.path("portal", "in-backrooms")));
-			case NETHER -> this.fuzzyTranspose(player, Realm.OVERWORLD);
-			default -> this.fuzzyTranspose(player, Realm.NETHER);
+			case NETHER -> this.transposer.transpose(player, Realm.OVERWORLD);
+			default -> this.transposer.transpose(player, Realm.NETHER);
 		}
 	}
 
@@ -113,24 +111,8 @@ public final class PortalListener implements Listener {
 					this.sendRateLimitedMessage(player, this.langConfig.c(NodePath.path("portal", "in-madlands-no-permission")));
 				}
 			}
-			case BACKROOMS -> this.sendRateLimitedMessage(player, this.langConfig.c(NodePath.path("portal", "in-backrooms")));
-			case END -> this.fuzzyTranspose(player, Realm.OVERWORLD);
-			default -> this.fuzzyTranspose(player, Realm.END);
-		}
-	}
-
-	/**
-	 * Transpose player with random chance to transpose to the backrooms.
-	 *
-	 * @param player the player to transpose
-	 * @param realm  the realm to possibly transpose player to
-	 */
-	private void fuzzyTranspose(final Player player, final Realm realm) {
-		// random chance to noclip into the backrooms. 5% chance.
-		if (RANDOM.nextFloat() < 0.05) {
-			this.transposer.noclipIntoBackrooms(player);
-		} else {
-			this.transposer.transpose(player, realm);
+			case END -> this.transposer.transpose(player, Realm.OVERWORLD);
+			default -> this.transposer.transpose(player, Realm.END);
 		}
 	}
 

@@ -2,8 +2,6 @@ package city.skybound.helios;
 
 import city.skybound.helios.ascension.AscendCommand;
 import city.skybound.helios.ascension.PlaytimeCommand;
-import city.skybound.helios.backrooms.RandomSpooks;
-import city.skybound.helios.backrooms.SpaceBreakListener;
 import city.skybound.helios.config.BooksConfig;
 import city.skybound.helios.config.ConfigConfig;
 import city.skybound.helios.config.EmotesConfig;
@@ -24,8 +22,6 @@ import city.skybound.helios.loop.VoidDamageListener;
 import city.skybound.helios.loop.WarpTask;
 import city.skybound.helios.milk.MilkCommand;
 import city.skybound.helios.milk.MilkListener;
-import city.skybound.helios.nextbot.Nate;
-import city.skybound.helios.nextbot.NextbotCommand;
 import city.skybound.helios.piano.PianoCommand;
 import city.skybound.helios.piano.PianoPlayListener;
 import city.skybound.helios.realm.MadlandsMoverListener;
@@ -120,8 +116,6 @@ public final class Helios extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
-		this.injector.getInstance(Nate.class).killNextbots();
-
 		try {
 			this.injector.getInstance(Charon.class).save();
 		} catch (final ConfigurateException e) {
@@ -178,7 +172,6 @@ public final class Helios extends JavaPlugin {
 		this.injector.getInstance(HatCommand.class).register(this.commandManager);
 		this.injector.getInstance(MilkCommand.class).register(this.commandManager);
 		this.injector.getInstance(MarkdownCommand.class).register(this.commandManager);
-		this.injector.getInstance(NextbotCommand.class).register(this.commandManager);
 		this.injector.getInstance(PackCommand.class).register(this.commandManager);
 		this.injector.getInstance(PianoCommand.class).register(this.commandManager);
 		this.injector.getInstance(PlaytimeCommand.class).register(this.commandManager);
@@ -201,12 +194,10 @@ public final class Helios extends JavaPlugin {
 				this.injector.getInstance(MadlandsMoverListener.class),
 				this.injector.getInstance(MilkListener.class),
 				this.injector.getInstance(VoidDamageListener.class),
-				this.injector.getInstance(Nate.class),
 				this.injector.getInstance(PianoPlayListener.class),
 				this.injector.getInstance(RainMusicListener.class),
 				this.injector.getInstance(PlayerSpawnListener.class),
 				this.injector.getInstance(ServerPingListener.class),
-				this.injector.getInstance(SpaceBreakListener.class),
 				this.injector.getInstance(WorldSpawnProtectionListener.class),
 				this.injector.getInstance(TagListener.class),
 				this.injector.getInstance(PortalListener.class),
@@ -218,7 +209,6 @@ public final class Helios extends JavaPlugin {
 	private void initTasks() {
 		this.injector.getInstance(ElevatorMusicJockey.class).start();
 		this.injector.getInstance(PlayerVoidLoopTask.class).start();
-		this.injector.getInstance(RandomSpooks.class).start();
 		this.injector.getInstance(TransportationTask.class).start();
 		this.injector.getInstance(WarpTask.class).start();
 	}

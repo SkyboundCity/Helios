@@ -122,7 +122,6 @@ public final class WorldProtectionListener implements Listener {
 			case OVERWORLD -> Permission.REALM_OVERWORLD;
 			case NETHER -> Permission.REALM_NETHER;
 			case END -> Permission.REALM_END;
-			case BACKROOMS -> Permission.REALM_BACKROOMS;
 		};
 
 		if (!player.hasPermission(permission)) {

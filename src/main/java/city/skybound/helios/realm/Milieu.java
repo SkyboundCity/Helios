@@ -16,8 +16,7 @@ import org.bukkit.entity.Entity;
 public enum Milieu {
 	CANON,
 	ONEROUS,
-	DOCILE,
-	SPOOKY;
+	DOCILE;
 
 	public static Milieu of(final World world) {
 		return Realm.from(world).milieu();

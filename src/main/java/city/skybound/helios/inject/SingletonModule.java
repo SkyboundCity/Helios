@@ -6,7 +6,6 @@ import city.skybound.helios.config.ConfigConfig;
 import city.skybound.helios.config.EmotesConfig;
 import city.skybound.helios.config.LangConfig;
 import city.skybound.helios.config.PianoNotesConfig;
-import city.skybound.helios.nextbot.Nate;
 import city.skybound.helios.realm.Transposer;
 import city.skybound.helios.realm.WorldService;
 import city.skybound.helios.soul.Charon;
@@ -26,7 +25,6 @@ public final class SingletonModule extends AbstractModule {
 		this.bind(Charon.class).asEagerSingleton();
 		this.bind(WorldService.class).asEagerSingleton();
 		this.bind(Transposer.class).asEagerSingleton();
-		this.bind(Nate.class).asEagerSingleton();
 		this.bind(PortalListener.class).asEagerSingleton();
 		this.bind(BooksConfig.class).asEagerSingleton();
 		this.bind(ConfigConfig.class).asEagerSingleton();

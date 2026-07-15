@@ -1,16 +1,11 @@
 package city.skybound.helios.realm;
 
-import city.skybound.helios.PotEff;
 import com.google.inject.Inject;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
-import org.bukkit.Particle;
-import org.bukkit.Sound;
-import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
-import org.bukkit.potion.PotionEffectType;
-
 import org.jspecify.annotations.Nullable;
+
 import java.util.Objects;
 
 /**
@@ -36,18 +31,6 @@ public final class Transposer {
 
 		player.teleport(this.getNextLocation(player, destination));
 		player.setFallDistance(0);
-	}
-
-	/**
-	 * Transpose player to backrooms with special effects.
-	 */
-	public void noclipIntoBackrooms(final Player player) {
-		final Location nextLocation = this.getNextLocation(player, Realm.BACKROOMS);
-		this.transpose(player, Realm.BACKROOMS);
-
-		player.addPotionEffect(PotEff.hidden(PotionEffectType.BLINDNESS, 60, 10));
-		player.getWorld().spawnParticle(Particle.LARGE_SMOKE, nextLocation, 40, 2, 2, 2);
-		player.playSound(nextLocation, Sound.BLOCK_PORTAL_TRAVEL, SoundCategory.MASTER, 4, 1);
 	}
 
 	/**

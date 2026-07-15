@@ -1,6 +1,5 @@
 package city.skybound.helios.realm;
 
-import city.skybound.helios.backrooms.BackroomsGenerator;
 import com.google.inject.Inject;
 import org.bukkit.GameRules;
 import org.bukkit.Location;
@@ -8,7 +7,6 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.WorldType;
-import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.slf4j.Logger;
@@ -51,17 +49,12 @@ public final class WorldService {
 			this.logger.info("Creating world `{}`.", realm.toString());
 			final var key = new NamespacedKey(this.plugin, realm.toString());
 
-			final ChunkGenerator generator = switch (realm) {
-				case BACKROOMS -> new BackroomsGenerator();
-				default -> new VoidGenerator();
-			};
-
 			this.plugin.getServer().createWorld(WorldCreator.ofKey(key)
 					// lower black horizon in overworld worlds.
 					// FLAT worlds turn black below Y-60; NORMAL worlds turn black below Y60.
 					.type(WorldType.FLAT)
 					.environment(realm.habitat().environment())
-					.generator(generator)
+					.generator(new VoidGenerator())
 			);
 		}
 	}
@@ -82,14 +75,7 @@ public final class WorldService {
 			world.setGameRule(GameRules.SPAWN_WARDENS, false);
 			world.setGameRule(GameRules.SPAWN_PHANTOMS, false);
 			world.setGameRule(GameRules.RAIDS, false);
-
-			if (realm.milieu() == Milieu.SPOOKY) {
-				// eternal night in backrooms.
-				world.setGameRule(GameRules.ADVANCE_TIME, false);
-				world.setTime(18000); // midnight.
-			} else {
-				world.setGameRule(GameRules.ADVANCE_TIME, true);
-			}
+			world.setGameRule(GameRules.ADVANCE_TIME, true);
 
 			if (realm.milieu() == Milieu.ONEROUS) {
 				world.setGameRule(GameRules.REDUCED_DEBUG_INFO, true);
