@@ -33,9 +33,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.configurate.NodePath;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 import static love.broccolai.corn.minecraft.item.ItemBuilder.itemBuilder;

@@ -8,7 +8,7 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public final class PdcLocStore {
 

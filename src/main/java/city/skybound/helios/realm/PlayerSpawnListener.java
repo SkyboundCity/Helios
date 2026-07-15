@@ -22,7 +22,7 @@ import org.bukkit.event.world.TimeSkipEvent;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.BoundingBox;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;

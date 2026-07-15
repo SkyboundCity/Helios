@@ -8,4 +8,7 @@
  * </ul>
  * And other things that can be found in the Notion document for the realms.
  */
+@NullMarked
 package city.skybound.helios.transportation;
+
+import org.jspecify.annotations.NullMarked;
