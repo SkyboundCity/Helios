@@ -9,6 +9,8 @@ import org.bukkit.generator.WorldInfo;
 
 import java.util.List;
 import java.util.Random;
+import java.util.random.RandomGenerator;
+import java.util.random.RandomGeneratorFactory;
 
 public final class VoidGenerator extends ChunkGenerator {
 
@@ -107,14 +109,18 @@ public final class VoidGenerator extends ChunkGenerator {
 
 		@Override
 		public Biome getBiome(final WorldInfo worldInfo, final int x, final int y, final int z) {
-			final long seed = Long.parseLong(// depend on signs of x and z because we take absolute values below.
-					String.valueOf(x >= 0 ? 1 : 0)
+			final long seed = Long.parseLong(
+					""
+							// depend on signs of x and z because we take absolute values below.
+							+ (x >= 0 ? 1 : 0)
 							+ (z >= 0 ? 1 : 0)
-							// concatenate x and z to avoid additive commutativity. note the integer (floored) division.
-							+ Math.abs(x) / BIOME_CHUNK_SIZE
-							+ Math.abs(z) / BIOME_CHUNK_SIZE
+							// concatenate x and z to avoid additive commutativity.
+							// note the integer (floored) division.
+							+ (Math.abs(x) / BIOME_CHUNK_SIZE)
+							+ (Math.abs(z) / BIOME_CHUNK_SIZE)
 			);
-			final Random random = new Random(seed);
+
+			final RandomGenerator random = RandomGeneratorFactory.getDefault().create(seed);
 
 			final List<Biome> biomes = this.getBiomes(worldInfo);
 			return biomes.get(random.nextInt(biomes.size()));
