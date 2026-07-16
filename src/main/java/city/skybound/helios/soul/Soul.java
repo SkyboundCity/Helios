@@ -10,7 +10,6 @@ public final class Soul {
 	private final Piano piano = new Piano(false, Instrument.HARP);
 	private boolean flyBypassEnabled = false;
 	private boolean markdown = true;
-	private boolean elevatorMusicPlaying = false;
 
 	public Soul(final UUID uuid) {
 		this.uuid = uuid;
@@ -44,14 +43,6 @@ public final class Soul {
 	public boolean toggleMarkdown() {
 		this.markdown(!this.markdown());
 		return this.markdown();
-	}
-
-	public boolean elevatorMusicPlaying() {
-		return this.elevatorMusicPlaying;
-	}
-
-	public void elevatorMusicPlaying(final boolean elevatorMusicPlaying) {
-		this.elevatorMusicPlaying = elevatorMusicPlaying;
 	}
 
 	public Piano piano() {

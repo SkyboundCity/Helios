@@ -8,13 +8,11 @@ import city.skybound.helios.config.EmotesConfig;
 import city.skybound.helios.config.LangConfig;
 import city.skybound.helios.config.PianoNotesConfig;
 import city.skybound.helios.fun.ActCommands;
-import city.skybound.helios.fun.ElevatorMusicJockey;
 import city.skybound.helios.fun.FishingListener;
 import city.skybound.helios.fun.FlingerListener;
 import city.skybound.helios.fun.FunCommands;
 import city.skybound.helios.fun.HatCommand;
 import city.skybound.helios.fun.PackCommand;
-import city.skybound.helios.fun.RainMusicListener;
 import city.skybound.helios.inject.PluginModule;
 import city.skybound.helios.inject.SingletonModule;
 import city.skybound.helios.loop.PlayerVoidLoopTask;
@@ -191,7 +189,6 @@ public final class Helios extends JavaPlugin {
 				this.injector.getInstance(InvalidWorldListener.class),
 				this.injector.getInstance(VoidDamageListener.class),
 				this.injector.getInstance(PianoPlayListener.class),
-				this.injector.getInstance(RainMusicListener.class),
 				this.injector.getInstance(PlayerSpawnListener.class),
 				this.injector.getInstance(ServerPingListener.class),
 				this.injector.getInstance(WorldSpawnProtectionListener.class),
@@ -203,7 +200,6 @@ public final class Helios extends JavaPlugin {
 	}
 
 	private void initTasks() {
-		this.injector.getInstance(ElevatorMusicJockey.class).start();
 		this.injector.getInstance(PlayerVoidLoopTask.class).start();
 		this.injector.getInstance(TransportationTask.class).start();
 		this.injector.getInstance(WarpTask.class).start();
