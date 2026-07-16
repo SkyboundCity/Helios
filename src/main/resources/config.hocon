@@ -5,6 +5,6 @@ poke-force: {
 	max-x-z: 0.8
 }
 
-resource-pack-url: "https://raw.githubusercontent.com/skyboundcity/pack/main/pack-archive.zip?raw=true"
+resource-pack-url: "https://github.com/SkyboundCity/Opsis/releases/latest/download/Opsis.zip"
 # https://emn178.github.io/online-tools/sha1_checksum.html
-resource-pack-hash: "8f4a4a762910f960f89d58e72be22e3210b21c6d"
+resource-pack-hash: "0967b16a9b5602ed745ee7570bae10a2b9d21e42"
