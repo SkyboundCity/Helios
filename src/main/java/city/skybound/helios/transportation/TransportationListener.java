@@ -101,8 +101,9 @@ public final class TransportationListener implements Listener {
 		if (event.getEntered() instanceof final Player player) {
 			final Vehicle vehicle = event.getVehicle();
 
-			if (vehicle.getType() == EntityType.ARROW) {
-				// allow sitting in the nether. (chairs plugin uses arrow vehicles.)
+			if (vehicle.getType() == EntityType.TEXT_DISPLAY) {
+				// allow sitting in the nether.
+				// (chairs plugin uses text display vehicles.)
 				return;
 			}
 
