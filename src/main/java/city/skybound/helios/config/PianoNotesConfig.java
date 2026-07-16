@@ -12,7 +12,7 @@ public final class PianoNotesConfig extends AbstractRawHoconConfig {
 
 	@Inject
 	public PianoNotesConfig(final @Named("dataFolder") Path dataFolder) {
-		super(dataFolder.resolve("piano-notes.conf"));
+		super(dataFolder.resolve("piano-notes.hocon"));
 	}
 
 }

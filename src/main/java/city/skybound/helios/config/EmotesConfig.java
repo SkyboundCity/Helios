@@ -12,7 +12,7 @@ public final class EmotesConfig extends AbstractRawHoconConfig {
 
 	@Inject
 	public EmotesConfig(final @Named("dataFolder") Path dataFolder) {
-		super(dataFolder.resolve("emotes.conf"));
+		super(dataFolder.resolve("emotes.hocon"));
 	}
 
 }

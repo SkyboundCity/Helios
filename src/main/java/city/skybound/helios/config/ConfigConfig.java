@@ -16,8 +16,8 @@ public final class ConfigConfig extends AbstractDataConfig<HoconConfigurateWrapp
 	@Inject
 	public ConfigConfig(final @Named("dataFolder") Path dataFolder) {
 		super(new HoconConfigurateWrapper(
-				dataFolder.resolve("config.conf"), HoconConfigurationLoader.builder()
-				.path(dataFolder.resolve("config.conf"))
+				dataFolder.resolve("config.hocon"), HoconConfigurationLoader.builder()
+				.path(dataFolder.resolve("config.hocon"))
 				.defaultOptions(opts -> opts.implicitInitialization(false))
 				.build()
 		));

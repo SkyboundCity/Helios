@@ -12,7 +12,7 @@ public final class BooksConfig extends AbstractRawHoconConfig {
 
 	@Inject
 	public BooksConfig(final @Named("dataFolder") Path dataFolder) {
-		super(dataFolder.resolve("books.conf"));
+		super(dataFolder.resolve("books.hocon"));
 	}
 
 }

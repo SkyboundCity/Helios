@@ -16,7 +16,7 @@ public class LangConfig extends AbstractLangConfig<HoconConfigurateWrapper> {
 	 */
 	@Inject
 	public LangConfig(final @Named("dataFolder") Path dataFolder) {
-		super(new HoconConfigurateWrapper(dataFolder.resolve("lang.conf")));
+		super(new HoconConfigurateWrapper(dataFolder.resolve("lang.hocon")));
 	}
 
 }

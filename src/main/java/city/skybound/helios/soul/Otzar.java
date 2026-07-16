@@ -25,8 +25,8 @@ public final class Otzar extends AbstractDataConfig<HoconConfigurateWrapper, Otz
 	@Inject
 	public Otzar(final @Named("dataFolder") Path dataFolder) {
 		super(new HoconConfigurateWrapper(
-				dataFolder.resolve("otzar.conf"), HoconConfigurationLoader.builder()
-				.path(dataFolder.resolve("otzar.conf"))
+				dataFolder.resolve("otzar.hocon"), HoconConfigurationLoader.builder()
+				.path(dataFolder.resolve("otzar.hocon"))
 				.build()
 		));
 	}
