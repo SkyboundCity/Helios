@@ -26,7 +26,6 @@ vote: """<gray>»<white> We'd really appreciate if you voted for us. Thanks ;D
 no-build: "<gray>»<white> Please read the <red>/rules</red> first."
 no-vehicle: "<red>         ABSOLUTELY           <dark_red><bold>N O T"
 
-no-sprint-potion: "<yellow>Fun Fact! <gray>Did you know that you may spontaneously die when trying to sprint in the nether? Now you do!"
 no-sprint: {
 	1: "<dark_gray>you may not sprint in this realm, mortal."
 	2: "<dark_gray>could you, uh, stop."

@@ -13,7 +13,6 @@ public final class Permission {
 	public static final String REALM_NETHER = REALM + ".nether";
 	public static final String REALM_END = REALM + ".end";
 
-	public static final String MILK = ROOT + ".milk";
 	public static final String FLY = ROOT + ".fly";
 	public static final String BROADCAST = ROOT + ".broadcast";
 	public static final String RELOAD = ROOT + ".reload";
@@ -21,7 +20,6 @@ public final class Permission {
 	public static final String HAT = ROOT + ".hat";
 	public static final String PIANO = ROOT + ".piano";
 	public static final String CHAT_COLOR = ROOT + ".chat-color";
-	public static final String NEXTBOT = ROOT + ".nextbot";
 
 	public static final String ACT = ROOT + ".act";
 	public static final String ZAP = ACT + ".zap";

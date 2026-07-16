@@ -3,7 +3,6 @@ package city.skybound.helios.transportation;
 import city.skybound.helios.Helios;
 import city.skybound.helios.PotEff;
 import city.skybound.helios.config.LangConfig;
-import city.skybound.helios.milk.Milk;
 import city.skybound.helios.realm.Milieu;
 import city.skybound.helios.realm.Realm;
 import city.skybound.helios.soul.Charon;
@@ -254,8 +253,7 @@ public final class TransportationListener implements Listener {
 													Component.text("There's an inscription on").color(NamedTextColor.GRAY),
 													Component.text("the back. It says \"#1 Idiot\".").color(NamedTextColor.GRAY)
 											)
-											.build(),
-									Milk.splash()
+											.build()
 							);
 
 					player.getInventory().addItem(bundleBuilder.build());

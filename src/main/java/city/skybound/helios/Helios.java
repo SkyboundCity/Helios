@@ -20,8 +20,6 @@ import city.skybound.helios.inject.SingletonModule;
 import city.skybound.helios.loop.PlayerVoidLoopTask;
 import city.skybound.helios.loop.VoidDamageListener;
 import city.skybound.helios.loop.WarpTask;
-import city.skybound.helios.milk.MilkCommand;
-import city.skybound.helios.milk.MilkListener;
 import city.skybound.helios.piano.PianoCommand;
 import city.skybound.helios.piano.PianoPlayListener;
 import city.skybound.helios.realm.InvalidWorldListener;
@@ -170,7 +168,6 @@ public final class Helios extends JavaPlugin {
 		this.injector.getInstance(FunCommands.class).register(this.commandManager);
 		this.injector.getInstance(GameModeCommands.class).register(this.commandManager);
 		this.injector.getInstance(HatCommand.class).register(this.commandManager);
-		this.injector.getInstance(MilkCommand.class).register(this.commandManager);
 		this.injector.getInstance(MarkdownCommand.class).register(this.commandManager);
 		this.injector.getInstance(PackCommand.class).register(this.commandManager);
 		this.injector.getInstance(PianoCommand.class).register(this.commandManager);
@@ -192,7 +189,6 @@ public final class Helios extends JavaPlugin {
 				this.injector.getInstance(FlingerListener.class),
 				this.injector.getInstance(JoinQuitListener.class),
 				this.injector.getInstance(InvalidWorldListener.class),
-				this.injector.getInstance(MilkListener.class),
 				this.injector.getInstance(VoidDamageListener.class),
 				this.injector.getInstance(PianoPlayListener.class),
 				this.injector.getInstance(RainMusicListener.class),
