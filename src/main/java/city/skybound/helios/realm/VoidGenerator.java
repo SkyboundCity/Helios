@@ -1,5 +1,8 @@
 package city.skybound.helios.realm;
 
+import io.papermc.paper.registry.RegistryAccess;
+import io.papermc.paper.registry.RegistryKey;
+import io.papermc.paper.registry.keys.tags.BiomeTagKeys;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
@@ -28,82 +31,20 @@ public final class VoidGenerator extends ChunkGenerator {
 
 	public static final class MixedBagBiomeProvider extends BiomeProvider {
 
-		// excluded Biome enum values:
-		// THE_VOID
-		// CUSTOM
+		private static final List<Biome> WHITE_BIOMES = List.copyOf(RegistryAccess
+				.registryAccess()
+				.getRegistry(RegistryKey.BIOME)
+				.getTagValues(BiomeTagKeys.IS_OVERWORLD));
 
-		private static final List<Biome> WHITE_BIOMES = List.of(
-				Biome.OCEAN,
-				Biome.PLAINS,
-				Biome.DESERT,
-				Biome.WINDSWEPT_HILLS,
-				Biome.FOREST,
-				Biome.TAIGA,
-				Biome.SWAMP,
-				Biome.MANGROVE_SWAMP,
-				Biome.RIVER,
-				Biome.FROZEN_OCEAN,
-				Biome.FROZEN_RIVER,
-				Biome.SNOWY_PLAINS,
-				Biome.MUSHROOM_FIELDS,
-				Biome.BEACH,
-				Biome.JUNGLE,
-				Biome.SPARSE_JUNGLE,
-				Biome.DEEP_OCEAN,
-				Biome.STONY_SHORE,
-				Biome.SNOWY_BEACH,
-				Biome.BIRCH_FOREST,
-				Biome.DARK_FOREST,
-				Biome.SNOWY_TAIGA,
-				Biome.OLD_GROWTH_PINE_TAIGA,
-				Biome.WINDSWEPT_FOREST,
-				Biome.SAVANNA,
-				Biome.SAVANNA_PLATEAU,
-				Biome.BADLANDS,
-				Biome.WOODED_BADLANDS,
-				Biome.WARM_OCEAN,
-				Biome.LUKEWARM_OCEAN,
-				Biome.COLD_OCEAN,
-				Biome.DEEP_LUKEWARM_OCEAN,
-				Biome.DEEP_COLD_OCEAN,
-				Biome.DEEP_FROZEN_OCEAN,
-				Biome.SUNFLOWER_PLAINS,
-				Biome.WINDSWEPT_GRAVELLY_HILLS,
-				Biome.FLOWER_FOREST,
-				Biome.ICE_SPIKES,
-				Biome.OLD_GROWTH_BIRCH_FOREST,
-				Biome.OLD_GROWTH_SPRUCE_TAIGA,
-				Biome.WINDSWEPT_SAVANNA,
-				Biome.ERODED_BADLANDS,
-				Biome.BAMBOO_JUNGLE,
-				Biome.DRIPSTONE_CAVES,
-				Biome.LUSH_CAVES,
-				Biome.DEEP_DARK,
-				Biome.MEADOW,
-				Biome.GROVE,
-				Biome.SNOWY_SLOPES,
-				Biome.FROZEN_PEAKS,
-				Biome.JAGGED_PEAKS,
-				Biome.STONY_PEAKS,
-				Biome.CHERRY_GROVE
-		);
+		private static final List<Biome> RED_BIOMES = List.copyOf(RegistryAccess
+				.registryAccess()
+				.getRegistry(RegistryKey.BIOME)
+				.getTagValues(BiomeTagKeys.IS_NETHER));
 
-		private static final List<Biome> RED_BIOMES = List.of(
-				Biome.NETHER_WASTES,
-				Biome.SOUL_SAND_VALLEY,
-				Biome.CRIMSON_FOREST,
-				Biome.WARPED_FOREST,
-				Biome.BASALT_DELTAS
-
-		);
-
-		private static final List<Biome> BLACK_BIOMES = List.of(
-				Biome.THE_END,
-				Biome.SMALL_END_ISLANDS,
-				Biome.END_MIDLANDS,
-				Biome.END_HIGHLANDS,
-				Biome.END_BARRENS
-		);
+		private static final List<Biome> BLACK_BIOMES = List.copyOf(RegistryAccess
+				.registryAccess()
+				.getRegistry(RegistryKey.BIOME)
+				.getTagValues(BiomeTagKeys.IS_END));
 
 		private static final int BIOME_CHUNK_SIZE = 96;
 
