@@ -27,11 +27,11 @@ public enum Realm {
 	}
 
 	public static Realm from(final World world) {
-		return switch (world.getName()) {
-			case "overworld" -> Realm.OVERWORLD;
-			case "nether" -> Realm.NETHER;
-			case "end" -> Realm.END;
-			default -> throw new RuntimeException("Could not find realm for world `" + world.getName() + "`.");
+		return switch (world.key().asString()) {
+			case "helios:overworld" -> Realm.OVERWORLD;
+			case "helios:nether" -> Realm.NETHER;
+			case "helios:end" -> Realm.END;
+			default -> throw new RuntimeException("Could not find realm for world `" + world.key().asString() + "`.");
 		};
 	}
 
