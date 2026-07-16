@@ -27,7 +27,6 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.jspecify.annotations.Nullable;
-import org.spongepowered.configurate.NodePath;
 
 import java.util.List;
 
@@ -98,20 +97,18 @@ public final class TransportationListener implements Listener {
 			return;
 		}
 
-		if (event.getEntered() instanceof final Player player) {
-			final Vehicle vehicle = event.getVehicle();
+		final Vehicle vehicle = event.getVehicle();
 
-			if (vehicle.getType() == EntityType.TEXT_DISPLAY) {
-				// allow sitting in the nether.
-				// (chairs plugin uses text display vehicles.)
-				return;
-			}
-
-			vehicle.getWorld().createExplosion(vehicle, 2, true, false);
-			vehicle.remove();
-		} else {
-			event.setCancelled(true);
+		if (vehicle.getType() == EntityType.TEXT_DISPLAY) {
+			// allow sitting in the nether.
+			// (chairs plugin uses text display vehicles.)
+			return;
 		}
+
+		event.setCancelled(true);
+
+		vehicle.getWorld().createExplosion(vehicle, 2, true, false);
+		vehicle.remove();
 	}
 
 	/**
