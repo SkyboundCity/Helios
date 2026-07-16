@@ -23,6 +23,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.BoundingBox;
 
 import org.jspecify.annotations.Nullable;
+
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -125,7 +126,7 @@ public final class PlayerSpawnListener implements Listener {
 		final Player player = event.getPlayer();
 		player.showTitle(Title.title(
 				Component.text("spawn point set").color(NamedTextColor.LIGHT_PURPLE),
-				Component.text("for the " + Realm.of(player).toString()).color(NamedTextColor.GRAY),
+				Component.text("for the " + Realm.of(player)).color(NamedTextColor.GRAY),
 				Title.Times.times(Duration.ofMillis(500), Duration.ofSeconds(5), Duration.ofSeconds(1))
 		));
 		player.addPotionEffect(PotEff.hidden(PotionEffectType.NAUSEA, 160, 1));
@@ -195,7 +196,7 @@ public final class PlayerSpawnListener implements Listener {
 	}
 
 	private NamespacedKey spawnKey(final Realm realm) {
-		return this.pdcLocStore.key("spawn-" + realm.toString());
+		return this.pdcLocStore.key("spawn-" + realm);
 	}
 
 }

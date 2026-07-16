@@ -65,7 +65,7 @@ public final class Transposer {
 	}
 
 	private NamespacedKey prevLocKey(final Realm realm) {
-		return this.pdcLocStore.key("previous-location-" + realm.toString());
+		return this.pdcLocStore.key("previous-location-" + realm);
 	}
 
 }
