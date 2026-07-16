@@ -3,12 +3,10 @@ package city.skybound.helios.realm;
 import com.google.inject.Inject;
 import org.bukkit.GameRules;
 import org.bukkit.Location;
-import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.WorldType;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.checkerframework.checker.nullness.qual.Nullable;
 import org.slf4j.Logger;
 
 /**
@@ -26,7 +24,7 @@ public final class WorldService {
 	}
 
 	public World getWorld(final Realm realm) {
-		final @Nullable World world = this.plugin.getServer().getWorld(realm.toString());
+		final World world = this.plugin.getServer().getWorld(realm.key(this.plugin));
 		if (world == null) {
 			throw new RuntimeException("Could not find world for realm `" + realm + "`.");
 		}
@@ -41,9 +39,7 @@ public final class WorldService {
 	private void createWorlds() {
 		for (final Realm realm : Realm.values()) {
 			this.logger.info("Creating world `{}`.", realm.toString());
-			final var key = new NamespacedKey(this.plugin, realm.toString());
-
-			this.plugin.getServer().createWorld(WorldCreator.ofKey(key)
+			this.plugin.getServer().createWorld(WorldCreator.ofKey(realm.key(this.plugin))
 					// lower black horizon in overworld worlds.
 					// FLAT worlds turn black below Y-60; NORMAL worlds turn black below Y60.
 					.type(WorldType.FLAT)

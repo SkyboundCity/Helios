@@ -1,8 +1,10 @@
 package city.skybound.helios.realm;
 
 import org.bukkit.Location;
+import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Locale;
 
@@ -44,6 +46,10 @@ public enum Realm {
 	@Override
 	public String toString() {
 		return this.name().toLowerCase(Locale.ROOT);
+	}
+
+	public NamespacedKey key(final JavaPlugin plugin) {
+		return new NamespacedKey(plugin, this.toString());
 	}
 
 	public Milieu milieu() {
