@@ -108,7 +108,6 @@ public final class TransportationListener implements Listener {
 
 			vehicle.getWorld().createExplosion(vehicle, 2, true, false);
 			vehicle.remove();
-			player.sendMessage(this.langConfig.c(NodePath.path("no-vehicle")));
 		} else {
 			event.setCancelled(true);
 		}
