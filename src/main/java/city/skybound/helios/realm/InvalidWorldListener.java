@@ -27,7 +27,7 @@ public final class InvalidWorldListener implements Listener {
 		try {
 			Realm.of(player);
 		} catch (RuntimeException _) {
-			this.transposer.transpose(player, Realm.OVERWORLD);
+			this.transposer.transposeNoPrevious(player, Realm.OVERWORLD);
 		}
 	}
 

@@ -26,9 +26,11 @@ public final class Transposer {
 	}
 
 	public void transpose(final Player player, final Realm destination) {
-		final Realm current = Realm.of(player);
-		this.setPreviousLocation(player, current);
+		this.setPreviousLocation(player, Realm.of(player));
+		this.transposeNoPrevious(player, destination);
+	}
 
+	public void transposeNoPrevious(final Player player, final Realm destination) {
 		player.teleport(this.getNextLocation(player, destination));
 		player.setFallDistance(0);
 	}
