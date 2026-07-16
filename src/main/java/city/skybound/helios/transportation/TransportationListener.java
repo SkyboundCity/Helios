@@ -4,13 +4,8 @@ import city.skybound.helios.Helios;
 import city.skybound.helios.PotEff;
 import city.skybound.helios.config.LangConfig;
 import city.skybound.helios.realm.Milieu;
-import city.skybound.helios.realm.Realm;
 import city.skybound.helios.soul.Charon;
-import city.skybound.helios.soul.Soul;
 import com.google.inject.Inject;
-import love.broccolai.corn.minecraft.item.special.BundleBuilder;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -26,7 +21,6 @@ import org.bukkit.event.entity.EntityToggleGlideEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
-import org.bukkit.event.player.PlayerToggleSprintEvent;
 import org.bukkit.event.vehicle.VehicleEnterEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -36,10 +30,6 @@ import org.jspecify.annotations.Nullable;
 import org.spongepowered.configurate.NodePath;
 
 import java.util.List;
-
-import static love.broccolai.corn.minecraft.item.ItemBuilder.itemBuilder;
-import static love.broccolai.corn.minecraft.item.special.BookBuilder.bookBuilder;
-import static love.broccolai.corn.minecraft.item.special.BundleBuilder.bundleBuilder;
 
 public final class TransportationListener implements Listener {
 
@@ -182,85 +172,6 @@ public final class TransportationListener implements Listener {
 		final PlayerInventory inventory = player.getInventory();
 		if (inventory.getChestplate() != null && inventory.getChestplate().getType() == Material.ELYTRA) {
 			inventory.setChestplate(new ItemStack(Material.AIR));
-		}
-	}
-
-	/**
-	 * Prevents sprinting in onerous realms. Additionally, handles the nether watcher.
-	 */
-	@EventHandler
-	public void onSprint(final PlayerToggleSprintEvent event) {
-		final Player player = event.getPlayer();
-		if (Milieu.of(player) != Milieu.ONEROUS || !event.isSprinting()) {
-			return;
-		}
-
-		player.setSprinting(false);
-		// stop their sprint again in a few ticks to catch any glitchiness.
-		player.getServer().getScheduler().runTaskLater(this.plugin, () -> player.setSprinting(false), 5);
-
-		// add gnarly effects. blindness prevents client-side sprint activation.
-		player.addPotionEffect(PotEff.hidden(PotionEffectType.SLOWNESS, 100, 4));
-		player.addPotionEffect(PotEff.hidden(PotionEffectType.BLINDNESS, PotEff.INF, 1));
-		player.playSound(player.getLocation(), Sound.ENTITY_IRON_GOLEM_DAMAGE, SoundCategory.MASTER, 100, 0.5F);
-		player.playSound(player.getLocation(), Sound.ENTITY_IRON_GOLEM_DEATH, SoundCategory.MASTER, 100, 0.5F);
-		player.playSound(player.getLocation(), Sound.AMBIENT_WARPED_FOREST_MOOD, SoundCategory.MASTER, 100, 1);
-
-		if (Realm.of(player) == Realm.NETHER) {
-			// nether watcher time!
-			final Soul soul = this.charon.grab(player);
-
-			soul.netherInfractions(soul.netherInfractions() + 1);
-
-			switch (soul.netherInfractions()) {
-				case 1, 2, 3, 5, 8, 10, 15, 20, 25 -> player.sendMessage(this.langConfig.c(NodePath.path("no-sprint", "1")));
-				case 30 -> player.sendMessage(this.langConfig.c(NodePath.path("no-sprint", "2")));
-				case 40 -> player.sendMessage(this.langConfig.c(NodePath.path("no-sprint", "3")));
-				case 50 -> player.sendMessage(this.langConfig.c(NodePath.path("no-sprint", "4")));
-				case 60 -> player.sendMessage(this.langConfig.c(NodePath.path("no-sprint", "5")));
-				case 70 -> player.sendMessage(this.langConfig.c(NodePath.path("no-sprint", "6")));
-				case 80 -> player.sendMessage(this.langConfig.c(NodePath.path("no-sprint", "7")));
-				case 100 -> {
-					player.sendMessage(this.langConfig.c(NodePath.path("no-sprint", "8")));
-
-					final BundleBuilder bundleBuilder = bundleBuilder()
-							.name(Component.text("Nether Watcher's Gift").color(NamedTextColor.RED))
-							.loreList(Component.text("Maybe you should open it.").color(NamedTextColor.GRAY))
-							.addItem(
-									bookBuilder(Material.WRITTEN_BOOK)
-											.title(Component.text("A Letter"))
-											.author(Component.text("The Nether Watcher"))
-											.addPage(Component.text("""
-													listen. i appreciate you giving me company,
-													but holy shit. the whole point of the nether is *not* to sprint,
-													yet you somehow managed to do it a hundred times!?
-													have you got something wrong in the head? take this, and fuck off.
-													""").color(NamedTextColor.DARK_GRAY))
-											.addPage(Component.text("""
-
-													..
-
-													still love you, tho.
-													""").color(NamedTextColor.DARK_GRAY))
-											.build(),
-									itemBuilder(Material.SLIME_BALL)
-											.name(Component.text("Ball of Slime"))
-											.loreList(Component.text("It's.. uh, a ball of slime.").color(NamedTextColor.GRAY))
-											.build(),
-									itemBuilder(Material.GOLD_NUGGET)
-											.name(Component.text("Gold Medal"))
-											.loreList(
-													Component.text("There's an inscription on").color(NamedTextColor.GRAY),
-													Component.text("the back. It says \"#1 Idiot\".").color(NamedTextColor.GRAY)
-											)
-											.build()
-							);
-
-					player.getInventory().addItem(bundleBuilder.build());
-				}
-				default -> {
-				}
-			}
 		}
 	}
 

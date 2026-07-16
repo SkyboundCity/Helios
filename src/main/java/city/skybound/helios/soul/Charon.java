@@ -28,9 +28,6 @@ public final class Charon {
 					final var soul = new Soul(uuid);
 					if (this.otzar.spirits().containsKey(uuid)) {
 						final var spirit = this.otzar.spirits().get(uuid);
-						if (spirit.netherInfractions() != null) {
-							soul.netherInfractions(spirit.netherInfractions());
-						}
 						if (spirit.markdown() != null) {
 							soul.markdown(spirit.markdown());
 						}
@@ -46,7 +43,7 @@ public final class Charon {
 
 	public void save() throws ConfigurateException {
 		for (final var soul : this.souls.values()) {
-			final var spirit = new Otzar.Data.Spirit(soul.netherInfractions(), soul.markdown());
+			final var spirit = new Otzar.Data.Spirit(soul.markdown());
 			this.otzar.spirits().put(soul.getUuid(), spirit);
 		}
 		this.otzar.save();

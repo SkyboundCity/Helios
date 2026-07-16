@@ -42,12 +42,6 @@ public final class TransportationTask {
 
 						// nether-specific behavior.
 						if (milieu == Milieu.ONEROUS) {
-							// catch players who bypassed the sprint listener.
-							if (player.isSprinting()) {
-								player.addPotionEffect(PotEff.hidden(PotionEffectType.BLINDNESS, PotEff.INF, 1));
-								player.setSprinting(false);
-							}
-
 							// catch players who bypassed the vehicle listener.
 							if (player.getVehicle() != null
 									&& player.getVehicle().getType() != EntityType.ARROW // allow arrow chairs.

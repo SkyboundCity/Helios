@@ -26,17 +26,6 @@ vote: """<gray>»<white> We'd really appreciate if you voted for us. Thanks ;D
 no-build: "<gray>»<white> Please read the <red>/rules</red> first."
 no-vehicle: "<red>         ABSOLUTELY           <dark_red><bold>N O T"
 
-no-sprint: {
-	1: "<dark_gray>you may not sprint in this realm, mortal."
-	2: "<dark_gray>could you, uh, stop."
-	3: "<dark_gray>wow. you just don't learn, huh?"
-	4: "<dark_gray>is this not getting annoying for you? even slightly?"
-	5: "<dark_gray>please stop. it's getting annoying for me, too."
-	6: "<dark_gray>do you have some kind of issue with me? it's not like you're going to get anything special for doing this."
-	7: "<dark_gray>alright, listen up, buttercup. stop. alright? it's ticking me off. every time you sprint i've got to make a banging noise and throw a potion of blindness on you. so please. chill."
-	8: "<dark_gray>ah, fuck it. here you go."
-}
-
 transpose: {
 	already-there: "<gray>you're already in that place."
 }

@@ -4,6 +4,7 @@ import city.skybound.helios.config.HoconConfigurateWrapper;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import dev.tehbrian.agna.configurate.AbstractDataConfig;
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.ConfigurateException;
 import org.spongepowered.configurate.hocon.HoconConfigurationLoader;
@@ -49,8 +50,7 @@ public final class Otzar extends AbstractDataConfig<HoconConfigurateWrapper, Otz
 	public record Data(Map<UUID, Spirit> spirits) {
 
 		@ConfigSerializable
-		public record Spirit(Integer netherInfractions,
-		                     Boolean markdown) {
+		public record Spirit(@Nullable Boolean markdown) {
 
 		}
 
