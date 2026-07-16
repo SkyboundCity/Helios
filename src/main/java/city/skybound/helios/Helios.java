@@ -55,7 +55,6 @@ import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.incendo.cloud.paper.PaperCommandManager;
 import org.incendo.cloud.paper.util.sender.Source;
-import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.ConfigurateException;
 
 import java.util.List;
@@ -207,7 +206,7 @@ public final class Helios extends JavaPlugin {
 
 	@Override
 	public ChunkGenerator getDefaultWorldGenerator(
-			final @NotNull String worldName,
+			final String worldName,
 			final @Nullable String id
 	) {
 		return new VoidGenerator();

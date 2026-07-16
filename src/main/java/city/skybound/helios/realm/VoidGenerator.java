@@ -6,7 +6,6 @@ import org.bukkit.block.Biome;
 import org.bukkit.generator.BiomeProvider;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.generator.WorldInfo;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Random;
@@ -16,12 +15,12 @@ public final class VoidGenerator extends ChunkGenerator {
 	private final MixedBagBiomeProvider mixedBagBiomeProvider = new MixedBagBiomeProvider();
 
 	@Override
-	public Location getFixedSpawnLocation(final @NotNull World world, final @NotNull Random random) {
+	public Location getFixedSpawnLocation(final World world, final Random random) {
 		return new Location(world, 0.5D, 65.0D, 0.5D);
 	}
 
 	@Override
-	public BiomeProvider getDefaultBiomeProvider(@NotNull final WorldInfo worldInfo) {
+	public BiomeProvider getDefaultBiomeProvider(final WorldInfo worldInfo) {
 		return this.mixedBagBiomeProvider;
 	}
 
@@ -107,7 +106,7 @@ public final class VoidGenerator extends ChunkGenerator {
 		private static final int BIOME_CHUNK_SIZE = 96;
 
 		@Override
-		public @NotNull Biome getBiome(@NotNull final WorldInfo worldInfo, final int x, final int y, final int z) {
+		public Biome getBiome(final WorldInfo worldInfo, final int x, final int y, final int z) {
 			final long seed = Long.parseLong(// depend on signs of x and z because we take absolute values below.
 					String.valueOf(x >= 0 ? 1 : 0)
 							+ (z >= 0 ? 1 : 0)
@@ -122,7 +121,7 @@ public final class VoidGenerator extends ChunkGenerator {
 		}
 
 		@Override
-		public @NotNull List<Biome> getBiomes(@NotNull final WorldInfo worldInfo) {
+		public List<Biome> getBiomes(final WorldInfo worldInfo) {
 			return switch (Habitat.from(worldInfo.getEnvironment())) {
 				case WHITE -> WHITE_BIOMES;
 				case RED -> RED_BIOMES;
