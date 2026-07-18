@@ -47,19 +47,19 @@ public final class GameModeCommands {
 
 
 	private void executeSurvival(final CommandContext<PlayerSource> c) {
-		execute(c, GameMode.SURVIVAL, "Survival");
+		this.execute(c, GameMode.SURVIVAL, "Survival");
 	}
 
 	private void executeCreative(final CommandContext<PlayerSource> c) {
-		execute(c, GameMode.CREATIVE, "Creative");
+		this.execute(c, GameMode.CREATIVE, "Creative");
 	}
 
 	private void executeAdventure(final CommandContext<PlayerSource> c) {
-		execute(c, GameMode.ADVENTURE, "Adventure");
+		this.execute(c, GameMode.ADVENTURE, "Adventure");
 	}
 
 	private void executeSpectator(final CommandContext<PlayerSource> c) {
-		execute(c, GameMode.SPECTATOR, "Spectator");
+		this.execute(c, GameMode.SPECTATOR, "Spectator");
 	}
 
 	private void execute(final CommandContext<PlayerSource> c, final GameMode gameMode, final String gameModeString) {

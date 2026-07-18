@@ -63,7 +63,7 @@ public final class PianoMenuProvider {
 			final Component name = ChatFormat.miniMessage(Objects.requireNonNull(itemNode.node("name").getString()));
 			final float pitch = itemNode.node("pitch").getFloat();
 
-			items.add(this.pianoNoteItems.createItem(material, name, pitch));
+			items.add(this.pianoNoteItems.createPianoNote(material, name, pitch));
 		}
 
 		return items;

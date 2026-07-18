@@ -9,7 +9,9 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-import static love.broccolai.corn.minecraft.item.ItemBuilder.itemBuilder;
+import static dev.tehbrian.agna.paper.FluentItem.createItem;
+import static dev.tehbrian.agna.paper.FluentItem.editItem;
+import static java.util.Objects.requireNonNull;
 
 public final class PianoNoteItems {
 
@@ -23,14 +25,15 @@ public final class PianoNoteItems {
 	}
 
 	public @Nullable Float getPitch(final ItemStack item) {
-		return itemBuilder(item).data(this.pitchKey, PersistentDataType.FLOAT);
+		return editItem(item).pdcGet(this.pitchKey, PersistentDataType.FLOAT);
 	}
 
-	public ItemStack createItem(final Material material, final Component name, final float pitch) {
-		return itemBuilder(material)
-				.name(name)
-				.data(this.pitchKey, PersistentDataType.FLOAT, pitch)
-				.build();
+	public ItemStack createPianoNote(final Material material, final Component name, final float pitch) {
+		final var itemType = requireNonNull(material.asItemType());
+		return createItem(itemType)
+				.itemName(name)
+				.pdcSet(this.pitchKey, PersistentDataType.FLOAT, pitch)
+				.item();
 	}
 
 }
