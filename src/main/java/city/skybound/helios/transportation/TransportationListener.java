@@ -1,11 +1,7 @@
 package city.skybound.helios.transportation;
 
-import city.skybound.helios.Helios;
 import city.skybound.helios.PotEff;
-import city.skybound.helios.config.LangConfig;
 import city.skybound.helios.realm.Milieu;
-import city.skybound.helios.soul.Charon;
-import com.google.inject.Inject;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -22,11 +18,9 @@ import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.vehicle.VehicleEnterEvent;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ItemType;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.jspecify.annotations.Nullable;
 
 import java.util.List;
 
@@ -39,37 +33,25 @@ public final class TransportationListener implements Listener {
 			PotionEffectType.LEVITATION
 	);
 
-	private final LangConfig langConfig;
-	private final Helios plugin;
-	private final Charon charon;
-
-	@Inject
-	public TransportationListener(
-			final LangConfig langConfig,
-			final Helios plugin,
-			final Charon charon
-	) {
-		this.langConfig = langConfig;
-		this.plugin = plugin;
-		this.charon = charon;
-	}
-
 	/**
 	 * Prevents spectator mode.
 	 */
 	@EventHandler
 	public void onModeToSpectator(final PlayerGameModeChangeEvent event) {
-		if (event.getNewGameMode() == GameMode.SPECTATOR) {
-			event.setCancelled(true);
-			final var player = event.getPlayer();
-			player.setGameMode(GameMode.ADVENTURE);
-			player.setFireTicks(100);
-			player.getWorld().strikeLightning(player.getLocation());
+		if (!event.getNewGameMode().equals(GameMode.SPECTATOR)) {
+			return;
 		}
+
+		event.setCancelled(true);
+
+		final var player = event.getPlayer();
+		player.setGameMode(GameMode.ADVENTURE);
+		player.setFireTicks(100);
+		player.getWorld().strikeLightning(player.getLocation());
 	}
 
 	/**
-	 * Prevents ender pearls and chorus fruit teleportation except in docile realms.
+	 * Prevents ender pearl and chorus fruit teleportation except in docile realms.
 	 */
 	@EventHandler
 	public void onTeleport(final PlayerTeleportEvent event) {
@@ -85,6 +67,7 @@ public final class TransportationListener implements Listener {
 		}
 
 		event.setCancelled(true);
+
 		event.getTo().getWorld().spawnParticle(Particle.SMOKE, event.getTo(), 200, 0.1, 0.1, 0.1, 0.1);
 	}
 
@@ -123,31 +106,29 @@ public final class TransportationListener implements Listener {
 		}
 
 		final PotionEffectType type = event.getNewEffect().getType();
-		if (ONEROUS_BANNED_EFFECTS.contains(type)) {
-			event.setCancelled(true);
-			player.setGameMode(GameMode.ADVENTURE);
-			player.addPotionEffect(PotEff.visible(PotionEffectType.WITHER, 160, 100));
+		if (!ONEROUS_BANNED_EFFECTS.contains(type)) {
+			return;
 		}
+
+		event.setCancelled(true);
+
+		player.setGameMode(GameMode.ADVENTURE);
+		player.addPotionEffect(PotEff.visible(PotionEffectType.WITHER, 160, 100));
 	}
 
 	/**
-	 * Remove leftover or banned effects.
+	 * Removes movement-enhancing potions when transposing into onerous realms.
 	 */
 	@EventHandler
 	public void onWorldChange(final PlayerChangedWorldEvent event) {
 		final Player player = event.getPlayer();
 
-		// remove leftover blindness from the nether.
-		final @Nullable PotionEffect blindness = player.getPotionEffect(PotionEffectType.BLINDNESS);
-		if (blindness != null && blindness.isInfinite()) {
-			player.removePotionEffect(PotionEffectType.BLINDNESS);
+		if (Milieu.of(player) != Milieu.ONEROUS) {
+			return;
 		}
 
-		// remove banned effects when going into nether.
-		if (Milieu.of(player) == Milieu.ONEROUS) {
-			for (final PotionEffectType type : ONEROUS_BANNED_EFFECTS) {
-				player.removePotionEffect(type);
-			}
+		for (final PotionEffectType type : ONEROUS_BANNED_EFFECTS) {
+			player.removePotionEffect(type);
 		}
 	}
 
@@ -163,12 +144,12 @@ public final class TransportationListener implements Listener {
 		}
 
 		player.setGliding(false);
-		player.playSound(player.getLocation(), Sound.ENTITY_TURTLE_EGG_CRACK, SoundCategory.MASTER, 100, 2);
+		player.getWorld().playSound(player.getLocation(), Sound.ENTITY_TURTLE_EGG_CRACK, SoundCategory.MASTER, 1, 1.875F);
 
 		// remove their elytra.
 		final PlayerInventory inventory = player.getInventory();
-		if (inventory.getChestplate() != null && inventory.getChestplate().getType() == Material.ELYTRA) {
-			inventory.setChestplate(new ItemStack(Material.AIR));
+		if (inventory.getChestplate().getType() == Material.ELYTRA) {
+			inventory.setChestplate(ItemType.AIR.createItemStack());
 		}
 	}
 
