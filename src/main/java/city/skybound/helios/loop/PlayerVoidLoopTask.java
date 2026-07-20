@@ -27,12 +27,12 @@ public final class PlayerVoidLoopTask {
 				this.plugin, () -> {
 					for (final Player player : server.getOnlinePlayers()) {
 						final Location loc = player.getLocation();
-						final Habitat habitat = Habitat.of(player);
-						if (loc.getY() <= LoopPositions.lowEngage(habitat)) { // they're too low.
-							loc.setY(LoopPositions.lowTo(habitat));
+						final var world = player.getWorld();
+						if (loc.getY() <= LoopPositions.lowEngage(world)) { // they're too low.
+							loc.setY(LoopPositions.lowTo(world));
 							Teleport.relative(player, loc);
-						} else if (loc.getY() >= LoopPositions.highEngage(habitat)) { // they're too high.
-							loc.setY(LoopPositions.highTo(habitat));
+						} else if (loc.getY() >= LoopPositions.highEngage(world)) { // they're too high.
+							loc.setY(LoopPositions.highTo(world));
 							Teleport.relative(player, loc);
 						}
 					}
