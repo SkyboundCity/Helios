@@ -39,9 +39,9 @@ public final class WorldService {
 	private void createWorlds() {
 		for (final Realm realm : Realm.values()) {
 			this.logger.info("Creating world `{}`.", realm.toString());
-			this.plugin.getServer().createWorld(WorldCreator.ofKey(realm.key(this.plugin))
+			final var world = this.plugin.getServer().createWorld(WorldCreator.ofKey(realm.key(this.plugin))
 					// lower black horizon in overworld worlds.
-					// FLAT worlds turn black below Y-60; NORMAL worlds turn black below Y60.
+					// FLAT worlds turn black below Y=-60. NORMAL worlds turn black below Y=60.
 					.type(WorldType.FLAT)
 					.environment(realm.habitat().environment())
 					.generator(new VoidGenerator())
@@ -52,11 +52,15 @@ public final class WorldService {
 	private void setGameRules() {
 		for (final Realm realm : Realm.values()) {
 			final World world = this.getWorld(realm);
+
 			world.setGameRule(GameRules.RESPAWN_RADIUS, 0);
 			world.setGameRule(GameRules.FIRE_SPREAD_RADIUS_AROUND_PLAYER, 0);
 			world.setGameRule(GameRules.MOB_GRIEFING, false);
 			world.setGameRule(GameRules.SPREAD_VINES, false);
 			world.setGameRule(GameRules.ADVANCE_WEATHER, true);
+			world.setGameRule(GameRules.ADVANCE_TIME, true);
+			world.setGameRule(GameRules.REDUCED_DEBUG_INFO, false);
+			world.setGameRule(GameRules.KEEP_INVENTORY, true);
 
 			// no mob spawning! >:(
 			world.setGameRule(GameRules.SPAWN_MOBS, false);
@@ -65,15 +69,6 @@ public final class WorldService {
 			world.setGameRule(GameRules.SPAWN_WARDENS, false);
 			world.setGameRule(GameRules.SPAWN_PHANTOMS, false);
 			world.setGameRule(GameRules.RAIDS, false);
-			world.setGameRule(GameRules.ADVANCE_TIME, true);
-
-			if (realm.milieu() == Milieu.ONEROUS) {
-				world.setGameRule(GameRules.REDUCED_DEBUG_INFO, true);
-				world.setGameRule(GameRules.KEEP_INVENTORY, false);
-			} else {
-				world.setGameRule(GameRules.REDUCED_DEBUG_INFO, false);
-				world.setGameRule(GameRules.KEEP_INVENTORY, true);
-			}
 		}
 	}
 
