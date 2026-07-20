@@ -2,7 +2,6 @@ package city.skybound.helios.loop;
 
 import city.skybound.helios.Helios;
 import city.skybound.helios.Ticks;
-import city.skybound.helios.realm.Habitat;
 import com.google.inject.Inject;
 import org.bukkit.Location;
 import org.bukkit.Server;
