@@ -39,6 +39,7 @@ public final class WorldService {
 	private void createWorlds() {
 		for (final Realm realm : Realm.values()) {
 			this.logger.info("Creating world `{}`.", realm.toString());
+
 			final var world = this.plugin.getServer().createWorld(WorldCreator.ofKey(realm.key(this.plugin))
 					// lower black horizon in overworld worlds.
 					// FLAT worlds turn black below Y=-60. NORMAL worlds turn black below Y=60.
@@ -46,6 +47,10 @@ public final class WorldService {
 					.environment(realm.habitat().environment())
 					.generator(new VoidGenerator())
 			);
+
+			if (world == null) {
+				throw new RuntimeException("Failed to create world for realm `" + realm + "`.");
+			}
 		}
 	}
 
