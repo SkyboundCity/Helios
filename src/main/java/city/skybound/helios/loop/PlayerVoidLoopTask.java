@@ -35,7 +35,7 @@ public final class PlayerVoidLoopTask {
 							Teleport.relative(player, loc);
 						}
 					}
-				}, 1, Ticks.in(Duration.ofSeconds(1))
+				}, 1, 1
 		);
 	}
 
