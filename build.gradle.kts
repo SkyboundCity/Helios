@@ -71,7 +71,6 @@ tasks {
 				"io.leangen",
 				"jakarta.inject",
 				"javax.annotation",
-				"love.broccolai.corn",
 				"net.kyori.option",
 				"org.aopalliance",
 				"org.checkerframework",

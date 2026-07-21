@@ -66,6 +66,7 @@ public final class WorldService {
 			world.setGameRule(GameRules.ADVANCE_TIME, true);
 			world.setGameRule(GameRules.REDUCED_DEBUG_INFO, false);
 			world.setGameRule(GameRules.KEEP_INVENTORY, true);
+			world.setGameRule(GameRules.COMMAND_BLOCKS_WORK, false);
 
 			// no mob spawning! >:(
 			world.setGameRule(GameRules.SPAWN_MOBS, false);
