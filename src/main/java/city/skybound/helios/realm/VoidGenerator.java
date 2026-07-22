@@ -12,8 +12,6 @@ import org.bukkit.generator.WorldInfo;
 
 import java.util.List;
 import java.util.Random;
-import java.util.random.RandomGenerator;
-import java.util.random.RandomGeneratorFactory;
 
 public final class VoidGenerator extends ChunkGenerator {
 
@@ -48,23 +46,35 @@ public final class VoidGenerator extends ChunkGenerator {
 
 		private static final int BIOME_CHUNK_SIZE = 96;
 
+		private static final long X_SALT = 0x9E3779B97F4A7C15L;
+		private static final long Z_SALT = 0xC2B2AE3D27D4EB4FL;
+
+		/**
+		 * Scrambles similar input values into thoroughly different output values.
+		 * <p>
+		 * Overflow is intentional: Java's long arithmetic wraps predictably,
+		 * making this deterministic across machines.
+		 */
+		private static long mix64(long value) {
+			value = (value ^ value >>> 30) * 0xBF58476D1CE4E5B9L;
+			value = (value ^ value >>> 27) * 0x94D049BB133111EBL;
+			return value ^ value >>> 31;
+		}
+
 		@Override
 		public Biome getBiome(final WorldInfo worldInfo, final int x, final int y, final int z) {
-			final long seed = Long.parseLong(
-					""
-							// depend on signs of x and z because we take absolute values below.
-							+ (x >= 0 ? 1 : 0)
-							+ (z >= 0 ? 1 : 0)
-							// concatenate x and z to avoid additive commutativity.
-							// note the integer (floored) division.
-							+ (Math.abs(x) / BIOME_CHUNK_SIZE)
-							+ (Math.abs(z) / BIOME_CHUNK_SIZE)
+			final long cellX = Math.floorDiv(x, BIOME_CHUNK_SIZE);
+			final long cellZ = Math.floorDiv(z, BIOME_CHUNK_SIZE);
+
+			final long hash = mix64(
+					worldInfo.getSeed()
+							^ cellX * X_SALT
+							^ cellZ * Z_SALT
 			);
 
-			final RandomGenerator random = RandomGeneratorFactory.getDefault().create(seed);
-
 			final List<Biome> biomes = this.getBiomes(worldInfo);
-			return biomes.get(random.nextInt(biomes.size()));
+			final int biomeIndex = (int) Math.floorMod(hash, (long) biomes.size());
+			return biomes.get(biomeIndex);
 		}
 
 		@Override
