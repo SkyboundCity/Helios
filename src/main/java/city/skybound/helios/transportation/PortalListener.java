@@ -1,6 +1,6 @@
 package city.skybound.helios.transportation;
 
-import city.skybound.helios.Helios;
+import city.skybound.helios.HeliosPlugin;
 import city.skybound.helios.realm.Realm;
 import city.skybound.helios.realm.Transposer;
 import com.google.inject.Inject;
@@ -24,20 +24,20 @@ public final class PortalListener implements Listener {
 
 	private final Map<Player, Integer> lastPortalAttempt = new HashMap<>();
 
-	private final Helios helios;
+	private final HeliosPlugin plugin;
 	private final Transposer transposer;
 
 	@Inject
 	public PortalListener(
-			final Helios helios,
+			final HeliosPlugin plugin,
 			final Transposer transposer
 	) {
-		this.helios = helios;
+		this.plugin = plugin;
 		this.transposer = transposer;
 	}
 
 	public void attemptPortal(final Player player) {
-		this.lastPortalAttempt.put(player, this.helios.getServer().getCurrentTick());
+		this.lastPortalAttempt.put(player, this.plugin.getServer().getCurrentTick());
 	}
 
 	@EventHandler
@@ -52,7 +52,7 @@ public final class PortalListener implements Listener {
 		}
 
 		if (this.lastPortalAttempt.containsKey(player)
-				&& this.helios.getServer().getCurrentTick() - this.lastPortalAttempt.get(player) < 5) {
+				&& this.plugin.getServer().getCurrentTick() - this.lastPortalAttempt.get(player) < 5) {
 			this.attemptPortal(player);
 			return;
 		}

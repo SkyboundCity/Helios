@@ -1,6 +1,6 @@
 package city.skybound.helios.server;
 
-import city.skybound.helios.Helios;
+import city.skybound.helios.HeliosPlugin;
 import city.skybound.helios.Permission;
 import city.skybound.helios.config.LangConfig;
 import com.google.inject.Inject;
@@ -12,12 +12,12 @@ import static org.incendo.cloud.description.Description.description;
 
 public final class HeliosCommand {
 
-	private final Helios plugin;
+	private final HeliosPlugin plugin;
 	private final LangConfig langConfig;
 
 	@Inject
 	public HeliosCommand(
-			final Helios plugin,
+			final HeliosPlugin plugin,
 			final LangConfig langConfig
 	) {
 		this.plugin = plugin;

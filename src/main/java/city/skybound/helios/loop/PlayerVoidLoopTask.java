@@ -1,21 +1,18 @@
 package city.skybound.helios.loop;
 
-import city.skybound.helios.Helios;
-import city.skybound.helios.Ticks;
+import city.skybound.helios.HeliosPlugin;
 import com.google.inject.Inject;
 import org.bukkit.Location;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
-import java.time.Duration;
-
 public final class PlayerVoidLoopTask {
 
-	private final Helios plugin;
+	private final HeliosPlugin plugin;
 
 	@Inject
 	public PlayerVoidLoopTask(
-			final Helios plugin
+			final HeliosPlugin plugin
 	) {
 		this.plugin = plugin;
 	}

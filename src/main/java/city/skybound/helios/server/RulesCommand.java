@@ -1,6 +1,6 @@
 package city.skybound.helios.server;
 
-import city.skybound.helios.Helios;
+import city.skybound.helios.HeliosPlugin;
 import city.skybound.helios.Permission;
 import city.skybound.helios.config.BookDeserializer;
 import city.skybound.helios.config.BooksConfig;
@@ -21,14 +21,14 @@ import static org.incendo.cloud.parser.standard.IntegerParser.integerParser;
 
 public final class RulesCommand {
 
-	private final Helios helios;
+	private final HeliosPlugin helios;
 	private final BooksConfig booksConfig;
 	private final LangConfig langConfig;
 	private final ConfigConfig configConfig;
 
 	@Inject
 	public RulesCommand(
-			final Helios helios,
+			final HeliosPlugin helios,
 			final BooksConfig booksConfig,
 			final LangConfig langConfig,
 			final ConfigConfig configConfig

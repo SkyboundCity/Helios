@@ -1,6 +1,6 @@
 package city.skybound.helios.transportation;
 
-import city.skybound.helios.Helios;
+import city.skybound.helios.HeliosPlugin;
 import city.skybound.helios.Permission;
 import city.skybound.helios.soul.Charon;
 import com.google.inject.Inject;
@@ -12,12 +12,12 @@ import org.bukkit.entity.Player;
 public final class FlightService {
 
 	private final Charon charon;
-	private final Helios plugin;
+	private final HeliosPlugin plugin;
 
 	@Inject
 	public FlightService(
 			final Charon charon,
-			final Helios plugin
+			final HeliosPlugin plugin
 	) {
 		this.charon = charon;
 		this.plugin = plugin;

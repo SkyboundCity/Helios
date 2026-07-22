@@ -1,7 +1,7 @@
 package city.skybound.helios.server;
 
 import city.skybound.helios.DurationFormat;
-import city.skybound.helios.Helios;
+import city.skybound.helios.HeliosPlugin;
 import city.skybound.helios.config.ConfigConfig;
 import city.skybound.helios.config.LangConfig;
 import city.skybound.helios.realm.Realm;
@@ -29,14 +29,14 @@ import static net.kyori.adventure.resource.ResourcePackRequest.resourcePackReque
 
 public final class JoinQuitListener implements Listener {
 
-	private final Helios plugin;
+	private final HeliosPlugin plugin;
 	private final LangConfig langConfig;
 	private final ConfigConfig configConfig;
 	private final WorldService worldService;
 
 	@Inject
 	public JoinQuitListener(
-			final Helios plugin,
+			final HeliosPlugin plugin,
 			final LangConfig langConfig,
 			final ConfigConfig configConfig,
 			final WorldService worldService

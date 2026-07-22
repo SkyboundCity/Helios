@@ -4,8 +4,11 @@ authors: [ TehBrian ]
 website: https://github.com/SkyboundCity/Helios
 
 version: ${version}
-main: city.skybound.helios.Helios
+main: city.skybound.helios.HeliosPlugin
 api-version: 26.2
 
-depend: [ LuckPerms ]
-load: STARTUP
+dependencies:
+  server:
+    LuckPerms:
+      load: BEFORE
+      required: true

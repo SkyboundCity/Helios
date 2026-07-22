@@ -1,6 +1,6 @@
 package city.skybound.helios.piano;
 
-import city.skybound.helios.Helios;
+import city.skybound.helios.HeliosPlugin;
 import city.skybound.helios.Permission;
 import city.skybound.helios.config.BookDeserializer;
 import city.skybound.helios.config.BooksConfig;
@@ -25,7 +25,7 @@ import static org.incendo.cloud.parser.standard.IntegerParser.integerParser;
 
 public final class PianoCommand {
 
-	private final Helios plugin;
+	private final HeliosPlugin plugin;
 	private final Charon charon;
 	private final PianoMenuProvider pianoMenuProvider;
 	private final BooksConfig booksConfig;
@@ -33,7 +33,7 @@ public final class PianoCommand {
 
 	@Inject
 	public PianoCommand(
-			final Helios plugin,
+			final HeliosPlugin plugin,
 			final Charon charon,
 			final PianoMenuProvider pianoMenuProvider,
 			final BooksConfig booksConfig,

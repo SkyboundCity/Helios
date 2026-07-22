@@ -1,6 +1,6 @@
 package city.skybound.helios.loop;
 
-import city.skybound.helios.Helios;
+import city.skybound.helios.HeliosPlugin;
 import city.skybound.helios.Ticks;
 import city.skybound.helios.config.LangConfig;
 import city.skybound.helios.realm.Realm;
@@ -36,14 +36,14 @@ public final class WarpTask {
 
 	private static final Random RANDOM = new Random();
 
-	private final Helios plugin;
+	private final HeliosPlugin plugin;
 	private final WorldService worldService;
 	private final LangConfig langConfig;
 	private final Transposer transposer;
 
 	@Inject
 	public WarpTask(
-			final Helios plugin,
+			final HeliosPlugin plugin,
 			final WorldService worldService,
 			final LangConfig langConfig,
 			final Transposer transposer

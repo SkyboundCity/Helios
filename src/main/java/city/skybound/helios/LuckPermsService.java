@@ -16,13 +16,13 @@ import java.util.List;
 
 public final class LuckPermsService {
 
-	private final Helios plugin;
+	private final HeliosPlugin plugin;
 
 	private @Nullable LuckPerms luckPerms;
 
 	@Inject
 	public LuckPermsService(
-			final Helios plugin
+			final HeliosPlugin plugin
 	) {
 		this.plugin = plugin;
 	}

@@ -67,7 +67,7 @@ import static org.incendo.cloud.paper.util.sender.PaperSimpleSenderMapper.simple
 /**
  * The main class for the Helios plugin.
  */
-public final class Helios extends JavaPlugin {
+public final class HeliosPlugin extends JavaPlugin {
 
 	private @MonotonicNonNull PaperCommandManager<Source> commandManager;
 	private @MonotonicNonNull Injector injector;

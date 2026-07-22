@@ -1,6 +1,6 @@
 package city.skybound.helios.transportation;
 
-import city.skybound.helios.Helios;
+import city.skybound.helios.HeliosPlugin;
 import city.skybound.helios.PotEff;
 import city.skybound.helios.realm.Milieu;
 import city.skybound.helios.realm.Realm;
@@ -12,12 +12,12 @@ import org.bukkit.potion.PotionEffectType;
 
 public final class TransportationTask {
 
-	private final Helios plugin;
+	private final HeliosPlugin plugin;
 	private final FlightService flightService;
 
 	@Inject
 	public TransportationTask(
-			final Helios plugin,
+			final HeliosPlugin plugin,
 			final FlightService flightService
 	) {
 		this.plugin = plugin;
