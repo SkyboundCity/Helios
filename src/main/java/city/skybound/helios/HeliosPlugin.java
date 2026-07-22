@@ -49,6 +49,7 @@ import city.skybound.helios.transportation.TransportationTask;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import dev.tehbrian.agna.configurate.ConfigLoader;
+import io.papermc.paper.datapack.Datapack;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
@@ -71,6 +72,15 @@ public final class HeliosPlugin extends JavaPlugin {
 
 	private @MonotonicNonNull PaperCommandManager<Source> commandManager;
 	private @MonotonicNonNull Injector injector;
+
+	@Override
+	public void onLoad() {
+		final Datapack pack = this.getServer().getDatapackManager().getPack(this.getPluginMeta().getName() + "/provided");
+		if (pack == null || !pack.isEnabled()) {
+			this.getSLF4JLogger().error("The provided datapack failed to load. Disabling plugin");
+			disableSelf(this);
+		}
+	}
 
 	@Override
 	public void onEnable() {

@@ -7,6 +7,8 @@ version: ${version}
 main: city.skybound.helios.HeliosPlugin
 api-version: 26.2
 
+bootstrapper: city.skybound.helios.HeliosBootstrap
+
 dependencies:
   server:
     LuckPerms:
