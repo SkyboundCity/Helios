@@ -17,11 +17,13 @@
         "sound": "minecraft:music.end"
       }
     },
-    "minecraft:gameplay/bed_rule": {
-      "can_set_spawn": "never",
-      "can_sleep": "never",
-      "explodes": true
-    },
+		"minecraft:gameplay/bed_rule": {
+			"can_set_spawn": "always",
+			"can_sleep": "always",
+			"error_message": {
+				"translate": "block.minecraft.bed.no_sleep"
+			}
+		},
     "minecraft:gameplay/respawn_anchor_works": false,
     "minecraft:visual/ambient_light_color": "#3f473f",
     "minecraft:visual/fog_color": "#181318",

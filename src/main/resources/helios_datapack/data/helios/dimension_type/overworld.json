@@ -23,7 +23,7 @@
     },
     "minecraft:gameplay/bed_rule": {
       "can_set_spawn": "always",
-      "can_sleep": "when_dark",
+      "can_sleep": "always",
       "error_message": {
         "translate": "block.minecraft.bed.no_sleep"
       }
@@ -44,7 +44,7 @@
   "height": 608,
   "infiniburn": "#minecraft:infiniburn_overworld",
   "logical_height": 608,
-  "min_y": -224,
+  "min_y": -288,
   "monster_spawn_block_light_limit": 0,
   "monster_spawn_light_level": {
     "type": "minecraft:uniform",
