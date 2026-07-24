@@ -4,9 +4,9 @@ authors: [ TehBrian ]
 website: https://github.com/SkyboundCity/Helios
 
 version: ${version}
-main: city.skybound.helios.HeliosPlugin
 api-version: 26.2
-
+load: STARTUP
+main: city.skybound.helios.HeliosPlugin
 bootstrapper: city.skybound.helios.HeliosBootstrap
 
 dependencies:
