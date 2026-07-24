@@ -1,11 +1,13 @@
 package city.skybound.helios.realm;
 
 import com.google.inject.Inject;
+import dev.wyck.level.LevelCreator;
+import dev.wyck.level.LevelType;
+import dev.wyck.worldgen.chunk.ChunkGenerator;
+import dev.wyck.worldgen.chunk.flat.FlatLevelGeneratorSettings;
 import org.bukkit.GameRules;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.WorldCreator;
-import org.bukkit.WorldType;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.slf4j.Logger;
 
@@ -24,7 +26,7 @@ public final class WorldService {
 	}
 
 	public World getWorld(final Realm realm) {
-		final World world = this.plugin.getServer().getWorld(realm.key(this.plugin));
+		final World world = this.plugin.getServer().getWorld(realm.key());
 		if (world == null) {
 			throw new RuntimeException("Could not find world for realm `" + realm + "`.");
 		}
@@ -38,20 +40,35 @@ public final class WorldService {
 
 	private void createWorlds() {
 		for (final Realm realm : Realm.values()) {
-			this.logger.info("Creating world `{}`.", realm.toString());
+			this.logger.info("Creating world for realm {}", realm.toString());
 
-			final var world = this.plugin.getServer().createWorld(WorldCreator.ofKey(realm.key(this.plugin))
-					// lower black horizon in overworld worlds.
-					// FLAT worlds turn black below Y=-60. NORMAL worlds turn black below Y=60.
-					.type(WorldType.FLAT)
+			final var voidGeneratorBukkit = new VoidGenerator();
+			final var voidGeneratorWyck = ChunkGenerator.flat()
+					.settings(FlatLevelGeneratorSettings.THE_VOID)
+					.build();
+
+			final var voidGenerator = ChunkGenerator.craftBukkit()
+					.generator(voidGeneratorBukkit)
+					.delegate(voidGeneratorWyck)
+					.build();
+
+			LevelCreator.builder()
+					.resourceKey(realm.wyckKey())
+					.name(realm.toString())
+					.dimension(realm.wyckKey())
+					.seed(realm.seed())
+					// lower black horizon in overworld
+					// FLAT worlds turn black below min_y whereas NORMAL worlds turn black below Y=63
+					// see ClientLevel#getHorizonHeight
+					.type(LevelType.FLAT)
+					// used in VoidGenerator to determine biome set
+					// TODO: don't do this?
 					.environment(realm.habitat().environment())
-					.generator(new VoidGenerator())
-			);
-
-			if (world == null) {
-				throw new RuntimeException("Failed to create world for realm `" + realm + "`.");
-			}
+					.generator(voidGenerator)
+					.create();
 		}
+
+		this.logger.info("Finished creating worlds");
 	}
 
 	private void setGameRules() {

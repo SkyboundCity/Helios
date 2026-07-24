@@ -18,6 +18,7 @@ repositories {
 	maven("https://repo.papermc.io/repository/maven-public/")
 	maven("https://repo.tehbrian.dev/releases/")
 	maven("https://repo.broccol.ai/snapshots/")
+	maven("https://repo.wyck.dev/snapshots/")
 }
 
 dependencies {
@@ -25,10 +26,13 @@ dependencies {
 	compileOnly("net.luckperms:api:5.5")
 	compileOnly("org.jspecify:jspecify:1.0.0")
 	implementation("com.google.inject:guice:7.0.0")
+	// replace old lib bundled by Guice
+	implementation("com.google.guava:guava:33.6.0-jre")
 	implementation("dev.tehbrian:agna-paper:1.2.2")
 	implementation("dev.tehbrian:agna-configurate:1.2.2")
 	implementation("org.incendo:cloud-paper:2.0.0-beta.17")
 	implementation("org.spongepowered:configurate-hocon:4.2.0")
+	implementation("dev.wyck:Wyck:3.3.0-8fe98f0")
 }
 
 tasks {
@@ -68,6 +72,7 @@ tasks {
 				"com.google.j2objc",
 				"com.google.thirdparty",
 				"dev.tehbrian.agna",
+				"dev.wyck",
 				"io.leangen",
 				"jakarta.inject",
 				"javax.annotation",

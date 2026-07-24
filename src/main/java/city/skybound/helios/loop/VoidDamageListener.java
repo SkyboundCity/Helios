@@ -1,5 +1,6 @@
 package city.skybound.helios.loop;
 
+import city.skybound.helios.realm.Realm;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -14,6 +15,10 @@ import org.bukkit.event.entity.EntityDamageEvent;
  * Also prevents void damage for all entities.
  */
 public final class VoidDamageListener implements Listener {
+
+	// lore-wise, they burnt up due to friction.
+	// practically, they're probably abandoned.
+	private static final int CRISP_THRESHOLD = 10_000;
 
 	@EventHandler
 	public void onVoidDamage(final EntityDamageEvent event) {
@@ -30,17 +35,15 @@ public final class VoidDamageListener implements Listener {
 			return;
 		}
 
-		if (entity.getFallDistance() > 10_000) {
-			// lore-wise, they burnt up due to friction.
-			// practically, they're probably abandoned.
+		if (entity.getFallDistance() > CRISP_THRESHOLD) {
 			entity.remove();
 			return;
 		}
 
 		final Location loc = entity.getLocation();
-		final var world = entity.getWorld();
-		if (loc.getY() <= LoopPositions.lowEngage(world)) {
-			loc.setY(LoopPositions.lowTo(world));
+		final var realm = Realm.of(entity);
+		if (loc.getY() <= RealmPositions.loopMinEngageY(realm)) {
+			loc.setY(RealmPositions.loopMinToY(realm));
 			Teleport.relative(entity, loc);
 		}
 	}

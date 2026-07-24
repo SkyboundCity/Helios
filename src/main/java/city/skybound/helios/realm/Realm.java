@@ -1,10 +1,10 @@
 package city.skybound.helios.realm;
 
+import dev.wyck.keys.ResourceKey;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Locale;
 
@@ -14,16 +14,22 @@ import java.util.Locale;
  * Each realm is tied to a distinct Minecraft world.
  */
 public enum Realm {
-	OVERWORLD(Milieu.CANON, Habitat.WHITE), // standard.
-	NETHER(Milieu.ONEROUS, Habitat.RED), // hellishly difficult.
-	END(Milieu.DOCILE, Habitat.BLACK); // carefree. allows elytras and ender pearls.
+	OVERWORLD(Milieu.CANON, Habitat.WHITE, 851215225L), // standard.
+	NETHER(Milieu.ONEROUS, Habitat.RED, 851214520L), // hellishly difficult.
+	END(Milieu.DOCILE, Habitat.BLACK, 85125144L); // carefree. allows elytras and ender pearls.
 
 	private final Milieu milieu;
 	private final Habitat habitat;
+	private final long seed;
 
-	Realm(final Milieu milieu, final Habitat habitat) {
+	Realm(
+			final Milieu milieu,
+			final Habitat habitat,
+			final long seed
+	) {
 		this.milieu = milieu;
 		this.habitat = habitat;
+		this.seed = seed;
 	}
 
 	public static Realm from(final World world) {
@@ -48,8 +54,12 @@ public enum Realm {
 		return this.name().toLowerCase(Locale.ROOT);
 	}
 
-	public NamespacedKey key(final JavaPlugin plugin) {
-		return new NamespacedKey(plugin, this.toString());
+	public NamespacedKey key() {
+		return new NamespacedKey("helios", this.toString());
+	}
+
+	public ResourceKey wyckKey() {
+		return ResourceKey.of("helios", this.toString());
 	}
 
 	public Milieu milieu() {
@@ -58,5 +68,9 @@ public enum Realm {
 
 	public Habitat habitat() {
 		return this.habitat;
+	}
+
+	public long seed() {
+		return this.seed;
 	}
 }

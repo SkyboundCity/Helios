@@ -15,7 +15,7 @@ import java.util.Random;
 
 public final class VoidGenerator extends ChunkGenerator {
 
-	private final MixedBagBiomeProvider mixedBagBiomeProvider = new MixedBagBiomeProvider();
+	private final VoidBiomeProvider biomeProvider = new VoidBiomeProvider();
 
 	@Override
 	public Location getFixedSpawnLocation(final World world, final Random random) {
@@ -24,10 +24,10 @@ public final class VoidGenerator extends ChunkGenerator {
 
 	@Override
 	public BiomeProvider getDefaultBiomeProvider(final WorldInfo worldInfo) {
-		return this.mixedBagBiomeProvider;
+		return this.biomeProvider;
 	}
 
-	public static final class MixedBagBiomeProvider extends BiomeProvider {
+	public static final class VoidBiomeProvider extends BiomeProvider {
 
 		private static final List<Biome> WHITE_BIOMES = List.copyOf(RegistryAccess
 				.registryAccess()
