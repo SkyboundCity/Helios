@@ -34,7 +34,7 @@ public final class RealmPositions {
 		return loopMinEngageY(realm) - 16 * 3;
 	}
 
-	public static int maxExclusiveY(final Realm realm) {
+	public static int maxYExclusive(final Realm realm) {
 		return switch (realm) {
 			case OVERWORLD -> 320;
 			case NETHER, END -> 256;
@@ -50,7 +50,7 @@ public final class RealmPositions {
 	}
 
 	public static int loopMinToY(final Realm realm) {
-		return maxExclusiveY(realm) + visualClearance(realm);
+		return maxYExclusive(realm) + visualClearance(realm);
 	}
 
 	public static int loopMaxToY(final Realm realm) {
@@ -58,11 +58,11 @@ public final class RealmPositions {
 	}
 
 	public static int technicalHeight(final Realm realm) {
-		return maxExclusiveY(realm) - technicalMinY(realm);
+		return maxYExclusive(realm) - technicalMinY(realm);
 	}
 
 	public static boolean inGameplayArea(final Realm realm, final int y) {
-		return y >= gameplayMinY(realm) && y < maxExclusiveY(realm);
+		return y >= gameplayMinY(realm) && y < maxYExclusive(realm);
 	}
 
 }

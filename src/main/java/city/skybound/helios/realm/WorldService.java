@@ -1,5 +1,6 @@
 package city.skybound.helios.realm;
 
+import city.skybound.helios.loop.RealmPositions;
 import com.google.inject.Inject;
 import dev.wyck.level.LevelCreator;
 import dev.wyck.level.LevelType;
@@ -10,6 +11,8 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.slf4j.Logger;
+
+import static com.google.common.base.Preconditions.checkState;
 
 /**
  * Handles the creation of abstract realms into concrete worlds.
@@ -35,6 +38,7 @@ public final class WorldService {
 
 	public void init() {
 		this.createWorlds();
+		this.verifyWorldPositions();
 		this.setGameRules();
 	}
 
@@ -69,6 +73,28 @@ public final class WorldService {
 		}
 
 		this.logger.info("Finished creating worlds");
+	}
+
+	private void verifyWorldPositions() {
+		for (final Realm realm : Realm.values()) {
+			final World world = this.getWorld(realm);
+
+			checkState(
+					world.getMinHeight() == RealmPositions.technicalMinY(realm),
+					"%s has min Y %s, expected %s",
+					realm,
+					world.getMinHeight(),
+					RealmPositions.technicalMinY(realm)
+			);
+
+			checkState(
+					world.getMaxHeight() == RealmPositions.maxYExclusive(realm),
+					"%s has max Y %s, expected %s",
+					realm,
+					world.getMaxHeight(),
+					RealmPositions.maxYExclusive(realm)
+			);
+		}
 	}
 
 	private void setGameRules() {
