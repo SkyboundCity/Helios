@@ -23,7 +23,7 @@ repositories {
 dependencies {
 	compileOnly("io.papermc.paper:paper-api:26.2.build.+")
 	compileOnly("net.luckperms:api:5.5")
-	implementation("org.jspecify:jspecify:1.0.0")
+	compileOnly("org.jspecify:jspecify:1.0.0")
 	implementation("com.google.inject:guice:7.0.0")
 	implementation("dev.tehbrian:agna-paper:1.2.2")
 	implementation("dev.tehbrian:agna-configurate:1.2.2")
