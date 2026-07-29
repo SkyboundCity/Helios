@@ -2,16 +2,23 @@ package city.skybound.helios.realm;
 
 import city.skybound.helios.loop.RealmPositions;
 import com.google.inject.Inject;
+import dev.wyck.biome.Biomes;
 import dev.wyck.level.LevelCreator;
 import dev.wyck.level.LevelType;
 import dev.wyck.worldgen.chunk.ChunkGenerator;
 import dev.wyck.worldgen.chunk.flat.FlatLevelGeneratorSettings;
 import org.bukkit.GameRules;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.slf4j.Logger;
 
+import java.util.Set;
+
+import static city.skybound.helios.realm.BiomeSets.BLACK_BIOMES;
+import static city.skybound.helios.realm.BiomeSets.RED_BIOMES;
+import static city.skybound.helios.realm.BiomeSets.WHITE_BIOMES;
 import static com.google.common.base.Preconditions.checkState;
 
 /**
@@ -42,18 +49,29 @@ public final class WorldService {
 		this.setGameRules();
 	}
 
+	private Set<dev.wyck.biome.Biome> getRealmBiomes(final Realm realm) {
+		return switch (realm.habitat()) {
+			case WHITE -> WHITE_BIOMES;
+			case RED -> RED_BIOMES;
+			case BLACK -> BLACK_BIOMES;
+		};
+	}
+
 	private void createWorlds() {
 		for (final Realm realm : Realm.values()) {
 			this.logger.info("Creating world for realm {}", realm.toString());
 
-			final var voidGeneratorBukkit = new VoidGenerator();
-			final var voidGeneratorWyck = ChunkGenerator.flat()
-					.settings(FlatLevelGeneratorSettings.THE_VOID)
+			final var flatLevelGeneratorSettings = FlatLevelGeneratorSettings.builder()
+					.layer(Material.AIR, 1)
+					.biome(Biomes.THE_VOID)
+					.decoration(false)
 					.build();
 
-			final var voidGenerator = ChunkGenerator.craftBukkit()
-					.generator(voidGeneratorBukkit)
-					.delegate(voidGeneratorWyck)
+			final var biomeSource = new RandomBiomeSource(this.getRealmBiomes(realm), realm.seed());
+
+			final var chunkGenerator = ChunkGenerator.flat()
+					.settings(flatLevelGeneratorSettings)
+					.biomeSource(biomeSource)
 					.build();
 
 			LevelCreator.builder()
@@ -68,7 +86,7 @@ public final class WorldService {
 					// used in VoidGenerator to determine biome set
 					// TODO: don't do this?
 					.environment(realm.habitat().environment())
-					.generator(voidGenerator)
+					.generator(chunkGenerator)
 					.create();
 		}
 
