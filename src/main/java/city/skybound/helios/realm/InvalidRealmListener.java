@@ -9,12 +9,12 @@ import org.bukkit.event.player.PlayerJoinEvent;
 /**
  * Teleports players who join the bootstrap world to the overworld.
  */
-public final class InvalidWorldListener implements Listener {
+public final class InvalidRealmListener implements Listener {
 
 	private final Transposer transposer;
 
 	@Inject
-	public InvalidWorldListener(
+	public InvalidRealmListener(
 			final Transposer transposer
 	) {
 		this.transposer = transposer;
@@ -26,8 +26,8 @@ public final class InvalidWorldListener implements Listener {
 
 		try {
 			Realm.of(player);
-		} catch (RuntimeException _) {
-			this.transposer.transposeNoPrevious(player, Realm.OVERWORLD);
+		} catch (IllegalStateException _) {
+			this.transposer.transpose(player, Realm.OVERWORLD);
 		}
 	}
 

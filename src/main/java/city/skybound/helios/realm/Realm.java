@@ -37,7 +37,7 @@ public enum Realm {
 			case "helios:overworld" -> Realm.OVERWORLD;
 			case "helios:nether" -> Realm.NETHER;
 			case "helios:end" -> Realm.END;
-			default -> throw new RuntimeException("Could not find realm for world `" + world.key().asString() + "`.");
+			default -> throw new IllegalStateException("Could not find realm for world " + world.key().asString());
 		};
 	}
 

@@ -10,13 +10,15 @@ import org.bukkit.generator.WorldInfo;
 import java.util.List;
 import java.util.Random;
 
+import static city.skybound.helios.realm.WorldService.defaultWorldSpawn;
+
 public final class VoidGenerator extends ChunkGenerator {
 
 	private final VoidBiomeProvider biomeProvider = new VoidBiomeProvider();
 
 	@Override
 	public Location getFixedSpawnLocation(final World world, final Random random) {
-		return new Location(world, 0.5D, 65.0D, 0.5D);
+		return defaultWorldSpawn(world);
 	}
 
 	@Override

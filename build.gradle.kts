@@ -32,8 +32,8 @@ dependencies {
 	implementation("dev.tehbrian:agna-configurate:1.2.2")
 	implementation("org.incendo:cloud-paper:2.0.0-beta.17")
 	implementation("org.spongepowered:configurate-hocon:4.2.0")
-	implementation("dev.wyck:wyck-26.2:3.3.0-f32b69d")
-	implementation("dev.wyck:wyck-decoders:3.3.0-f32b69d")
+	implementation("dev.wyck:wyck-26.2:3.3.0-2e003af")
+	implementation("dev.wyck:wyck-decoders:3.3.0-2e003af")
 }
 
 tasks {

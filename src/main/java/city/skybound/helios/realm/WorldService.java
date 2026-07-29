@@ -35,10 +35,14 @@ public final class WorldService {
 		this.logger = logger;
 	}
 
+	public static Location defaultWorldSpawn(final World world) {
+		return new Location(world, 0.5D, 65D, 0.5D);
+	}
+
 	public World getWorld(final Realm realm) {
 		final World world = this.plugin.getServer().getWorld(realm.key());
 		if (world == null) {
-			throw new RuntimeException("Could not find world for realm `" + realm + "`.");
+			throw new IllegalStateException("Could not find world for realm `" + realm + "`.");
 		}
 		return world;
 	}
@@ -46,7 +50,7 @@ public final class WorldService {
 	public void init() {
 		this.createWorlds();
 		this.verifyWorldPositions();
-		this.setGameRules();
+		this.configureWorlds();
 	}
 
 	private Set<dev.wyck.biome.Biome> getRealmBiomes(final Realm realm) {
@@ -115,7 +119,7 @@ public final class WorldService {
 		}
 	}
 
-	private void setGameRules() {
+	private void configureWorlds() {
 		for (final Realm realm : Realm.values()) {
 			final World world = this.getWorld(realm);
 

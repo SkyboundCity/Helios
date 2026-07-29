@@ -20,7 +20,7 @@ import city.skybound.helios.loop.VoidDamageListener;
 import city.skybound.helios.loop.WarpTask;
 import city.skybound.helios.piano.PianoCommand;
 import city.skybound.helios.piano.PianoPlayListener;
-import city.skybound.helios.realm.InvalidWorldListener;
+import city.skybound.helios.realm.InvalidRealmListener;
 import city.skybound.helios.realm.PlayerSpawnListener;
 import city.skybound.helios.realm.TransposeCommands;
 import city.skybound.helios.realm.VoidGenerator;
@@ -195,7 +195,7 @@ public final class HeliosPlugin extends JavaPlugin {
 				this.injector.getInstance(FlightListener.class),
 				this.injector.getInstance(FlingerListener.class),
 				this.injector.getInstance(JoinQuitListener.class),
-				this.injector.getInstance(InvalidWorldListener.class),
+				this.injector.getInstance(InvalidRealmListener.class),
 				this.injector.getInstance(VoidDamageListener.class),
 				this.injector.getInstance(PianoPlayListener.class),
 				this.injector.getInstance(PlayerSpawnListener.class),

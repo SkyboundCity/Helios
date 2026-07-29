@@ -5,6 +5,7 @@ import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.jspecify.annotations.Nullable;
+import org.slf4j.Logger;
 
 import java.util.Objects;
 
@@ -15,22 +16,31 @@ public final class Transposer {
 
 	private final WorldService worldService;
 	private final PdcLocStore pdcLocStore;
+	private final Logger logger;
 
 	@Inject
 	public Transposer(
 			final WorldService worldService,
-			final PdcLocStore pdcLocStore
+			final PdcLocStore pdcLocStore,
+			final Logger logger
 	) {
 		this.worldService = worldService;
 		this.pdcLocStore = pdcLocStore;
+		this.logger = logger;
 	}
 
 	public void transpose(final Player player, final Realm destination) {
-		this.setPreviousLocation(player, Realm.of(player));
-		this.transposeNoPrevious(player, destination);
-	}
+		Realm prevRealm = null;
+		try {
+			prevRealm = Realm.of(player);
+		} catch (final IllegalStateException e) {
+			this.logger.warn("Transposing out of non-realm world {}", player.getWorld().key().value());
+		}
 
-	public void transposeNoPrevious(final Player player, final Realm destination) {
+		if (prevRealm != null) {
+			this.setPreviousLocation(player, prevRealm);
+		}
+
 		player.teleport(this.getNextLocation(player, destination));
 		player.setFallDistance(0);
 	}
