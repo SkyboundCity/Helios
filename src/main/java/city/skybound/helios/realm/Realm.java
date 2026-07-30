@@ -54,6 +54,14 @@ public enum Realm {
 		return from(location.getWorld());
 	}
 
+	public static Realm of(final Block block) {
+		return from(block.getWorld());
+	}
+
+	public static Realm of(final BlockState blockState) {
+		return from(blockState.getWorld());
+	}
+
 	public static Realm of(final Entity entity) {
 		return from(entity.getWorld());
 	}
