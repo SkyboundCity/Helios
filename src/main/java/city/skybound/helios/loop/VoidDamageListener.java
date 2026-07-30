@@ -26,12 +26,17 @@ public final class VoidDamageListener implements Listener {
 			return;
 		}
 
-		// void damage? no such thing.
+		final Entity entity = event.getEntity();
+		final var realm = Realm.find(entity.getWorld());
+		if (realm == null) {
+			return;
+		}
+
+		// void damage? no such thing
 		event.setCancelled(true);
 
-		final Entity entity = event.getEntity();
 		if (entity instanceof Player) {
-			// players will be handled in PlayerVoidLoop, so no need to handle them here.
+			// players will be handled in PlayerVoidLoop, so no need to handle them here
 			return;
 		}
 
@@ -41,7 +46,6 @@ public final class VoidDamageListener implements Listener {
 		}
 
 		final Location loc = entity.getLocation();
-		final var realm = Realm.of(entity);
 		if (loc.getY() <= RealmPositions.loopMinEngageY(realm)) {
 			loc.setY(RealmPositions.loopMinToY(realm));
 			Teleport.relative(entity, loc);

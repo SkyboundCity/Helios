@@ -29,18 +29,33 @@ import static city.skybound.helios.loop.RealmPositions.inGameplayArea;
  * - BlockDispenseEvent
  * - PortalCreateEvent
  */
-public class GameplayBoundsListener implements Listener {
+public final class GameplayBoundsListener implements Listener {
 
 	private static boolean isForbidden(final Location loc) {
-		return !inGameplayArea(Realm.of(loc), loc.getBlockY());
+		final var realm = Realm.find(loc.getWorld());
+		if (realm != null) {
+			return !inGameplayArea(realm, loc.getBlockY());
+		} else {
+			return false;
+		}
 	}
 
 	private static boolean isForbidden(final Block block) {
-		return !inGameplayArea(Realm.of(block), block.getY());
+		final var realm = Realm.find(block.getWorld());
+		if (realm != null) {
+			return !inGameplayArea(realm, block.getY());
+		} else {
+			return false;
+		}
 	}
 
 	private static boolean isForbidden(final BlockState blockState) {
-		return !inGameplayArea(Realm.of(blockState), blockState.getY());
+		final var realm = Realm.find(blockState.getWorld());
+		if (realm != null) {
+			return !inGameplayArea(realm, blockState.getY());
+		} else {
+			return false;
+		}
 	}
 
 	private static void cancelIfForbidden(final Cancellable cancellable, final Location loc) {

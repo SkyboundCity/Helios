@@ -7,9 +7,9 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Locale;
-import java.util.Optional;
 
 /**
  * The "worlds" that exist in Skybound City.
@@ -35,19 +35,21 @@ public enum Realm {
 		this.seed = seed;
 	}
 
-	public static Optional<Realm> find(final World world) {
+	public static @Nullable Realm find(final World world) {
 		return switch (world.key().asString()) {
-			case "helios:overworld" -> Optional.of(Realm.OVERWORLD);
-			case "helios:nether" -> Optional.of(Realm.NETHER);
-			case "helios:end" -> Optional.of(Realm.END);
-			default -> Optional.empty();
+			case "helios:overworld" -> Realm.OVERWORLD;
+			case "helios:nether" -> Realm.NETHER;
+			case "helios:end" -> Realm.END;
+			default -> null;
 		};
 	}
 
 	public static Realm from(final World world) {
-		return find(world).orElseThrow(
-				() -> new IllegalStateException("Could not find realm for world " + world.key())
-		);
+		final var realm = find(world);
+		if (realm == null) {
+			throw new IllegalStateException("Could not find realm for world " + world.key());
+		}
+		return realm;
 	}
 
 	public static Realm of(final Location location) {

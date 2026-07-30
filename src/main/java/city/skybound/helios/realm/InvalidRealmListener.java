@@ -23,7 +23,7 @@ public final class InvalidRealmListener implements Listener {
 	@EventHandler
 	public void onPlayerJoin(final PlayerJoinEvent event) {
 		final Player player = event.getPlayer();
-		if (Realm.find(player.getWorld()).isEmpty()) {
+		if (Realm.find(player.getWorld()) == null) {
 			this.transposer.transpose(player, Realm.OVERWORLD);
 		}
 	}

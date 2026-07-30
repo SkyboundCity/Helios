@@ -30,16 +30,17 @@ public final class Transposer {
 	}
 
 	public void transpose(final Player player, final Realm destination) {
-		Realm.find(player.getWorld()).ifPresentOrElse(
-				prevRealm -> {
-					if (prevRealm == destination) {
-						this.logger.warn("Player {} is transposing to same realm {}", player.getName(), destination);
-					}
+		final var prevRealm = Realm.find(player.getWorld());
 
-					this.setPreviousLocation(player, prevRealm);
-				},
-				() -> this.logger.warn("Player {} is transposing out of non-realm world {}", player.getName(), player.getWorld().key())
-		);
+		if (prevRealm != null) {
+			if (prevRealm == destination) {
+				this.logger.warn("Player {} is transposing to same realm {}", player.getName(), destination);
+			}
+
+			this.setPreviousLocation(player, prevRealm);
+		} else {
+			this.logger.warn("Player {} is transposing out of non-realm world {}", player.getName(), player.getWorld().key());
+		}
 
 		player.teleport(this.getNextLocation(player, destination));
 		player.setFallDistance(0);
