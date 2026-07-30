@@ -8,7 +8,7 @@ import java.util.Set;
 
 public final class RandomBiomeSource extends CustomBiomeSource {
 
-	private static final int BIOME_CHUNK_SIZE = 96;
+	private static final int BIOME_CHUNK_SIZE = 24;
 
 	private static final long X_SALT = 0x9E3779B97F4A7C15L;
 	private static final long Z_SALT = 0xC2B2AE3D27D4EB4FL;
@@ -34,8 +34,8 @@ public final class RandomBiomeSource extends CustomBiomeSource {
 
 	@Override
 	public Biome biome(final BiomeSourceContext context) {
-		final long cellX = Math.floorDiv(context.blockX(), BIOME_CHUNK_SIZE);
-		final long cellZ = Math.floorDiv(context.blockZ(), BIOME_CHUNK_SIZE);
+		final long cellX = Math.floorDiv(context.quartX(), BIOME_CHUNK_SIZE);
+		final long cellZ = Math.floorDiv(context.quartZ(), BIOME_CHUNK_SIZE);
 
 		final long hash = mix64(this.seed ^ cellX * X_SALT ^ cellZ * Z_SALT);
 

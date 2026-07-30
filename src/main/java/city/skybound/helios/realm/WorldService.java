@@ -69,6 +69,7 @@ public final class WorldService {
 					.layer(Material.AIR, 1)
 					.biome(Biomes.THE_VOID)
 					.decoration(false)
+					.structures(Set.of())
 					.build();
 
 			final var biomeSource = new RandomBiomeSource(this.getRealmBiomes(realm), realm.seed());
@@ -83,6 +84,7 @@ public final class WorldService {
 					.name(realm.toString())
 					.dimension(realm.wyckKey())
 					.seed(realm.seed())
+					.generateStructures(false)
 					// lower black horizon in overworld
 					// FLAT worlds turn black below min_y whereas NORMAL worlds turn black below Y=63
 					// see ClientLevel#getHorizonHeight
