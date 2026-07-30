@@ -4,9 +4,12 @@ import dev.wyck.keys.ResourceKey;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
 
 import java.util.Locale;
+import java.util.Optional;
 
 /**
  * The "worlds" that exist in Skybound City.
@@ -32,13 +35,19 @@ public enum Realm {
 		this.seed = seed;
 	}
 
-	public static Realm from(final World world) {
+	public static Optional<Realm> find(final World world) {
 		return switch (world.key().asString()) {
-			case "helios:overworld" -> Realm.OVERWORLD;
-			case "helios:nether" -> Realm.NETHER;
-			case "helios:end" -> Realm.END;
-			default -> throw new IllegalStateException("Could not find realm for world " + world.key().asString());
+			case "helios:overworld" -> Optional.of(Realm.OVERWORLD);
+			case "helios:nether" -> Optional.of(Realm.NETHER);
+			case "helios:end" -> Optional.of(Realm.END);
+			default -> Optional.empty();
 		};
+	}
+
+	public static Realm from(final World world) {
+		return find(world).orElseThrow(
+				() -> new IllegalStateException("Could not find realm for world " + world.key())
+		);
 	}
 
 	public static Realm of(final Location location) {

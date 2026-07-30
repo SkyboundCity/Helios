@@ -42,7 +42,7 @@ public final class WorldService {
 	public World getWorld(final Realm realm) {
 		final World world = this.plugin.getServer().getWorld(realm.key());
 		if (world == null) {
-			throw new IllegalStateException("Could not find world for realm `" + realm + "`.");
+			throw new IllegalStateException("Could not find world for realm " + realm);
 		}
 		return world;
 	}
