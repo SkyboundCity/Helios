@@ -1,7 +1,6 @@
 package city.skybound.helios.tag;
 
 import city.skybound.helios.config.LangConfig;
-import city.skybound.helios.realm.Realm;
 import com.google.inject.Inject;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.GameMode;
@@ -32,19 +31,12 @@ public final class TagListener implements Listener {
 
 	/**
 	 * Prevents potion effects other than damage resistance and saturation during tag.
-	 * <p>
-	 * Grants an exception for blindness in onerous realms.
 	 */
 	@EventHandler
 	public void onPotionEffect(final EntityPotionEffectEvent event) {
 		if (!(event.getEntity() instanceof final Player player)
 				|| !this.tagGame.isPlaying(player)
 				|| event.getNewEffect() == null) {
-			return;
-		}
-
-		if (event.getNewEffect().getType().equals(PotionEffectType.BLINDNESS)
-				&& Realm.of(player) == Realm.NETHER) {
 			return;
 		}
 
