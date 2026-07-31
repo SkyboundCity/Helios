@@ -17,7 +17,7 @@ public final class RealmPositions {
 	// https://i.imgur.com/OubxQoa.jpeg
 
 	private static int visualClearance(final Realm realm) {
-		return switch (realm.habitat()) {
+		return switch (realm) {
 			// server view-distance=10
 			// FogRenderer.setupFog() calculates
 			// renderDistanceInBlocks = renderDistanceInChunks * 16
@@ -26,11 +26,11 @@ public final class RealmPositions {
 			// renderDistanceEnd = renderDistanceInBlocks
 			// SectionOcclusionGraph.getRelativeFrom() rejects when
 			// abs(cameraSectionY - targetSectionY) > viewDistance
-			case WHITE, BLACK -> 16 * 10;
+			case OVERWORLD, END -> 16 * 10;
 			// nether dimension type
 			// "minecraft:visual/fog_end_distance": 96.0,
 			// "minecraft:visual/fog_start_distance": 10.0,
-			case RED -> 16 * 6;
+			case NETHER -> 16 * 6;
 		};
 	}
 

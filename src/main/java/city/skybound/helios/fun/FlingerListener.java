@@ -1,6 +1,6 @@
 package city.skybound.helios.fun;
 
-import city.skybound.helios.realm.Milieu;
+import city.skybound.helios.realm.Realm;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -112,7 +112,7 @@ public final class FlingerListener implements Listener {
 
 	private float getPitch(final Player player) {
 		final float increaseBy;
-		if (Milieu.of(player) == Milieu.ONEROUS) {
+		if (Realm.of(player) == Realm.NETHER) {
 			increaseBy = 1;
 		} else {
 			increaseBy = 0.1F;

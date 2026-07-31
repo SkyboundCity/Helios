@@ -16,9 +16,7 @@ import org.slf4j.Logger;
 
 import java.util.Set;
 
-import static city.skybound.helios.realm.BiomeSets.BLACK_BIOMES;
-import static city.skybound.helios.realm.BiomeSets.RED_BIOMES;
-import static city.skybound.helios.realm.BiomeSets.WHITE_BIOMES;
+import static city.skybound.helios.realm.BiomeSets.getBiomes;
 import static com.google.common.base.Preconditions.checkState;
 
 /**
@@ -53,14 +51,6 @@ public final class WorldService {
 		this.configureWorlds();
 	}
 
-	private Set<dev.wyck.biome.Biome> getRealmBiomes(final Realm realm) {
-		return switch (realm.habitat()) {
-			case WHITE -> WHITE_BIOMES;
-			case RED -> RED_BIOMES;
-			case BLACK -> BLACK_BIOMES;
-		};
-	}
-
 	private void createWorlds() {
 		for (final Realm realm : Realm.values()) {
 			this.logger.info("Creating world for realm {}", realm.toString());
@@ -72,7 +62,7 @@ public final class WorldService {
 					.structures(Set.of())
 					.build();
 
-			final var biomeSource = new RandomBiomeSource(this.getRealmBiomes(realm), realm.seed());
+			final var biomeSource = new RandomBiomeSource(getBiomes(realm), realm.seed());
 
 			final var chunkGenerator = ChunkGenerator.flat()
 					.settings(flatLevelGeneratorSettings)
@@ -89,9 +79,8 @@ public final class WorldService {
 					// FLAT worlds turn black below min_y whereas NORMAL worlds turn black below Y=63
 					// see ClientLevel#getHorizonHeight
 					.type(LevelType.FLAT)
-					// used in VoidGenerator to determine biome set
-					// TODO: don't do this?
-					.environment(realm.habitat().environment())
+					// potentially used by plugins
+					.environment(realm.environment())
 					.generator(chunkGenerator)
 					.create();
 		}

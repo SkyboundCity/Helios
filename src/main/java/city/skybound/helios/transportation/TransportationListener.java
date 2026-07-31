@@ -1,7 +1,7 @@
 package city.skybound.helios.transportation;
 
 import city.skybound.helios.PotEff;
-import city.skybound.helios.realm.Milieu;
+import city.skybound.helios.realm.Realm;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -62,7 +62,7 @@ public final class TransportationListener implements Listener {
 		}
 
 		// allow teleportation in the end.
-		if (Milieu.of(event.getPlayer()) == Milieu.DOCILE) {
+		if (Realm.of(event.getPlayer()) == Realm.END) {
 			return;
 		}
 
@@ -76,7 +76,7 @@ public final class TransportationListener implements Listener {
 	 */
 	@EventHandler
 	public void onVehicleEnter(final VehicleEnterEvent event) {
-		if (Milieu.of(event.getEntered()) != Milieu.ONEROUS) {
+		if (Realm.of(event.getEntered()) != Realm.NETHER) {
 			return;
 		}
 
@@ -100,7 +100,7 @@ public final class TransportationListener implements Listener {
 	@EventHandler
 	public void onPotionEffect(final EntityPotionEffectEvent event) {
 		if (!(event.getEntity() instanceof final Player player)
-				|| Milieu.of(player) != Milieu.ONEROUS
+				|| Realm.of(player) != Realm.NETHER
 				|| event.getNewEffect() == null) {
 			return;
 		}
@@ -123,7 +123,7 @@ public final class TransportationListener implements Listener {
 	public void onWorldChange(final PlayerChangedWorldEvent event) {
 		final Player player = event.getPlayer();
 
-		if (Milieu.of(player) != Milieu.ONEROUS) {
+		if (Realm.of(player) != Realm.NETHER) {
 			return;
 		}
 
@@ -138,7 +138,7 @@ public final class TransportationListener implements Listener {
 	@EventHandler
 	public void onElytra(final EntityToggleGlideEvent event) {
 		if (!(event.getEntity() instanceof final Player player)
-				|| Milieu.of(player) == Milieu.DOCILE
+				|| Realm.of(player) == Realm.END
 				|| !event.isGliding()) {
 			return;
 		}

@@ -2,7 +2,6 @@ package city.skybound.helios.transportation;
 
 import city.skybound.helios.HeliosPlugin;
 import city.skybound.helios.PotEff;
-import city.skybound.helios.realm.Milieu;
 import city.skybound.helios.realm.Realm;
 import com.google.inject.Inject;
 import org.bukkit.Server;
@@ -30,18 +29,17 @@ public final class TransportationTask {
 				this.plugin, () -> {
 					for (final Player player : server.getOnlinePlayers()) {
 						final Realm realm = Realm.of(player);
-						final Milieu milieu = realm.milieu();
 
 						// no flight anywhere.
 						this.flightService.checkFlight(player);
 
 						// elytra only in the end.
-						if (milieu != Milieu.DOCILE) {
+						if (realm != Realm.END) {
 							player.setGliding(false);
 						}
 
 						// nether-specific behavior.
-						if (milieu == Milieu.ONEROUS) {
+						if (realm == Realm.NETHER) {
 							// catch players who bypassed the vehicle listener.
 							if (player.getVehicle() != null
 									&& player.getVehicle().getType() != EntityType.ARROW // allow arrow chairs.

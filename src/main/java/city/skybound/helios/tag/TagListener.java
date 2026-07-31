@@ -1,7 +1,7 @@
 package city.skybound.helios.tag;
 
 import city.skybound.helios.config.LangConfig;
-import city.skybound.helios.realm.Milieu;
+import city.skybound.helios.realm.Realm;
 import com.google.inject.Inject;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.GameMode;
@@ -44,7 +44,7 @@ public final class TagListener implements Listener {
 		}
 
 		if (event.getNewEffect().getType().equals(PotionEffectType.BLINDNESS)
-				&& Milieu.of(player) == Milieu.ONEROUS) {
+				&& Realm.of(player) == Realm.NETHER) {
 			return;
 		}
 

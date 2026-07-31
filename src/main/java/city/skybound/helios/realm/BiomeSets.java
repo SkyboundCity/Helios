@@ -13,7 +13,7 @@ import static java.util.stream.Collectors.toSet;
 
 public final class BiomeSets {
 
-	public static final Set<Biome> WHITE_BIOMES = RegistryAccess
+	public static final Set<Biome> OVERWORLD_BIOMES = RegistryAccess
 			.registryAccess()
 			.getRegistry(RegistryKey.BIOME)
 			.getTagValues(BiomeTagKeys.IS_OVERWORLD)
@@ -21,7 +21,7 @@ public final class BiomeSets {
 			.map(BiomeSets::toBiome)
 			.collect(toSet());
 
-	public static final Set<Biome> RED_BIOMES = RegistryAccess
+	public static final Set<Biome> NETHER_BIOMES = RegistryAccess
 			.registryAccess()
 			.getRegistry(RegistryKey.BIOME)
 			.getTagValues(BiomeTagKeys.IS_NETHER)
@@ -29,7 +29,7 @@ public final class BiomeSets {
 			.map(BiomeSets::toBiome)
 			.collect(toSet());
 
-	public static final Set<Biome> BLACK_BIOMES = RegistryAccess
+	public static final Set<Biome> END_BIOMES = RegistryAccess
 			.registryAccess()
 			.getRegistry(RegistryKey.BIOME)
 			.getTagValues(BiomeTagKeys.IS_END)
@@ -42,6 +42,14 @@ public final class BiomeSets {
 
 	private static Biome toBiome(final Keyed biome) {
 		return Biome.reference(ResourceKey.minecraft(biome.key().value())).wrap();
+	}
+
+	public static Set<Biome> getBiomes(final Realm realm) {
+		return switch (realm) {
+			case OVERWORLD -> OVERWORLD_BIOMES;
+			case NETHER -> NETHER_BIOMES;
+			case END -> END_BIOMES;
+		};
 	}
 
 }
