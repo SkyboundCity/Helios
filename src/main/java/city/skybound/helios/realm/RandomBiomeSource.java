@@ -44,8 +44,12 @@ public final class RandomBiomeSource extends CustomBiomeSource {
 
 	@Override
 	public Biome biome(final BiomeSourceContext context) {
-		final long cellX = Math.floorDiv(context.quartX(), BIOME_CHUNK_SIZE);
-		final long cellZ = Math.floorDiv(context.quartZ(), BIOME_CHUNK_SIZE);
+		return this.biome(context.quartX(), context.quartZ());
+	}
+
+	public Biome biome(final int quartX, final int quartZ) {
+		final long cellX = Math.floorDiv(quartX, BIOME_CHUNK_SIZE);
+		final long cellZ = Math.floorDiv(quartZ, BIOME_CHUNK_SIZE);
 
 		final long hash = mix64(this.seed ^ cellX * X_SALT ^ cellZ * Z_SALT);
 
