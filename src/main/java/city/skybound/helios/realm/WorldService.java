@@ -116,6 +116,7 @@ public final class WorldService {
 
 			world.setGameRule(GameRules.RESPAWN_RADIUS, 0);
 			world.setGameRule(GameRules.FIRE_SPREAD_RADIUS_AROUND_PLAYER, 0);
+			world.setGameRule(GameRules.MAX_SNOW_ACCUMULATION_HEIGHT, 0);
 			world.setGameRule(GameRules.MOB_GRIEFING, false);
 			world.setGameRule(GameRules.SPREAD_VINES, false);
 			world.setGameRule(GameRules.ADVANCE_WEATHER, true);
