@@ -52,7 +52,7 @@ public final class PlayerSpawnListener implements Listener {
 	public void onRespawn(final PlayerRespawnEvent event) {
 		final Player player = event.getPlayer();
 		final Realm realm = Realm.of(player);
-		final @Nullable Location playerSpawn = this.getPlayerSpawn(player, realm);
+		final Location playerSpawn = this.getPlayerSpawn(player, realm);
 
 		if (playerSpawn == null) {
 			// player hasn't set spawn yet.
