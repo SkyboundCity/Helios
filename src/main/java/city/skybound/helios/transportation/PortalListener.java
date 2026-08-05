@@ -1,18 +1,20 @@
 package city.skybound.helios.transportation;
 
-import city.skybound.helios.HeliosPlugin;
 import city.skybound.helios.realm.Realm;
 import city.skybound.helios.realm.Transposer;
 import com.google.inject.Inject;
 import io.papermc.paper.event.entity.EntityInsideBlockEvent;
+import net.kyori.adventure.sound.Sound;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerPortalEvent;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Sends players to the correct realms upon entering a portal.
@@ -24,12 +26,12 @@ public final class PortalListener implements Listener {
 
 	private final Map<Player, Integer> lastPortalAttempt = new HashMap<>();
 
-	private final HeliosPlugin plugin;
+	private final JavaPlugin plugin;
 	private final Transposer transposer;
 
 	@Inject
 	public PortalListener(
-			final HeliosPlugin plugin,
+			final JavaPlugin plugin,
 			final Transposer transposer
 	) {
 		this.plugin = plugin;
@@ -43,9 +45,11 @@ public final class PortalListener implements Listener {
 	@EventHandler
 	public void onPortal(final EntityInsideBlockEvent event) {
 		final Material portal = event.getBlock().getType();
-		if (portal == Material.NETHER_PORTAL || portal == Material.END_PORTAL) {
-			event.setCancelled(true);
+		if (portal != Material.NETHER_PORTAL && portal != Material.END_PORTAL) {
+			return;
 		}
+
+		event.setCancelled(true);
 
 		if (!(event.getEntity() instanceof final Player player)) {
 			return;
@@ -56,13 +60,29 @@ public final class PortalListener implements Listener {
 			this.attemptPortal(player);
 			return;
 		}
+
 		this.attemptPortal(player);
 
+		final Realm from = Realm.of(player);
+		final Realm to;
 		if (portal == Material.NETHER_PORTAL) {
-			this.onNetherPortal(player);
-		} else if (portal == Material.END_PORTAL) {
-			this.onEndPortal(player);
+			to = from == Realm.NETHER ? Realm.OVERWORLD : Realm.NETHER;
+		} else {
+			to = from == Realm.END ? Realm.OVERWORLD : Realm.END;
 		}
+
+		this.transposer.transpose(player, to);
+
+		player.getScheduler().run(
+				this.plugin,
+				_ -> player.playSound(Sound.sound(
+						org.bukkit.Sound.BLOCK_PORTAL_TRAVEL,
+						Sound.Source.AMBIENT,
+						0.4F,
+						this.randomFloatBetween(0.9F, 1.1F)
+				)),
+				null
+		);
 	}
 
 	@EventHandler
@@ -71,20 +91,8 @@ public final class PortalListener implements Listener {
 		event.setCancelled(true);
 	}
 
-	private void onNetherPortal(final Player player) {
-		if (Realm.of(player) == Realm.NETHER) {
-			this.transposer.transpose(player, Realm.OVERWORLD);
-		} else {
-			this.transposer.transpose(player, Realm.NETHER);
-		}
-	}
-
-	private void onEndPortal(final Player player) {
-		if (Realm.of(player) == Realm.END) {
-			this.transposer.transpose(player, Realm.OVERWORLD);
-		} else {
-			this.transposer.transpose(player, Realm.END);
-		}
+	private float randomFloatBetween(final float min, final float max) {
+		return min + ThreadLocalRandom.current().nextFloat() * (max - min);
 	}
 
 }
