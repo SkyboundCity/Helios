@@ -18,10 +18,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
-import org.bukkit.event.world.TimeSkipEvent;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.BoundingBox;
-
 import org.jspecify.annotations.Nullable;
 
 import java.time.Duration;
@@ -135,25 +133,11 @@ public final class PlayerSpawnListener implements Listener {
 	}
 
 	/**
-	 * Prevents sleeping in beds from skipping the night.
-	 */
-	@EventHandler
-	public void onTimeSkip(final TimeSkipEvent event) {
-		if (event.getSkipReason() == TimeSkipEvent.SkipReason.NIGHT_SKIP) {
-			event.setCancelled(true);
-		}
-	}
-
-	/**
-	 * Allows beds in the nether and the end.
+	 * Shows a message to the player when they enter a bed, telling them that sleeping will set their spawn point.
 	 */
 	@EventHandler
 	public void onBedEnter(final PlayerBedEnterEvent event) {
-		if (event.getBedEnterResult() == PlayerBedEnterEvent.BedEnterResult.NOT_POSSIBLE_HERE) {
-			event.setUseBed(Event.Result.ALLOW);
-		}
-
-		if (event.useBed() == Event.Result.ALLOW || event.getBedEnterResult() == PlayerBedEnterEvent.BedEnterResult.OK) {
+		if (event.useBed() == Event.Result.ALLOW) {
 			event.getPlayer().showTitle(Title.title(
 					Component.empty(),
 					Component.text("sleep to set your spawn point").color(NamedTextColor.DARK_GRAY),

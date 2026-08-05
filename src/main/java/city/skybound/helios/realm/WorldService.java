@@ -125,6 +125,9 @@ public final class WorldService {
 			world.setGameRule(GameRules.KEEP_INVENTORY, true);
 			world.setGameRule(GameRules.COMMAND_BLOCKS_WORK, false);
 
+			// prevent sleeping from skipping the night
+			world.setGameRule(GameRules.PLAYERS_SLEEPING_PERCENTAGE, 101);
+
 			// no mob spawning! >:(
 			world.setGameRule(GameRules.SPAWN_MOBS, false);
 			world.setGameRule(GameRules.SPAWN_PATROLS, false);
