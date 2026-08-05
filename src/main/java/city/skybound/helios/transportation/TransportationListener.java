@@ -26,7 +26,7 @@ import java.util.List;
 
 public final class TransportationListener implements Listener {
 
-	private static final List<PotionEffectType> ONEROUS_BANNED_EFFECTS = List.of(
+	private static final List<PotionEffectType> NETHER_BANNED_EFFECTS = List.of(
 			PotionEffectType.SPEED,
 			PotionEffectType.JUMP_BOOST,
 			PotionEffectType.SLOW_FALLING,
@@ -51,7 +51,7 @@ public final class TransportationListener implements Listener {
 	}
 
 	/**
-	 * Prevents ender pearl and chorus fruit teleportation except in docile realms.
+	 * Prevents ender pearl and chorus fruit teleportation except in the end.
 	 */
 	@EventHandler
 	public void onTeleport(final PlayerTeleportEvent event) {
@@ -72,7 +72,7 @@ public final class TransportationListener implements Listener {
 	}
 
 	/**
-	 * Prevents vehicle usage in onerous realms.
+	 * Prevents vehicle usage in the nether.
 	 */
 	@EventHandler
 	public void onVehicleEnter(final VehicleEnterEvent event) {
@@ -95,7 +95,7 @@ public final class TransportationListener implements Listener {
 	}
 
 	/**
-	 * Prevents movement-enhancing potions in onerous realms.
+	 * Prevents movement-enhancing potions in the nether.
 	 */
 	@EventHandler
 	public void onPotionEffect(final EntityPotionEffectEvent event) {
@@ -106,7 +106,7 @@ public final class TransportationListener implements Listener {
 		}
 
 		final PotionEffectType type = event.getNewEffect().getType();
-		if (!ONEROUS_BANNED_EFFECTS.contains(type)) {
+		if (!NETHER_BANNED_EFFECTS.contains(type)) {
 			return;
 		}
 
@@ -117,23 +117,24 @@ public final class TransportationListener implements Listener {
 	}
 
 	/**
-	 * Removes movement-enhancing potions when transposing into onerous realms.
+	 * Removes movement-enhancing potion effects when transposing into the nether.
 	 */
 	@EventHandler
 	public void onWorldChange(final PlayerChangedWorldEvent event) {
 		final Player player = event.getPlayer();
 
-		if (Realm.of(player) != Realm.NETHER) {
+		final var realm = Realm.find(player.getWorld());
+		if (realm != Realm.NETHER) {
 			return;
 		}
 
-		for (final PotionEffectType type : ONEROUS_BANNED_EFFECTS) {
+		for (final PotionEffectType type : NETHER_BANNED_EFFECTS) {
 			player.removePotionEffect(type);
 		}
 	}
 
 	/**
-	 * Prevents elytra usage outside docile realms.
+	 * Prevents elytra usage outside the end.
 	 */
 	@EventHandler
 	public void onElytra(final EntityToggleGlideEvent event) {

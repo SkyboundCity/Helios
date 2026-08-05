@@ -28,7 +28,10 @@ public final class TransportationTask {
 		server.getScheduler().runTaskTimer(
 				this.plugin, () -> {
 					for (final Player player : server.getOnlinePlayers()) {
-						final Realm realm = Realm.of(player);
+						final var realm = Realm.find(player.getWorld());
+						if (realm == null) {
+							continue;
+						}
 
 						// no flight anywhere.
 						this.flightService.checkFlight(player);

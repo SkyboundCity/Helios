@@ -24,7 +24,10 @@ public final class PlayerVoidLoopTask {
 				this.plugin, () -> {
 					for (final Player player : server.getOnlinePlayers()) {
 						final Location loc = player.getLocation();
-						final var realm = Realm.of(player);
+						final var realm = Realm.find(player.getWorld());
+						if (realm == null) {
+							continue;
+						}
 						if (loc.getY() <= RealmPositions.loopMinEngageY(realm)) { // they're too low.
 							loc.setY(RealmPositions.loopMinToY(realm));
 							Teleport.relative(player, loc);
