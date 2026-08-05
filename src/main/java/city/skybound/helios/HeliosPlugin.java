@@ -42,6 +42,7 @@ import city.skybound.helios.soul.Charon;
 import city.skybound.helios.soul.Otzar;
 import city.skybound.helios.tag.TagCommand;
 import city.skybound.helios.tag.TagListener;
+import city.skybound.helios.transportation.EmulateNetherPortalCreationListener;
 import city.skybound.helios.transportation.FlightListener;
 import city.skybound.helios.transportation.FlyCommand;
 import city.skybound.helios.transportation.PortalListener;
@@ -192,6 +193,7 @@ public final class HeliosPlugin extends JavaPlugin {
 		registerListeners(
 				this,
 				this.injector.getInstance(ChatListener.class),
+				this.injector.getInstance(EmulateNetherPortalCreationListener.class),
 				this.injector.getInstance(FishingListener.class),
 				this.injector.getInstance(FlightListener.class),
 				this.injector.getInstance(FlingerListener.class),
