@@ -24,6 +24,8 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public final class PortalListener implements Listener {
 
+	private static final int VANILLA_PORTAL_COOLDOWN = 300;
+
 	private final Map<Player, Integer> lastPortalAttempt = new HashMap<>();
 
 	private final JavaPlugin plugin;
@@ -72,6 +74,10 @@ public final class PortalListener implements Listener {
 		}
 
 		this.transposer.transpose(player, to);
+
+		// The destination may be the player's saved location inside the other portal.
+		// Match vanilla's cooldown so that portal does not immediately restart its overlay.
+		player.setPortalCooldown(VANILLA_PORTAL_COOLDOWN);
 
 		player.getScheduler().run(
 				this.plugin,

@@ -55,10 +55,15 @@ public final class Transposer {
 	 * @return the location that the player would be teleported to on transpose
 	 */
 	public Location getNextLocation(final Player player, final Realm realm) {
-		return Objects.requireNonNullElseGet(
-				this.getPreviousLocation(player, realm),
-				() -> this.worldService.ornateSpawn(realm)
-		);
+		final var prevLoc = this.getPreviousLocation(player, realm);
+		if (prevLoc != null) {
+			final var playerLoc = player.getLocation();
+			prevLoc.setYaw(playerLoc.getYaw());
+			prevLoc.setPitch(playerLoc.getPitch());
+			return prevLoc;
+		} else {
+			return this.worldService.ornateSpawn(realm);
+		}
 	}
 
 	private @Nullable Location getPreviousLocation(final Player player, final Realm realm) {
