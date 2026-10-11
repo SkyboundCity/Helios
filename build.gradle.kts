@@ -1,8 +1,8 @@
 plugins {
 	id("java")
-	id("com.gradleup.shadow") version "9.5.1"
+	id("com.gradleup.shadow") version "9.6.1"
 	id("net.kyori.indra.checkstyle") version "4.0.0"
-	id("com.github.ben-manes.versions") version "0.54.0"
+	id("io.github.ben-manes.versions") version "0.65.0"
 }
 
 group = "city.skybound"
@@ -22,18 +22,18 @@ repositories {
 }
 
 dependencies {
-	compileOnly("io.papermc.paper:paper-api:26.2.build.+")
+	compileOnly("io.papermc.paper:paper-api:26.3.build.+")
 	compileOnly("net.luckperms:api:5.5")
-	compileOnly("org.jspecify:jspecify:1.0.0")
+	compileOnly("org.jspecify:jspecify:1.0.1")
 	implementation("com.google.inject:guice:7.0.0")
 	// replace old lib bundled by Guice
 	implementation("com.google.guava:guava:33.6.0-jre")
-	implementation("dev.tehbrian:agna-paper:1.2.2")
-	implementation("dev.tehbrian:agna-configurate:1.2.2")
-	implementation("org.incendo:cloud-paper:2.0.0-beta.17")
+	implementation("dev.tehbrian:agna-paper:1.2.4")
+	implementation("dev.tehbrian:agna-configurate:1.2.4")
+	implementation("org.incendo:cloud-paper:2.0.1")
 	implementation("org.spongepowered:configurate-hocon:4.2.0")
-	implementation("dev.wyck:wyck-26.2:3.3.0-2e003af")
-	implementation("dev.wyck:wyck-decoders:3.3.0-2e003af")
+	implementation("dev.wyck:wyck:4.0.0-837d6ec")
+	implementation("dev.wyck:wyck-decoders:4.0.0-837d6ec")
 }
 
 tasks {
