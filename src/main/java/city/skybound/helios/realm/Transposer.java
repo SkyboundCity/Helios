@@ -7,8 +7,6 @@ import org.bukkit.entity.Player;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 
-import java.util.Objects;
-
 /**
  * Responsible for transposing players to the different realms.
  */
